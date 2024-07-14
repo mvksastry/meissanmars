@@ -62,9 +62,88 @@
 				<!-- Main row -->
 				<div class="row">
 					<!-- Left col -->
-					<section class="col-lg-7 connectedSortable">
+					<section class="col-lg-12 connectedSortable">
 						<!-- TO DO List -->
-           
+            <div class="card card-primary card-outline">
+              <div class="card-header">
+                <h3 class="card-title"></h3>Species Permissions
+
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                  <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="card-body">
+                @if(count($allowedSpecies) > 0)
+								  <table id="userIndex2" class="table table-sm table-bordered table-hover">
+										<thead>
+											<tr>
+												<th> Check</th>
+												<th> Species </th>
+												<th> Primary Handler </th>
+												<th> Back-up Handler</th>
+												<th> Start Date</th>
+												<th> End Date </th>
+												<th> Note </th>
+											</tr>
+										</thead>
+										<tbody>
+											@foreach($allowedSpecies as $row)
+												<tr>
+													<td>
+													<label class="inline-flex items-center">
+														
+													</label>
+												</td>
+												<td>
+													
+												</td>
+												<td>
+													
+												</td>
+												<td>
+													
+												</td>
+												<td>
+													
+												</td>
+												
+												<td>
+													
+												</td>
+												<td>
+													
+												</td>
+												<td>
+													
+												</td>
+												<td>
+													
+												</td>
+												<td>
+													
+												</td>
+												<td>
+													
+												</td>
+											</tr>
+											@endforeach
+										</tbody>
+									</table>
+								@else
+									No Information to display
+								@endif
+              </div>
+              <!-- /.card-body -->
+              <div class="card-footer">
+                Footer
+              </div>
+              <!-- /.card-footer-->
+            </div>           
 						<!-- /.card -->
 					</section>
 					<!-- /.Left col -->
