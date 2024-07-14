@@ -7,11 +7,11 @@
 			<div class="container-fluid">
 				<div class="row mb-2">
 					<div class="col-sm-6">
-						<h1 class="m-0">Dashboard: Permissions</h1>
+						<h1 class="m-0">Species: Permissions</h1>
 					</div><!-- /.col -->
 					<div class="col-sm-6">
 						<ol class="breadcrumb float-sm-right">
-							<li class="breadcrumb-item"><a href="/dashboard">Dashboard</a></li>
+							<li class="breadcrumb-item"><a href="/dashboard">Species</a></li>
 							<li class="breadcrumb-item active">Permissions</li>
 						</ol>
 					</div><!-- /.col -->
@@ -34,7 +34,7 @@
             <!-- Default box -->
             <div class="card card-primary card-outline">
               <div class="card-header">
-                <h3 class="card-title">Dashboard Weaning</h3>
+                <h3 class="card-title"></h3>Species Permissions
 
                 <div class="card-tools">
                   <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
@@ -81,3 +81,4 @@
 	</div>
 
 </div>
+

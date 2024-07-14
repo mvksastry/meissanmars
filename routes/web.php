@@ -105,6 +105,14 @@ use App\Livewire\Breeding\Colony\WeanHome;
 use App\Livewire\Breeding\Colony\ColonyPermissions;
 //-------------------------------------------------------//
 
+//livewire - Breeding/Colnoy Permission Management
+use App\Livewire\Breeding\Colony\AssignSpecies;
+use App\Livewire\Breeding\Colony\AssignStrain;
+use App\Livewire\Breeding\Colony\AssignMatings;
+use App\Livewire\Breeding\Colony\AssignLitter;
+use App\Livewire\Breeding\Colony\AssignWeaning;		
+//-------------------------------------------------------//
+		
 //Livewiere - Search Engines
 use App\Livewire\Breeding\Searches\Searchmice;
 use App\Livewire\Breeding\Searches\Searchmatings;
@@ -290,6 +298,14 @@ Route::middleware(['auth','verified'])->group(function() {
 		Route::get('/colony-permissions', ColonyPermissions::class);
     // -------------- //
         
+		// Breeding - Livewire Colony Routes		
+		Route::get('/assign-species', AssignSpecies::class);
+		Route::get('/assign-strain', AssignStrain::class);
+		Route::get('/assign-matings', AssignMatings::class);
+		Route::get('/assign-litter', AssignLitter::class);
+		Route::get('/assign-weaning', AssignWeaning::class);		
+	  // -------------- //
+				
     // Breeding - Livewire Search engine
     Route::get('/searchmice', Searchmice::class);
     Route::get('/searchmatings', Searchmatings::class);
