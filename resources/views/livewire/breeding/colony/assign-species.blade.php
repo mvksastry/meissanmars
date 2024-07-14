@@ -82,7 +82,7 @@
 								  <table id="userIndex2" class="table table-sm table-bordered table-hover">
 										<thead>
 											<tr>
-												<th> Check</th>
+												
 												<th> Species </th>
 												<th> Primary Handler </th>
 												<th> Back-up Handler</th>
@@ -95,42 +95,25 @@
 											@foreach($allowedSpecies as $row)
 												<tr>
 													<td>
-													<label class="inline-flex items-center">
-														
-													</label>
-												</td>
-												<td>
+													{{ $row->species->species_name}}
+													</td>
+													<td>
+													{{ $row->handler->name }}
+													</td>
+													<td>
+													{{ $row->surrogater->name }}
+													</td>
+													<td>
+													{{ $row->start_date }}
+													</td>
 													
-												</td>
-												<td>
-													
-												</td>
-												<td>
-													
-												</td>
-												<td>
-													
-												</td>
-												
-												<td>
-													
-												</td>
-												<td>
-													
-												</td>
-												<td>
-													
-												</td>
-												<td>
-													
-												</td>
-												<td>
-													
-												</td>
-												<td>
-													
-												</td>
-											</tr>
+													<td>
+														{{ $row->end_date }}
+													</td>
+													<td>
+														{{ ucfirst($row->status) }}
+													</td>
+												</tr>
 											@endforeach
 										</tbody>
 									</table>

@@ -32,17 +32,17 @@ class Speciesassent extends Model
 		
 		public function species()
     {
-      return $this->hasOne(Species::class, 'species_id', 'species_id');
+      return $this->hasOne(\App\Models\Species::class, 'species_id', 'species_id');
     }
 		
 		public function handler()
     {
-      return $this->hasOne(User::class, 'id', 'handler_id');
+      return $this->hasOne(\App\Models\User::class, 'id', 'handler_id');
     }
 		
 		public function surrogater()
     {
-      return $this->hasOne(User::class, 'id', 'surrogate_id');
+      return $this->hasOne(\App\Models\User::class, 'id', 'surrogate_id');
     }
 
     // Customize log name

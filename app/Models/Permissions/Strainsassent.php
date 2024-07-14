@@ -10,7 +10,8 @@ use Spatie\Permission\Traits\HasRoles;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\LogOptions;
 
-class Strainassent extends Model
+
+class Strainsassent extends Model
 {
     use HasFactory;
     use HasRoles;
@@ -30,7 +31,7 @@ class Strainassent extends Model
     	'updated_at'
     ];
 		
-		public function strain()
+		public function strains()
     {
       return $this->hasOne(\App\Models\Strain::class, 'strain_id', 'strain_id');
     }
@@ -42,11 +43,11 @@ class Strainassent extends Model
 		
 		public function backup()
     {
-      return $this->hasOne(\App\Models\User::class, 'id', 'surrogate_id');
+      return $this->hasOne(\App\Models\User::class, 'id', 'backup_id');
     }
 
     // Customize log name
-    protected static $logName = 'Strainassents';
+    protected static $logName = 'Strainsassents';
 
     // Only defined attribute will store in log while any change
     protected static $logAttributes = [
