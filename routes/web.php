@@ -101,6 +101,7 @@ use App\Livewire\Breeding\Colony\AddMating;
 use App\Livewire\Breeding\Colony\EditMating;
 use App\Livewire\Breeding\Colony\AddLitter;
 use App\Livewire\Breeding\Colony\EditLitter;
+use App\Livewire\Breeding\Colony\WeanHome;
 //-------------------------------------------------------//
 
 //Livewiere - Search Engines
@@ -284,6 +285,7 @@ Route::middleware(['auth','verified'])->group(function() {
     Route::get('/edit-mating', EditMating::class);
     Route::get('/add-litter', AddLitter::class);
     Route::get('/edit-litter', EditLitter::class);
+		Route::get('/wean-home', WeanHome::class);
     // -------------- //
         
     // Breeding - Livewire Search engine
