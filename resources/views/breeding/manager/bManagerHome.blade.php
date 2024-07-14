@@ -7,11 +7,11 @@
 			<div class="container-fluid">
 				<div class="row mb-2">
 					<div class="col-sm-6">
-						<h1 class="m-0">Breeding Dashboard: Manager</h1>
+						<h1 class="m-0">Colony Dashboard: Manager</h1>
 					</div><!-- /.col -->
 					<div class="col-sm-6">
 						<ol class="breadcrumb float-sm-right">
-							<li class="breadcrumb-item"><a href="/dashboard">Breeding Home</a></li>
+							<li class="breadcrumb-item"><a href="/dashboard">Colony Home</a></li>
 							<li class="breadcrumb-item active">Dashboard</li>
 						</ol>
 					</div><!-- /.col -->
@@ -46,7 +46,7 @@
                 </div>
               </div>
               <div class="card-body">
-                Start using your amazing application!
+                Start using this amazing application!
               </div>
               <!-- /.card-body -->
               <div class="card-footer">

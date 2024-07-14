@@ -24,7 +24,7 @@
         <div class="inner">
           <!-- h3><sup style="font-size: 20px"></sup></h3 -->
           <h5>COLONY</h5>
-          <p>Home</p>
+          <p>ENTRIES</p>
         </div>
         <div class="icon">
           <i class="ion ion-stats-bars"></i>
@@ -39,8 +39,8 @@
       <!-- small box -->
       <div class="small-box bg-success">
         <div class="inner">
-          <h5>KANBAN</h5>
-          <p>Boards</p>
+          <h5>COLONY</h5>
+          <p>REVIEW</p>
         </div>
         <div class="icon">
           <i class="ion ion-card"></i>
@@ -55,13 +55,13 @@
       <!-- small box -->
       <div class="small-box bg-warning">
         <div class="inner">
-          <h5>I O COMMS</h5>
-          <p>New: </p>
+          <h5>COLONY</h5>
+          <p>PERMISSIONS</p>
         </div>
         <div class="icon">
           <i class="ion ion-ios-email-outline"></i>
         </div>
-        <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+        <a href="/colony-permissions" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
       </div>
     </div>
 
@@ -71,7 +71,7 @@
     <div class="small-box bg-secondary">
       <div class="inner">
         <h5>FACILITY</h5>
-        <p>...</p>
+        <p>OPS</p>
       </div>
       <div class="icon">
         <i class="ion ion-android-options"></i>

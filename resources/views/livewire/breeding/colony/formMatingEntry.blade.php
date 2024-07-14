@@ -162,9 +162,9 @@
 							<font color="red">Wean time</font>
             </td>
             <td colspan="2">
-							<input class="mx-5" wire:model.lazy="weantime" value="1" type="radio">Standard (18 days)
+							<input class="mx-5" wire:model.lazy="weantime" checked value="21" type="radio">Standard (21 days)
 							</br>
-							<input class="mx-5" wire:model.lazy="weantime" value="2" type="radio">Extended (28 days)
+							<input class="mx-5" wire:model.lazy="weantime" value="28" type="radio">Extended (28 days)
             </td>
 						<td>
 

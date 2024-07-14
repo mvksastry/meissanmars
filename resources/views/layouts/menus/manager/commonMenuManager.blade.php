@@ -56,7 +56,7 @@
           <a href="{{ route('bhome.index') }}" class="nav-link">
             <i class="nav-icon fas fa-tree"></i>
             <p>
-            Breeding
+            Colony
             <i class="fas fa-angle-left right"></i>
             </p>
           </a>

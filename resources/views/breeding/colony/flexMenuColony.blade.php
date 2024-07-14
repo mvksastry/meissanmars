@@ -10,7 +10,7 @@
         <a href="/add-entry" class="small-box-footer"> 
         <button type="button" class="btn btn-outline-primary btn-block">
           <i class="fas fa-arrow-circle-right"></i>
-          ADD MICE
+          ADD TO DB
         </button>
         </a>
       </div>
