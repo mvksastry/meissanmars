@@ -29,35 +29,7 @@
 				@endhasrole
 
           <!-- Main content -->
-          <section class="content">
-
-            <!-- Default box -->
-            <div class="card card-primary card-outline">
-              <div class="card-header">
-                <h3 class="card-title"></h3>Species Permissions
-
-                <div class="card-tools">
-                  <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                    <i class="fas fa-minus"></i>
-                  </button>
-                  <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
-                    <i class="fas fa-times"></i>
-                  </button>
-                </div>
-              </div>
-              <div class="card-body">
-                Start using your amazing application!
-              </div>
-              <!-- /.card-body -->
-              <div class="card-footer">
-                Footer
-              </div>
-              <!-- /.card-footer-->
-            </div>
-            <!-- /.card -->
-
-          </section>
-          <!-- /.content -->
+           <!-- /.content -->
           
 				<!-- Main row -->
 				<div class="row">
@@ -66,7 +38,7 @@
 						<!-- TO DO List -->
             <div class="card card-primary card-outline">
               <div class="card-header">
-                <h3 class="card-title"></h3>Species Permissions
+                <h3 class="card-title"></h3>Active Species Permissions
 
                 <div class="card-tools">
                   <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
@@ -82,13 +54,12 @@
 								  <table id="userIndex2" class="table table-sm table-bordered table-hover">
 										<thead>
 											<tr>
-												
 												<th> Species </th>
 												<th> Primary Handler </th>
 												<th> Back-up Handler</th>
 												<th> Start Date</th>
 												<th> End Date </th>
-												<th> Note </th>
+												<th> Notes </th>
 											</tr>
 										</thead>
 										<tbody>
@@ -101,17 +72,16 @@
 													{{ $row->handler->name }}
 													</td>
 													<td>
-													{{ $row->surrogater->name }}
+													{{ $row->backup->name }}
 													</td>
 													<td>
 													{{ $row->start_date }}
 													</td>
-													
 													<td>
 														{{ $row->end_date }}
 													</td>
 													<td>
-														{{ ucfirst($row->status) }}
+														{{ ucfirst($row->notes) }}
 													</td>
 												</tr>
 											@endforeach
@@ -132,8 +102,88 @@
 					<!-- /.Left col -->
 
 					<!-- right col (We are only adding the ID to make the widgets sortable)-->          
-          <section class="col-lg-5 connectedSortable">
-            
+          <section class="col-lg-12 connectedSortable">
+            <div class="card card-primary card-outline">
+              <div class="card-header">
+                <h3 class="card-title"></h3>Assign Permissions for Species
+
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                  <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="card-body">
+							  <div class="card-body">
+                 
+									<div class="form-group">
+										<label for="exampleSelectBorder">Select Species</label>
+										<select class="custom-select form-control-border" wire:model.lazy="species_id" id="exampleSelectBorder">
+											<option value="-1">Select</option>
+											@foreach($activeSpecies as $row)
+											<option value="{{ $row->species_id }}">{{ $row->species_name }}</option>
+											@endforeach
+										</select>
+									</div>
+								
+
+									<div class="row">
+										<div class="form-group col-lg-6">
+											<label for="exampleSelectBorder">Primary Handler</label>
+											<select class="custom-select form-control-border" wire:model.lazy="handler_id" id="exampleSelectBorder">
+												<option value="-1">Select</option>
+												@foreach($users as $row)
+												<option value="{{ $row->id }}">{{ $row->name }}</option>
+												@endforeach
+											</select>
+										</div>									
+
+										<div class="form-group col-lg-6">
+											<label for="exampleSelectBorder">Back-up Handler</label>
+											<select class="custom-select form-control-border" wire:model.lazy="backup_id" id="exampleSelectBorder">
+												<option value="-1">Select</option>
+												@foreach($users as $row)
+												<option value="{{ $row->id }}">{{ $row->name }}</option>
+												@endforeach
+											</select>
+										</div>
+									</div>
+									
+									<div class="row">
+										<div class="form-group col-lg-6">
+											<label for="exampleSelectBorder">Permission Start Date</label>
+												<input type="date" class="form-control" wire:model.lazy="start_date" id="exampleInputPassword1" placeholder="Start Date">
+										</div>								
+
+										<div class="form-group col-lg-6">
+											<label for="exampleSelectBorder">Permission End Date</label>
+												<input type="date" class="form-control" wire:model.lazy="end_date" id="exampleInputPassword1" placeholder="End Date">
+										</div>	
+									</div>
+									
+                  <div class="form-group">
+                    <label for="exampleInputEmail1">Notes</label>
+                    <input type="text" class="form-control" wire:model.lazy="notes" id="exampleInputEmail1" placeholder="Notes">
+									</div>
+
+								<div class="card-footer">
+                  <button wire:click="postPermForSpecies()" class="btn btn-info">Create Permission</button>
+                  <button wire:click="resetForm()" class="btn btn-default float-right">Cancel</button>
+                </div>
+								
+                </div>
+							
+			
+              </div>
+              <!-- /.card-body -->
+              <div class="card-footer">
+                Footer
+              </div>
+              <!-- /.card-footer-->
+            </div>             
 						<!-- /.card -->
 					</section>
 					<!-- right col -->

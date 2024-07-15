@@ -22,10 +22,10 @@ class Speciesassent extends Model
     protected $fillable = [
     	'species_id',
 			'handler_id',
-			'surrogate_id',
+			'backup_id',
     	'start_date',
 			'end_date',
-    	'status',
+    	'notes',
     	'created_at',
     	'updated_at'
     ];
@@ -40,9 +40,9 @@ class Speciesassent extends Model
       return $this->hasOne(\App\Models\User::class, 'id', 'handler_id');
     }
 		
-		public function surrogater()
+		public function backup()
     {
-      return $this->hasOne(\App\Models\User::class, 'id', 'surrogate_id');
+      return $this->hasOne(\App\Models\User::class, 'id', 'backup_id');
     }
 
     // Customize log name
