@@ -2,18 +2,6 @@
   <div class="row">
     
     <!-- .col -->
-       
-    <div class="col-lg-3 col-6">
-      <!-- small box -->
-      <div class="small-box">
-        <a href="/assign-species" class="small-box-footer"> 
-        <button type="button" class="btn btn-outline-primary btn-block">
-        <i class="fas fa-arrow-circle-right"></i>
-          Assign Species
-        </button>
-        </a>
-      </div>
-    </div>
     
     <div class="col-lg-3 col-6">
       <!-- small box -->
@@ -50,8 +38,7 @@
         </a>
       </div>
     </div>
-	</div>
-	<div class="row">
+
     <div class="col-lg-3 col-6">
       <!-- small box -->
       <div class="small-box">

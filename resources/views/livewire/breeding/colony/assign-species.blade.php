@@ -38,7 +38,7 @@
 						<!-- TO DO List -->
             <div class="card card-primary card-outline">
               <div class="card-header">
-                <h3 class="card-title"></h3>Active Species Permissions
+                <h3 class="card-title"></h3>Active Strains & Permissions
 
                 <div class="card-tools">
                   <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
@@ -50,11 +50,11 @@
                 </div>
               </div>
               <div class="card-body">
-                @if(count($allowedSpecies) > 0)
+                @if(count($allowedStrains) > 0)
 								  <table id="userIndex2" class="table table-sm table-bordered table-hover">
 										<thead>
 											<tr>
-												<th> Species </th>
+												<th> Strain </th>
 												<th> Primary Handler </th>
 												<th> Back-up Handler</th>
 												<th> Start Date</th>
@@ -63,10 +63,10 @@
 											</tr>
 										</thead>
 										<tbody>
-											@foreach($allowedSpecies as $row)
+											@foreach($allowedStrains as $row)
 												<tr>
 													<td>
-													{{ $row->species->species_name}}
+													{{ $row->strains->strain_name}}
 													</td>
 													<td>
 													{{ $row->handler->name }}
@@ -81,7 +81,7 @@
 														{{ $row->end_date }}
 													</td>
 													<td>
-														{{ ucfirst($row->notes) }}
+														{{ ucfirst($row->status) }}
 													</td>
 												</tr>
 											@endforeach
@@ -105,7 +105,7 @@
           <section class="col-lg-12 connectedSortable">
             <div class="card card-primary card-outline">
               <div class="card-header">
-                <h3 class="card-title"></h3>Assign Permissions for Species
+                <h3 class="card-title"></h3>Assign Permissions for Strains
 
                 <div class="card-tools">
                   <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
@@ -118,13 +118,14 @@
               </div>
               <div class="card-body">
 							  <div class="card-body">
-                 
+             
+									
 									<div class="form-group">
-										<label for="exampleSelectBorder">Select Species</label>
-										<select class="custom-select form-control-border" wire:model.lazy="species_id" id="exampleSelectBorder">
+										<label for="exampleSelectBorder">Select Strains</label>
+										<select class="custom-select form-control-border" wire:model.lazy="strain_id" id="exampleSelectBorder">
 											<option value="-1">Select</option>
-											@foreach($activeSpecies as $row)
-											<option value="{{ $row->species_id }}">{{ $row->species_name }}</option>
+											@foreach($activeStrains as $row)
+											<option value="{{ $row->strain_id }}">{{ $row->strain_name }}</option>
 											@endforeach
 										</select>
 									</div>

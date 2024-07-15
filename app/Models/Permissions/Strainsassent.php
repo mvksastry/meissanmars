@@ -18,7 +18,7 @@ class Strainsassent extends Model
     use LogsActivity;
     
 		//protected $table = 'matingassents';
-    protected $primaryKey = 'strainassent_id';
+    protected $primaryKey = 'strainsassent_id';
     
     protected $fillable = [
     	'strain_id',

@@ -76,7 +76,7 @@ class AddEntry extends Component
     //$this->cmsg = $this->cageInfos;
     $this->LiveNewTagCheck($this->tagBase);
 
-        return view('livewire.breeding.colony.add-entry');
+    return view('livewire.breeding.colony.add-entry');
   }
 
 	public function show($id)
