@@ -29,6 +29,14 @@
       @hasexactroles('pient')
         @include('layouts.menus.pient.pient')
       @endhasexactroles
+
+      @hasexactroles('colony_sup')
+        @include('layouts.menus.colsup.colsup')
+      @endhasexactroles      
+			
+			@hasexactroles('colony_asst')
+        @include('layouts.menus.colasst.colasst')
+      @endhasexactroles
 			<!-- /.Main Sidebar Container -->
 			
 			<!-- Dynamic content -->

@@ -73,6 +73,7 @@ class HomeController extends Controller
 
 		$user = Auth::user();
     $roles = $user->getRoleNames();
+		//dd($roles);
     $groupTasks = $this->groupsTasks();
     $personalTasks = $this->personalTasks();
     $kbCards = Kanbancards::where('posted_by', Auth::user()->name)->get();
@@ -99,6 +100,7 @@ class HomeController extends Controller
       //Log::channel('activity')->info('Logged in user [ '.Auth::user()->name.' ] dashboard requested');
       Log::channel('activity')->info('Logged in user [ '.Auth::user()->name.' ] dashboard requested');
       return view('layouts.home.pi.dashboard')->with([
+			
                   'appProjects'=>$appProjects,
                   'subProjects'=>$subProjects,
                   'amendProjects'=>$amendProjects,
@@ -111,9 +113,88 @@ class HomeController extends Controller
                   'personalTasks'=>$personalTasks,
                   'groupTasks'=> $groupTasks,
                   'kbCards' => $kbCards
+			
       ]);
     }
 
+    if( Auth::user()->hasAnyRole('colony_sup') )
+    {
+      
+      //IAEC projects
+//      $appProjects = $this->approvedProjects();
+//      $subProjects = $this->submittedProjects();
+//      $amendProjects = $this->amendProjects();
+//      $expiredProjects = $this->expiredProjects();
+
+        //IAEC Animal usage
+//      $submittedIssues = $this->piSubmittedIssues();
+//      $confirmedIssues = $this->piConfirmedIssues();
+//      $approvedIssues = $this->piApprovedIssues();
+//      $issuedIssues = $this->piIssuedIssues();
+      
+      //research projects
+//      $actvProjs = $this->allowedProjectIds();
+      //dd($appProjects, $subProjects, $amendProjects, $expiredProjects);
+      //dd($submittedIssues, $confirmedIssues, $approvedIssues, $issuedIssues);
+      //Log::channel('activity')->info('Logged in user [ '.Auth::user()->name.' ] dashboard requested');
+//      Log::channel('activity')->info('Logged in user [ '.Auth::user()->name.' ] dashboard requested');
+      return view('layouts.home.colsup.dashboard')->with([
+			/*
+                  'appProjects'=>$appProjects,
+                  'subProjects'=>$subProjects,
+                  'amendProjects'=>$amendProjects,
+                  'expiredProjects'=>$expiredProjects,
+                  'submittedIssues'=>$submittedIssues,
+                  'confirmedIssues'=>$confirmedIssues,
+                  'approvedIssues'=>$approvedIssues,
+                  'issuedIssues'=>$issuedIssues,
+                  'actvProjs'=>$actvProjs,
+                  'personalTasks'=>$personalTasks,
+                  'groupTasks'=> $groupTasks,
+                  'kbCards' => $kbCards
+			*/
+      ]);
+    }
+
+    if( Auth::user()->hasRole('colony_asst') )
+    {
+      //dd("reached");
+      //IAEC projects
+//      $appProjects = $this->approvedProjects();
+//      $subProjects = $this->submittedProjects();
+//      $amendProjects = $this->amendProjects();
+//      $expiredProjects = $this->expiredProjects();
+
+        //IAEC Animal usage
+//      $submittedIssues = $this->piSubmittedIssues();
+//      $confirmedIssues = $this->piConfirmedIssues();
+//      $approvedIssues = $this->piApprovedIssues();
+//      $issuedIssues = $this->piIssuedIssues();
+      
+       //research projects
+//      $actvProjs = $this->allowedProjectIds();
+      //dd($appProjects, $subProjects, $amendProjects, $expiredProjects);
+      //dd($submittedIssues, $confirmedIssues, $approvedIssues, $issuedIssues);
+      //Log::channel('activity')->info('Logged in user [ '.Auth::user()->name.' ] dashboard requested');
+//      Log::channel('activity')->info('Logged in user [ '.Auth::user()->name.' ] dashboard requested');
+      return view('layouts.home.colasst.dashboard')->with([
+								/*
+                  'appProjects'=>$appProjects,
+                  'subProjects'=>$subProjects,
+                  'amendProjects'=>$amendProjects,
+                  'expiredProjects'=>$expiredProjects,
+                  'submittedIssues'=>$submittedIssues,
+                  'confirmedIssues'=>$confirmedIssues,
+                  'approvedIssues'=>$approvedIssues,
+                  'issuedIssues'=>$issuedIssues,
+                  'actvProjs'=>$actvProjs,
+                  'personalTasks'=>$personalTasks,
+                  'groupTasks'=> $groupTasks,
+                  'kbCards' => $kbCards
+								*/
+      ]);
+    }
+		
     if( Auth::user()->hasRole('manager') )
     {
       $users = count(User::all());
@@ -222,7 +303,7 @@ class HomeController extends Controller
         
 		$msg = "Your account is freshly registered or has no assigned role or not activated. Contact Service Provider";
 		Log::channel('activity')->info('Logged in user [ '.Auth::user()->name.' ] Guest user requesting for dashboard');
-    return view('norole.noRoleHome')->with(['slot'=>$msg]);
+    return view('layouts.home.norole.noRoleHome')->with(['slot'=>$msg]);
   }
 
   public function passwordReset(Request $request)
