@@ -6,8 +6,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
-
-
 use App\Models\Rack;
 use App\Models\Slot;
 use App\Models\Floor;
@@ -23,15 +21,22 @@ trait SlotCreation
   
   public function inductNewRack($request)
   {
+			//first get the building and floor ids
+			$result = Floor::findorFail($request['room_id']);
+    
+			$building_id = $result->building_id;
+			$floor_id = $result->floor_id;
+		
       $rack = new Rack();
-      $rack->building_id = 1;
-      $rack->floor_id = 1;
-      $rack->room_id = $request['room_id'];
-      $rack->rack_name = $request['rack_name'];
-      $rack->rows = $request['rows'];
-      $rack->cols = $request['cols'];
-      $rack->levels = $request['levels'];
-      $rack->notes = $request['notes'];
+      $rack->building_id = $building_id;
+      $rack->floor_id    = $floor_id;
+      $rack->room_id     = $request['room_id'];
+      $rack->rack_name   = $request['rack_name'];
+      $rack->rows        = $request['rows'];
+      $rack->cols        = $request['cols'];
+      $rack->levels      = $request['levels'];
+      $rack->notes       = $request['notes'];
+			//dd($rack);
       $rack->save();
       
       $rack_id = $rack->rack_id;
@@ -47,20 +52,20 @@ trait SlotCreation
         $slot->status = 'A';
         $slot->save();
       }
-    return true;
+    return $request['rack_name'];
   }
 
   public function editRackInformation($request)
   {
     //first get the building and floor ids
-    $result = Floor::findorFail($request['rack->id']);
+    $result = Floor::findorFail($request['room_id']);
     
     $building_id = $result->building_id;
-    $floor_id = $result->floor_id;
+    $floor_id    = $result->floor_id;
         
     $rack = new Rack();
-    $rack->building_id = 1;
-    $rack->floor_id = 1;
+    $rack->building_id = $building_id;
+    $rack->floor_id = $floor_id;
     $rack->room_id = $request['room_id'];
     $rack->rack_name = $request['rack_name'];
     $rack->rows = $request['rows'];

@@ -74,10 +74,10 @@ class RackController extends Controller
       //Validate name and permissions field
       $this->validate($request, [
         'room_id'   => 'required|numeric|min:1',
-        'rack_name' => 'required|alpha_dash|max:15',
+        'rack_name' => 'required|regex:/(^[A-Za-z0-9 -_]+$)+/|max:50',
         'rows'      => 'required|numeric|max:2',
         'cols'      => 'required|numeric|max:10',
-        'levels'    => 'required|numeric|max:4',
+        'levels'    => 'required|numeric|max:8',
         'notes'     => 'nullable|regex:/(^[A-Za-z0-9 -_]+$)+/|max:250'
       ]);
 
@@ -110,9 +110,9 @@ class RackController extends Controller
       }
       */
       
-      return redirect()->route('racks.index')
+      return redirect()->route('roomsnracks.index')
           ->with('flash_message',
-           'rack'. $rack->rack_name.' added!');
+           'rack'. $result.' added!');
     }
 
     /**
