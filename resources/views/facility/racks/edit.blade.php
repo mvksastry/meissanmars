@@ -35,7 +35,7 @@
 							<div class="card-header">
 								<h3 class="card-title">
 								  <i class="fas fa-chart-pie mr-1"></i>
-								  Edit Rack
+								  Edit Rack : {{ $msg }}
 								</h3>
 								<div class="card-tools">
 								  <ul class="nav nav-pills ml-auto">
@@ -57,12 +57,12 @@
 										<!-- /.card-header -->
 
 										<div class="card-body">
-                      @if(!($noEditMessage))
+
 											<form method="POST" action="{{ route('rack.update', $rack->rack_id) }}">
                         @method('PUT')
 												@csrf
                         <input type="text" hidden class="form-control form-control-border" 
-                            name="purpose" id="purpose" value="edit" placeholder="Notes">
+                            name="purpose" id="purpose" value="edit" placeholder="Edit">
                             
                           <div class="form-group col">
                             <label for="exampleInputBorderWidth2">Room Name*</label>
@@ -73,7 +73,6 @@
                                 @if($rack->room_id == $row->room_id)
                                   selected="selected"
                                 @endif
-                                
                                 >{{ $row->room_name }}</option>
                               @endforeach
                             </select>
@@ -97,7 +96,8 @@
 
                           <div class="col-xs-12 form-group">
                             <label for="exampleInputBorderWidth2">Rows*</label>
-                            <input type="text" class="form-control form-control-border" 
+                            <input type="text" class="form-control form-control-border"
+														@if($edit) readonly @endif
                             name="rows" id="rows" value="{{ $rack->rows }}" placeholder="Rows">
                             @if($errors->has('rows'))
                               <p class="help-block text-danger">
@@ -109,6 +109,7 @@
                           <div class="col-xs-12 form-group">
                             <label for="exampleInputBorderWidth2">Columns*</label>
                             <input type="text" class="form-control form-control-border" 
+														@if($edit) readonly @endif
                             name="cols" id="cols" value="{{ $rack->cols }}" placeholder="Columns">
                             @if($errors->has('cols'))
                               <p class="help-block text-danger">
@@ -120,8 +121,9 @@
                           <div class="col-xs-12 form-group">
                             <label for="exampleInputBorderWidth2">Shelfs*</label>
                             <input type="text" class="form-control form-control-border" 
+														@if($edit) readonly @endif
                             name="levels" id="levels" value="{{ $rack->levels }}" placeholder="Shelfs">
-                            @if($errors->has('levels'))
+														@if($errors->has('levels'))
                               <p class="help-block text-danger">
                                 {{ $errors->first('levels') }}
                               </p>
@@ -144,9 +146,6 @@
 													<button type="submit" class="btn btn-primary">Submit</button>
 												</div>
                       </form>
-											@else
-                        <label for="exampleInputBorderWidth2">Rack not empty, must empty before editing it.</label>
-                      @endif
 										</div>
 
 									  <!-- /.card-body -->

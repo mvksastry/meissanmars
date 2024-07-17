@@ -130,10 +130,23 @@ class RackController extends Controller
     {
         $rooms = Room::all();
         $rack = Rack::findOrFail($id);
-        
+				$rmsg = Slot::where('rack_id', $id)->where('status', 'O')->get();
+				//dd($rmsg);
+				if(count($rmsg) > 0)
+				{
+					$edit = true;
+					$msg = "Rack Not Empty: Rows, Columns, Shelfs can not be edited";
+					
+				}
+				else {
+					$edit = false;
+					$msg = "Rack Empty: Rows, Columns, Shelfs can be edited";
+				}
         return view('facility.racks.edit')
           ->with('rooms',$rooms)
-          ->with('rack', $rack);
+          ->with('rack', $rack)
+					->with('msg',$msg)
+					->with('edit', $edit);
      
     }
 
