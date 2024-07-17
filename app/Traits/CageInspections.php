@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 use App\Models\Issue;
+use App\Models\Mortality;
 use App\Models\Slot;
 use App\Models\Cage;
 use App\Models\Cagenote;
@@ -27,6 +28,8 @@ trait CageInspections
       //$cnInfo = Cagenote::where('cage_id', intval($idcg))->get();
 
       $project_id = $cageIdInfo->iaecproject_id;
+			$pi_id = iaecproject::where('iaecproject_id', $project_id)->pluck('pi_id');
+			
 
       $nbTable = $project_id."notebook";
 
@@ -39,6 +42,28 @@ trait CageInspections
       $housing  = $this->housing;
       $xyz      = $this->xyz;
       $notes    = $this->notes;
+			
+      if($moribund > 0)
+      {
+        //reduce the animal number by that many
+        //$cageIdInfo->animal_number = $cageIdInfo->animal_number - $moribund;
+        $cnotes = $cnotes.'[ '.$moribund." ] moribund state removed;";
+      }
+
+      if($housing)
+      {
+        $cnotes = $cnotes."Cage changed with new bedding;";
+      }
+
+      if($xyz)
+      {
+        $cnotes = $cnotes."Xyz;";
+      }
+
+      if($notes != "")
+      {
+        $notes = $cnotes.$notes;
+      }			
 
       if($numdead > 0)
       {
@@ -61,28 +86,25 @@ trait CageInspections
         $input['remarks'] = "none";
 
         $result = DB::table($nbTable)->insert($input);
-      }
-
-      if($moribund > 0)
-      {
-        //reduce the animal number by that many
-        //$cageIdInfo->animal_number = $cageIdInfo->animal_number - $moribund;
-        $cnotes = $cnotes.'[ '.$moribund." ] moribund state removed;";
-      }
-
-      if($housing)
-      {
-        $cnotes = $cnotes."Cage changed with new bedding;";
-      }
-
-      if($xyz)
-      {
-        $cnotes = $cnotes."Xyz;";
-      }
-
-      if($notes != "")
-      {
-        $notes = $cnotes.$notes;
+				
+				//now make an entry in mortality table
+				
+				$mort = new Mortality(); 
+				$mort->species_id = $cageIdInfo->species_id;
+				$mort->strain_id = $cageIdInfo->strain_id;
+				$mort->project_id = $project_id;
+				$mort->pi_id = $pi_id;
+				$mort->colony_info = "na";
+				$mort->strain_incharge_id = "na";
+				$mort->cage_id = $cageIdInfo->cage_id;
+				$mort->date_death = date('Y-m-d');
+				$mort->cod = "not known";
+				$mort->notes = $notes;
+				$mort->posted_by = Auth::user()->name;
+				$mort->date_posted = date('Y-m-d');
+				
+				$mort->save();
+				
       }
 
       $res = Cagenote::updateOrCreate(
@@ -93,6 +115,7 @@ trait CageInspections
       
       $this->resetCageObservations();
       $this->cageInfos = false;
+			
   	}
 
 
