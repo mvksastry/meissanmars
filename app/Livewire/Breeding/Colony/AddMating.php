@@ -22,6 +22,7 @@ use App\Models\Breeding\Cvterms\CVGeneration;
 use App\Models\Breeding\Cvterms\CVPhenotype;
 use App\Models\Breeding\Cvterms\Lifestatus;
 use App\Models\Room;
+use App\Models\Rack;
 use App\Models\Breeding\Cvterms\CVCoatcolor;
 use App\Models\Breeding\Cvterms\CVDiet;
 use App\Models\Breeding\Cvterms\Owner;
@@ -57,6 +58,7 @@ class AddMating extends Component
     public $matingType, $species_name, $lifestatus, $owners, $dam1=1, $dam2=2, $sire=3;
 
     public $rooms, $cageChars, $cageParams, $cageName, $cageStatus, $cageRooms, $datex;
+		public $racksInRoom=[];
     public $cageCreateMessage="", $cageComment, $dam1CageId, $dam2CageId, $sireCageId;
 
     public $dam1Strain, $dam2Strain, $sireStrain, $dam1Diet, $dam2Diet, $sireDiet;
@@ -69,9 +71,15 @@ class AddMating extends Component
       $this->dam1IdCheck($this->dam1Id);
       $this->dam2IdCheck($this->dam2Id);
       $this->sireIdCheck($this->sireId);
-
+			$this->rackSelCheck($this->cageRooms);
       return view('livewire.breeding.colony.add-mating');
     }
+
+		public function rackSelCheck($room_id)
+		{
+			$this->racksInRoom = Rack::where('room_id', $room_id)->get();
+			//dd($racksInRooms);
+		}
 
     public function dam1IdCheck($dam1Id)
     {
