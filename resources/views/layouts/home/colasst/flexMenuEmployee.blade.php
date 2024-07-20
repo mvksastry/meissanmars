@@ -6,7 +6,7 @@
       <div class="small-box bg-success">
         <div class="inner">
           <h4><sup style="font-size: 20px"></sup>KB</h4>
-          <p>Kanban Board</p>
+          <p>Colony Report</p>
         </div>
         <div class="icon">
           <i class="ion ion-card"></i>
@@ -20,7 +20,7 @@
     <!-- small box -->
     <div class="small-box bg-secondary">
       <div class="inner">
-        <h4> Upcoming </h4>
+        <h4> Matings </h4>
         <p>Not Coded</p>
       </div>
       <div class="icon">
@@ -36,7 +36,7 @@
     <!-- small box -->
     <div class="small-box bg-secondary">
       <div class="inner">
-        <h4> Upcoming </h4>
+        <h4> Litter </h4>
         <p>Not Coded</p>
       </div>
       <div class="icon">

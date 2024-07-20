@@ -36,17 +36,14 @@
         @include('layouts.menus.supervisor')
       @endhasrole      
 
-      @hasrole('strpur')
-        @include('layouts.menus.strpur')
-      @endhasrole
-      
       @hasexactroles('pient')
         @include('layouts.menus.pient.pient')
       @endhasexactroles
-      
-      @hasexactroles('employee')
-        @include('layouts.menus.employee')
+			
+      @hasexactroles('colony_asst')
+        @include('layouts.menus.colasst.colasst')
       @endhasexactroles
+
 			<!-- /.Main Sidebar Container -->
       <main>
         {{ $slot }}

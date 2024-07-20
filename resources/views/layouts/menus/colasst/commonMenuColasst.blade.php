@@ -11,6 +11,17 @@
 				</li>
  
 				<li class="nav-item">
+					<a href="/daily-colony-reports" class="nav-link">
+					  <i class="nav-icon fas fa-copy"></i>
+					  <p>
+						D C R
+						<i class="fas fa-angle-left right"></i>
+						<!-- span class="badge badge-info right">6</span -->
+					  </p>
+					</a>
+				</li>
+				
+				<li class="nav-item">
 					<a href="/iaec-projects" class="nav-link">
 					  <i class="nav-icon fas fa-copy"></i>
 					  <p>

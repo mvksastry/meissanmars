@@ -42,7 +42,9 @@
         @include('layouts.menus.employee')
       @endhasexactroles
 			<!-- /.Main Sidebar Container -->
-			
+			@hasexactroles('colony_asst')
+        @include('layouts.menus.colasst.colasst')
+      @endhasexactroles
 			<!-- Dynamic content -->
 			@yield('content')  		
 			<!-- /.Dynamic content -->

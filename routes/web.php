@@ -30,8 +30,6 @@ use App\Http\Controllers\EditIAECProjectController;
 use App\Http\Controllers\ProjectsManagerController;
 use App\Http\Controllers\UsageApprovalController;
 
-
-
 //-------------------------------------------------------//
 // Manager and Manager specific
 use App\Http\Controllers\BillingController;
@@ -50,7 +48,6 @@ use App\Http\Controllers\RoomsnRacksController;
 use App\Http\Controllers\VetController;
 use App\Http\Controllers\FacilityHelpController;
 use App\Http\Controllers\ReportsController;
-
 
 //livewire - Facility Management
 use App\Livewire\Occupancy;
@@ -103,6 +100,7 @@ use App\Livewire\Breeding\Colony\AddLitter;
 use App\Livewire\Breeding\Colony\EditLitter;
 use App\Livewire\Breeding\Colony\WeanHome;
 use App\Livewire\Breeding\Colony\ColonyPermissions;
+use App\Livewire\Breeding\Colony\DailyColonyReports;
 //-------------------------------------------------------//
 
 //livewire - Breeding/Colnoy Permission Management
@@ -304,6 +302,7 @@ Route::middleware(['auth','verified'])->group(function() {
 		Route::get('/assign-matings', AssignMatings::class);
 		Route::get('/assign-litter', AssignLitter::class);
 		Route::get('/assign-weaning', AssignWeaning::class);		
+		Route::get('/daily-colony-reports', DailyColonyReports::class);
 	  // -------------- //
 				
     // Breeding - Livewire Search engine
