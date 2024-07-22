@@ -137,7 +137,7 @@
                           <thead>
                             <tr>
                               <th> ID </th>
-                              <th> Title </th>
+                              <th class="col-6"> Title </th>
                               <th> Status </th>
                               <th> Action</th>
                             </tr>
@@ -157,24 +157,24 @@
                                 <td>
                                   @if ($row->projectiaec->status == 'active')
                                     @hasanyrole('pisg|pient')
-                                      <button wire:click="show({{ $row->iaecproject_id }})" class="btn btn-primary rounded mx-3">Details</button>
+                                      <button wire:click="show({{ $row->iaecproject_id }})" class="btn btn-primary rounded mx-2">Details</button>
                                       <a href="/iaec-usage">
-                                      <button class="btn btn-warning rounded mx-3">Usage</button>
+                                      <button class="btn btn-warning rounded mx-2">Usage</button>
                                       </a>
-                                      <button wire:click="showFormDInfo({{ $row->iaecproject_id }})" class="btn btn-danger  rounded mx-3">Form-D</button>
-                                      <button wire:click="reports({{ $row->iaecproject_id }})" class="btn btn-secondary  rounded mx-3">Reports</button>
-                                      <button wire:click="costs({{ $row->iaecproject_id }})" class="btn btn-success  rounded mx-3">Cost</button>
+                                      <button wire:click="showFormDInfo({{ $row->iaecproject_id }})" class="btn btn-danger  rounded mx-2">Form-D</button>
+                                      <button wire:click="reports({{ $row->iaecproject_id }})" class="btn btn-secondary  rounded mx-2">Reports</button>
+                                      <button wire:click="costs({{ $row->iaecproject_id }})" class="btn btn-success  rounded mx-2">Cost</button>
                                     @endhasanyrole
                                     
                                     @hasrole('researcher')
-                                      <button wire:click="show( '{{ $row->iaecproject_id }}' )" class="btn btn-primary rounded mx-3">Details</button>
-                                      <button wire:click="formD({{ $row->iaecproject_id }})" class="btn btn-danger rounded mx-3">Form-D</button>
-                                      <button wire:click="reports({{ $row->iaecproject_id }})" class="btn btn-secondary rounded mx-3">Reports</button>
+                                      <button wire:click="show( '{{ $row->iaecproject_id }}' )" class="btn btn-primary rounded mx-2">Details</button>
+                                      <button wire:click="formD({{ $row->iaecproject_id }})" class="btn btn-danger rounded mx-2">Form-D</button>
+                                      <button wire:click="reports({{ $row->iaecproject_id }})" class="btn btn-secondary rounded mx-2">Reports</button>
                                     @endhasrole
                                     
                                     @hasrole('veterinarian')
-                                      <button wire:click="formD({{ $row->iaecproject_id }})" class="btn btn-success  rounded mx-3">Notebook</button>
-                                      <button wire:click="reports({{ $row->iaecproject_id }})" class="btn btn-secondary  rounded mx-3">Reports</button>
+                                      <button wire:click="formD({{ $row->iaecproject_id }})" class="btn btn-success  rounded mx-2">Notebook</button>
+                                      <button wire:click="reports({{ $row->iaecproject_id }})" class="btn btn-secondary  rounded mx-2">Reports</button>
                                     @endhasrole
                                   @endif
                                 </td>
