@@ -94,7 +94,7 @@ trait ProjectDecision
 				$newAssent->allowed_id = $project->pi_id;
 				$newAssent->start_date = $tempProj->start_date;
 				$newAssent->end_date   = $tempProj->end_date;
-				$newAssent->status     = 1;
+				$newAssent->status     = "active";
         $newAssent->formd      = $newProject_id."formd";
 				$newAssent->notebook   = $newProject_id."notebook";
 				//dd($newAssent);
