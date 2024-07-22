@@ -323,8 +323,8 @@ class IaecProjects extends Component
 
       public function piprojectDownload($id)
       {
-        dd($id);
-          $projSearch = Project::with('user')->where('filename', $id)->where('pi_id', Auth::id() )
+        //dd($id);
+          $projSearch = Iaecproject::with('user')->where('filename', $id)->where('pi_id', Auth::id() )
                                               ->first();
           if(!empty($projSearch) )
           {
