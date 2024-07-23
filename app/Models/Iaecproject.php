@@ -25,6 +25,7 @@ class Iaecproject extends Model
    */
   protected $fillable = [
     'uuid',
+		'inst_id',
     'pi_id',
     'title',
     'start_date',
@@ -61,6 +62,7 @@ class Iaecproject extends Model
   // Only defined attribute will store in log while any change
   protected static $logAttributes = [
     'uuid',
+		'inst_id',
     'pi_id',
     'title',
     'start_date',

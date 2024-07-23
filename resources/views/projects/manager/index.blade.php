@@ -60,7 +60,7 @@
 																							
 													<th style="text-align:center;">ID</th>
 													<th>PI</th>
-													<th>Title</th>                       
+													<th class="col-6">Title</th>                       
                           <th>Start Date</th>
                           <th>End Date</th>
 													<th>Actions</th>
@@ -148,7 +148,7 @@
 												<tr bgcolor="#BBDEFB">												
 													<th style="text-align:center;">ID</th>
 													<th>PI</th>
-													<th>Title</th>                       
+													<th class="col-6">Title</th>                       
                           <th>Start Date</th>
                           <th>End Date</th>
 													<th>Details</th>
@@ -157,7 +157,7 @@
 											<tbody>
 												@foreach($activeProjects as $row)
                           <tr bgcolor="#E1BEE7"   data-entry-id="{{ $row->tempproject_id }}">
-                            <td>{{ $row->iaecproject_id }}</td>
+                            <td>B-{{ $row->inst_id }}</td>
                             <td>{{ $row->user->name }}</td>
                             <td>{{ $row->title }}</td>
                             <td>{{ date('d-m-Y', strtotime($row->start_date)) }}</td>

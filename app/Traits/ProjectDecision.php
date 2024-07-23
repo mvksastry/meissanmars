@@ -49,6 +49,7 @@ trait ProjectDecision
 				$project = new Iaecproject();
 				$project->iaecproject_id    = $newProject_id;
         $project->uuid              = $tempProj->uuid;
+				$project->inst_id           = $input['iaec_inst_id'];
 				$project->pi_id             = $tempProj->pi_id;
 				$project->title             = $tempProj->title;
 				$project->start_date        = $tempProj->start_date;

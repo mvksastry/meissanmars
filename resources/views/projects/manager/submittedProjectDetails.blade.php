@@ -163,14 +163,27 @@
                           </a>
                         </td>
                       </tr>
- 
+
+                      <tr>                     
+                        <td class="text-wrap text-sm">Institutional ID <strong>B-</strong></td>
+                        <td class="text-wrap text-xs">
+                        <input class="form-control form-control-border shadow border rounded w-full py-2 px-3 text-gray-900 leading-tight focus:outline-none focus:shadow-outline" 
+                          id="iaec_inst_id" name="iaec_inst_id" value="" type="text" placeholder="Institutional Serial Number">
+                          @if($errors->has('iaec_inst_id'))
+                            <p class="help-block text-danger">
+                              {{ $errors->first('iaec_inst_id') }}
+                            </p>
+                          @endif
+                        </td>
+                      </tr>
+											
                       <tr>                     
                         <td class="text-wrap text-xs">IAEC Approval Ref</td>
                         <td class="text-wrap text-xs">
                         <input class="form-control form-control-border shadow border rounded w-full py-2 px-3 text-gray-900 leading-tight focus:outline-none focus:shadow-outline" 
                           id="iaec_app_ref" name="iaec_app_ref" value="" type="text" placeholder="Approval Reference">
                           @if($errors->has('iaec_app_ref'))
-                            <p class="help-block text-orange-200">
+                            <p class="help-block text-danger">
                               {{ $errors->first('iaec_app_ref') }}
                             </p>
                           @endif
@@ -183,7 +196,7 @@
                         <input class="form-control form-control-border shadow border rounded w-full py-2 px-3 text-gray-900 leading-tight focus:outline-none focus:shadow-outline" 
                           id="iaec_comments" name="iaec_comments" value="{{ $subProject->iaec_comments }}" type="text" placeholder="Remarks">
                           @if($errors->has('iaec_comments'))
-                            <p class="help-block text-orange-200">
+                            <p class="help-block text-danger">
                               {{ $errors->first('iaec_comments') }}
                             </p>
                           @endif
@@ -196,7 +209,7 @@
                           <input class="form-control form-control-border shadow border rounded" 
                           id="iaec_date" name="iaec_date" type="date" placeholder="IAEC Approval Date: Y-m-d">
                           @if($errors->has('iaec_date'))
-                            <p class="help-block text-orange-200">
+                            <p class="help-block text-danger">
                               {{ $errors->first('iaec_date') }}
                             </p>
                           @endif
@@ -209,7 +222,7 @@
                           <input class="form-control form-control-border shadow rounded" 
                           id="iaec_meeting" name="iaec_meeting" type="text" placeholder="IAEC Meeting Information">
                           @if($errors->has('iaec_meeting'))
-                            <p class="help-block text-orange-200">
+                            <p class="help-block text-danger">
                               {{ $errors->first('iaec_meeting') }}
                             </p>
                           @endif
@@ -231,7 +244,7 @@
                     </tr>  
 
                       <tr>
-                        <td colspan='7' class="text-xs text-left text-gray-200" align="center">
+                        <td colspan='7' class="text-xs text-left text-primary" align="center">
                         <button type="submit" class="btn btn-xs text-sm text-gray-200 btn-info p-1">Submit</button>
                         </td>
                       </tr>

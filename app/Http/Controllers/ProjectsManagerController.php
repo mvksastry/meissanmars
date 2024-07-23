@@ -264,6 +264,7 @@ class ProjectsManagerController extends Controller
     {
       $input = $request->validate([
         'iaec_comments' => 'required|regex:/^[a-zA-Z0-9\s .,\-\_\/]+$/|max:255',
+				'iaec_inst_id'  => 'required|numeric',
         'iaec_app_ref'  => 'required|regex:/^[a-zA-Z0-9\s .,\-\_\/]+$/|max:255',
         'iaec_date'     => 'required|date',
         'iaec_meeting'  => 'required|regex:/^[a-zA-Z0-9\s .,\-\_\/]+$/|max:255',
