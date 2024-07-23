@@ -60,11 +60,12 @@
     <div class="form-group">
       <label for="exampleInputFile">Current Project File (Signed)</label>
       </br>
-      <a href="#">
-        <button class="btn btn-sm btn-info">
-        Current Project File
-        </button>
-      </a>
+			<a href="{{ route('pitempproject.download', $tempproject->filename ) }}">
+				<button type="button" class="btn btn-sm btn-primary">
+				Current Project File
+				</button>                                                   
+			</a>
+      
     </div>
     <div class="form-group">
       <label for="exampleInputFile">New Project File (Signed)</label>
