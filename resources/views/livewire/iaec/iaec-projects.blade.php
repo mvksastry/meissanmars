@@ -58,7 +58,7 @@
                           <thead>
                             <tr>
                               <th> ID </th>
-                              <th> Title </th>
+                              <th class="col-6"> Title </th>
                               <th> Status </th>
                               <th> Action</th>
                             </tr>

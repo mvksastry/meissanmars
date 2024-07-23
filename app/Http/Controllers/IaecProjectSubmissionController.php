@@ -20,43 +20,54 @@ class IaecProjectSubmissionController extends Controller
      */
     public function __invoke(Request $request)
     {
-        if( Auth::user()->hasAnyRole('pient','manager') )
-        {
-          $input = $request->all();  
+			if( Auth::user()->hasAnyRole('pient','manager') )
+			{
+				
+				$input = $request->all();  
 
-          $purpose = "new";
-          $id = "null";
+				$purpose = "new";
+				$id = "null";
 
-          $this->validate($request, [
-            'title'      => 'required|regex:/(^[A-Za-z0-9 -_]+$)+/|max:200',
-            'start_date' => 'required|date|date_format:Y-m-d',
-            'end_date'   => 'required|date|date_format:Y-m-d|after:start_date',
-            'species'    => 'present|array',
-            'exp_strain' => 'present|array',
-            'spcomments' => 'nullable|regex:/(^[A-Za-z0-9 -_]+$)+/',
-          ]);
+				$this->validate($request, [
+					'title'      => 'required|regex:/(^[A-Za-z0-9 -_]+$)+/|max:200',
+					'start_date' => 'required|date|date_format:Y-m-d',
+					'end_date'   => 'required|date|date_format:Y-m-d|after:start_date',
+					'species'    => 'present|array',
+					'exp_strain' => 'present|array',
+					'spcomments' => 'nullable|regex:/(^[A-Za-z0-9 -_]+$)+/',
+				]);
 
-          if( $request->hasFile('projfile') )
-          {
-            $request->validate([
-              'projfile' => 'required|mimes:pdf|max:4096'
-            ]);
-            
-            $filename = $this->projFileUpload($request);
-            // for testing uncomment below and comment above
-            //$filename = "abvdedfadklj";
-          }
-          else {
-            session()->flash("error", "Project File Not Attached!");
-            return redirect()->back()->withErrors(['errors' => 'Project File Not Attached!']);;
-          }
-      
-          $result = $this->postProjectData($request, $purpose, $id, $filename);
-          
-          return redirect()->route('projectsmanager.index')
-                  ->with('success',
-                      'New Project Posted Successfully.');
-        }
+				if( $request->hasFile('projfile') )
+				{
+					$request->validate([
+						'projfile' => 'required|mimes:pdf|max:4096'
+					]);
+					
+					$filename = $this->projFileUpload($request);
+					// for testing uncomment below and comment above
+					//$filename = "abvdedfadklj";
+				}
+				else {
+					session()->flash("error", "Project File Not Attached!");
+					return redirect()->back()->withErrors(['errors' => 'Project File Not Attached!']);;
+				}
+		
+				$result = $this->postProjectData($request, $purpose, $id, $filename);
+				
+				if( Auth::user()->hasRole('manager') )
+				{
+					return redirect()->route('projectsmanager.index')
+								->with('success',
+										'New Project Posted Successfully');
+				}
+				
+				if( Auth::user()->hasRole('pient') )
+				{
+					return redirect()->route('home')
+								->with('success',
+										'New Project Posted Successfully');
+				}
+			}
         
     }
 }
