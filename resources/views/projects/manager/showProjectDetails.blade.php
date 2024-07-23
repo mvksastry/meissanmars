@@ -56,7 +56,7 @@
                       <tbody>
                         <tr bgcolor="#E1BEE7"   data-entry-id="{{ $iaecproject->iaecproject_id }}">
                           <td>ID</td>
-                          <td>{{ $iaecproject->iaecproject_id }}</td>
+                          <td><strong>B-{{ $iaecproject->inst_id }}</strong></td>
                         </tr>
                         <tr>
                           <td>PI</td>
