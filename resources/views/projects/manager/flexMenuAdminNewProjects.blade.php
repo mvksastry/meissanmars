@@ -20,11 +20,11 @@
     <!-- .col -->
     <div class="col-lg-6 col-6">
       <!-- small box -->
-      <div class="small-box bg-info">
+      <div class="small-box bg-secondary">
         <div class="inner">
           <!-- h3><sup style="font-size: 20px"></sup></h3 -->
-          <h5>AMEND PROJECT</h5>
-          <p>Enter</p>
+          <h5>AMENDMENTS</h5>
+          <p>Soon...</p>
         </div>
         <div class="icon">
           <i class="ion ion-stats-bars"></i>

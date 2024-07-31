@@ -58,8 +58,8 @@
                           <td>ID</td>
                           <td><strong>B-{{ $iaecproject->inst_id }}</strong></td>
                         </tr>
-                        <tr>
-                          <td>PI</td>
+                        <tr >
+                          <td class="col-2">PI</td>
                           <td>{{ $iaecproject->user->name }}</td>
                         </tr>
                         <tr>                        
@@ -130,7 +130,12 @@
                       </tr>
                       <tr>
                         <td class="text-wrap text-sm">IAEC Decision Remarks</td>
-                        <td class="text-wrap text-sm">{{ $iaecproject->iaec_comments }}</td>
+												<?php $icomms = explode(";;;", $iaecproject->iaec_comments); ?>
+                        <td class="text-wrap text-sm">
+													@foreach($icomms as $val)
+													{{ $val }} </br>
+													@endforeach
+												</td>
                       </tr>
                       <tr>
                         <td class="text-wrap text-xs">IAEC Meeting Date</td>
