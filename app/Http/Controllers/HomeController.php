@@ -29,7 +29,7 @@ use App\Traits\DashAdminTrait;
 use App\Traits\ProjectQueries;
 use App\Traits\DashPiTrait;
 use App\Traits\TaskReminderTrait;
-//use App\Traits\HerdTaskAlertTrait;
+use App\Traits\DashColonyAsstTrait;
 use App\Traits\DashTempHumidityGraphTrait;
 
 use Illuminate\Support\Facades\Route;
@@ -45,6 +45,7 @@ class HomeController extends Controller
 	use HasRoles;
 	use ProjectQueries;
 	use DashAdminTrait, DashPiTrait;
+	use DashColonyAsstTrait;
   use TaskReminderTrait;
   //  use HerdTaskAlertTrait;
   use DashTempHumidityGraphTrait;
@@ -159,35 +160,16 @@ class HomeController extends Controller
     if( Auth::user()->hasRole('colony_asst') )
     {
       //dd("reached");
-      //IAEC projects
-//      $appProjects = $this->approvedProjects();
-//      $subProjects = $this->submittedProjects();
-//      $amendProjects = $this->amendProjects();
-//      $expiredProjects = $this->expiredProjects();
-
-        //IAEC Animal usage
-//      $submittedIssues = $this->piSubmittedIssues();
-//      $confirmedIssues = $this->piConfirmedIssues();
-//      $approvedIssues = $this->piApprovedIssues();
-//      $issuedIssues = $this->piIssuedIssues();
-      
-       //research projects
-//      $actvProjs = $this->allowedProjectIds();
-      //dd($appProjects, $subProjects, $amendProjects, $expiredProjects);
-      //dd($submittedIssues, $confirmedIssues, $approvedIssues, $issuedIssues);
-      //Log::channel('activity')->info('Logged in user [ '.Auth::user()->name.' ] dashboard requested');
+      //Colony management role
+      $operableStrains = $this->strainPermsForColonyAssistants();
+			//dd($operableStrains);
+//    $operableRooms = $this->submittedProjects();
+   
 //      Log::channel('activity')->info('Logged in user [ '.Auth::user()->name.' ] dashboard requested');
       return view('layouts.home.colasst.dashboard')->with([
+								
+                  'operableStrains'=>$operableStrains,
 								/*
-                  'appProjects'=>$appProjects,
-                  'subProjects'=>$subProjects,
-                  'amendProjects'=>$amendProjects,
-                  'expiredProjects'=>$expiredProjects,
-                  'submittedIssues'=>$submittedIssues,
-                  'confirmedIssues'=>$confirmedIssues,
-                  'approvedIssues'=>$approvedIssues,
-                  'issuedIssues'=>$issuedIssues,
-                  'actvProjs'=>$actvProjs,
                   'personalTasks'=>$personalTasks,
                   'groupTasks'=> $groupTasks,
                   'kbCards' => $kbCards

@@ -23,10 +23,6 @@
 		<!-- Main content -->
 		<section class="content">
 			<div class="container-fluid">
-			
-				@hasrole('manager')
-					@include('livewire.breeding.colony.flexMenuColonyPerms')
-				@endhasrole
 
           <!-- Main content -->
           <!-- /.content -->
@@ -50,52 +46,71 @@
                 </div>
               </div>
               <div class="card-body">
-                @if(count($allowedStrains) > 0)
 								  <table id="userIndex2" class="table table-sm table-bordered table-hover">
-										<thead>
-											<tr>
-												
-												<th> Strain </th>
-												<th> Primary Handler </th>
-												<th> Back-up Handler</th>
-												<th> Start Date</th>
-												<th> End Date </th>
-												<th> Note </th>
-											</tr>
-										</thead>
 										<tbody>
-											@foreach($allowedStrains as $row)
-												<tr>
-													<td>
-													{{ $row->strains->strain_name}}
-													</td>
-													<td>
-													{{ $row->handler->name }}
-													</td>
-													<td>
-													{{ $row->backup->name }}
-													</td>
-													<td>
-													{{ $row->start_date }}
-													</td>
-													
-													<td>
-														{{ $row->end_date }}
-													</td>
-													<td>
-														{{ ucfirst($row->status) }}
-													</td>
-												</tr>
-											@endforeach
+											<div class="card-body">
+												<div class="form-check">
+													<label for="exampleSelectBorderWidth2"><code>Strain</code></label>
+													<div class="row row-cols-3">
+														@foreach($activStrains as $row)
+															<div class="col">
+																<input type="checkbox" wire:model.defer="strain_ids" value="{{ $row->strain_id }}" class="form-check-input" id="exampleCheck1">
+																<label class="form-check-label" for="exampleCheck1">{{ $row->strain_name }}</label>
+															</div>
+														@endforeach
+													</div>	
+												</div>
+											
+												<div class="row">
+													<div class="col-4">
+														<div class="form-group">
+															<label for="exampleSelectBorderWidth2"><code>Primary Handler</code></label>
+															<select wire:model.defer="ph_id" class="custom-select form-control-border border-width-2" id="exampleSelectBorderWidth2">
+																@foreach($curUsers as $row)
+																<option value="{{ $row->id }}">{{ $row->name }}</option>
+																@endforeach
+															</select>
+														</div>
+													</div>
+													<div class="col-4">
+														<div class="form-group">
+															<label for="exampleInputPassword1">Start Date</label>
+															<input wire:model.defer="start_date" type="date" class="form-control" name="start_date" placeholder="Start Date">
+														</div>
+													</div>
+													<div class="col-4">
+														<div class="form-group">
+															<label for="exampleInputPassword1">End Date</label>
+															<input wire:model.defer="end_date" type="date" class="form-control" name="end_date" placeholder="End Date">
+														</div>
+													</div>	
+												</div>
+												
+												<div class="form-group">
+													<label for="exampleInputPassword1">Notes</label>
+													<input wire:model.defer="notes" type="text" class="form-control" name="notes" placeholder="Notes">
+												</div>
+											
+												<!--
+												<div class="form-check">
+													<input wire:model.defer="auto_ext" type="checkbox" class="form-check-input" id="exampleCheck1">
+													<label class="form-check-label" for="exampleCheck1">Automatic 30 Day Extension</label>
+												</div>
+												-->
+											</div>
+											<!-- /.card-body -->
+
+											<div class="card-footer">
+												<button wire:click="postStrainPerms()" class="btn btn-primary rounded">Enter</button>
+											</div>											
 										</tbody>
 									</table>
-								@else
-									No Information to display
-								@endif
               </div>
               <!-- /.card-body -->
               <div class="card-footer">
-                Footer
+							<a href="/colony-authorizations" class="small-box-footer">
+                <button class="btn btn-primary rounded">Back To Authorizations</button>
+							</a>
               </div>
               <!-- /.card-footer-->
             </div>            

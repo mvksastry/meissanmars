@@ -101,6 +101,7 @@ use App\Livewire\Breeding\Colony\EditLitter;
 use App\Livewire\Breeding\Colony\WeanHome;
 use App\Livewire\Breeding\Colony\ColonyPermissions;
 use App\Livewire\Breeding\Colony\DailyColonyReports;
+use App\Livewire\Breeding\Colony\ColonyAuthorizations;
 //-------------------------------------------------------//
 
 //livewire - Breeding/Colnoy Permission Management
@@ -303,6 +304,7 @@ Route::middleware(['auth','verified'])->group(function() {
 		Route::get('/assign-litter', AssignLitter::class);
 		Route::get('/assign-weaning', AssignWeaning::class);		
 		Route::get('/daily-colony-reports', DailyColonyReports::class);
+		Route::get('/colony-authorizations', ColonyAuthorizations::class);
 	  // -------------- //
 				
     // Breeding - Livewire Search engine

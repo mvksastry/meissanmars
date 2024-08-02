@@ -30,11 +30,10 @@
 
           <!-- Main content -->
           <section class="content">
-
             <!-- Default box -->
             <div class="card card-primary card-outline">
               <div class="card-header">
-                <h3 class="card-title">Dashboard</h3>
+                <h3 class="card-title">Dashboard: Strains Assigned</h3>
 
                 <div class="card-tools">
                   <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
@@ -46,7 +45,47 @@
                 </div>
               </div>
               <div class="card-body">
-                Start using your amazing application!
+                @if(count($operableStrains) > 0)
+								  <table id="userIndex2" class="table table-sm table-bordered table-hover">
+										<thead>
+											<tr>
+												<th> Primary Handler </th>
+												<th> Strain </th>
+												<th> Start Date</th>
+												<th> End Date </th>
+												<th> Status </th>
+												<th> Notes </th>
+											</tr>
+										</thead>
+										<tbody>
+											@foreach($operableStrains as $row)
+												<tr>
+												  <td>
+													  {{ $row->handler->name }}
+													</td>
+													<td>
+													  {{ $row->strains->strain_name}}
+													</td>
+													<td>
+													  {{ $row->start_date }}
+													</td>
+													<td>
+														{{ $row->end_date }}
+													</td>
+													<td>
+														{{ ucfirst($row->status) }}
+													</td>
+													<td>
+													  {{ $row->notes }}
+													</td>
+												</tr>
+											@endforeach
+										</tbody>
+									</table>
+								@else
+									No Information to display
+								@endif								
+
               </div>
               <!-- /.card-body -->
               <div class="card-footer">
@@ -55,9 +94,77 @@
               <!-- /.card-footer-->
             </div>
             <!-- /.card -->
-
           </section>
           <!-- /.content -->
+
+          <section class="content">
+            <!-- Default box -->
+            <div class="card card-primary card-outline">
+              <div class="card-header">
+                <h3 class="card-title">Dashboard: Racks Assigned</h3>
+
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                  <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="card-body">
+                @if(count($operableStrains) > 0)
+								  <table id="userIndex2" class="table table-sm table-bordered table-hover">
+										<thead>
+											<tr>
+												<th> Primary Handler </th>
+												<th> Strain </th>
+												<th> Start Date</th>
+												<th> End Date </th>
+												<th> Status </th>
+												<th> Notes </th>
+											</tr>
+										</thead>
+										<tbody>
+											@foreach($operableStrains as $row)
+												<tr>
+												  <td>
+													  {{ $row->handler->name }}
+													</td>
+													<td>
+													  {{ $row->strains->strain_name}}
+													</td>
+													<td>
+													  {{ $row->start_date }}
+													</td>
+													<td>
+														{{ $row->end_date }}
+													</td>
+													<td>
+														{{ ucfirst($row->status) }}
+													</td>
+													<td>
+													  {{ $row->notes }}
+													</td>
+												</tr>
+											@endforeach
+										</tbody>
+									</table>
+								@else
+									No Information to display
+								@endif								
+
+              </div>
+              <!-- /.card-body -->
+              <div class="card-footer">
+                Footer
+              </div>
+              <!-- /.card-footer-->
+            </div>
+            <!-- /.card -->
+          </section>
+          <!-- /.content -->
+
 
 				<!-- Main row -->
 				<div class="row">

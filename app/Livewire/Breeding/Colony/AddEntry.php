@@ -312,7 +312,7 @@ class AddEntry extends Component
 			}
 			else {
 				$this->addToCageFlag = false;
-				$this->cmsg2 ="Strain/Gending Mixing Possibility";
+				$this->cmsg2 ="Strain/Gender Mixing Possibility";
 				$this->createCageFlag = false;
 			}
 		}
