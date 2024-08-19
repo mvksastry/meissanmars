@@ -69,7 +69,25 @@ class HomeController extends Controller
  			Log::channel('activity')->info('Logged in user [ '.Auth::user()->name.' ] account expired');
  			return  view('errors.dashboard')->with('msg', $msg);
 		}
-
+		
+		// First login change password done here
+		$flogin = Auth::user()->first_login;
+		$last_pw_change = Auth::user()->last_pwchange;
+		
+		if($flogin == null){
+			//update first_login with datetime
+			$result = User::where('email', Auth::user()->email)->update([
+                       'first_login' => date('Y-m-d')]);
+			Auth::logout();
+			return  redirect('/forgot-password');
+		}
+		
+		if($last_pw_change == null)
+		{
+			//Auth::logout();
+			//return redirect('/forgot-password');
+		}
+		
 		// all is well from here on
 
 		$user = Auth::user();
