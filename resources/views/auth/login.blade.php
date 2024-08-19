@@ -84,11 +84,7 @@
               </a>
               @endif
           </p>
-          @if (Route::has('register'))
-            <p class="mb-0">
-              <a href="{{ route('register') }}" class="text-center">Register a new membership</a>
-            </p>
-          @endif
+
         </div>
         <!-- /.card-body -->
       </div>
