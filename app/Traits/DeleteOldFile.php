@@ -27,15 +27,16 @@ trait DeleteOldFile
 
   			$from_path = "/institutions"."/".$folder."/";
 
-  			$to_path = $from_path."junk";
+  			$to_path = $from_path;
   			//delete old file if any here before upload
   			//delete any old file in the directory by the same name
-  			if(\File::exists(public_path('upload/bio.png')))
-  			{
-  				\File::delete(public_path('upload/bio.png'));
-  			}else{
-  				return false;
-  			}
+  			//if(\File::exists(public_path($to_path.$oldFileName)))
+  			//{
+  				//\File::delete(public_path($to_path.$oldFileName));
+				//	Storage::move($from_path.$oldFileName, 'public/movedfiles/'.$oldFileName);
+  			//}else{
+  			//	return false;
+  			//}
 
   			if(Storage::exists($from_path.$oldFileName))
   			{

@@ -9,29 +9,44 @@ use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 
+use App\Models\Tempproject;
+
 use App\Traits\Fileupload;
 use App\Traits\ProjectSubmission;
+use App\Traits\DeleteOldFile;
 
 class EditIAECProjectController extends Controller
 {
-  use Fileupload, ProjectSubmission;
+  use Fileupload, DeleteOldFile, ProjectSubmission;
     /**
      * Handle the incoming request.
      */
     public function __invoke(Request $request)
     {
       $input = $request->all();
+			$id = $input['tempproject_idx'];
       //dd($input);
       if( Auth::user()->hasAnyRole('pisg','pient','manager') )
       {
         $purpose = "edit";
         $tempproject = Tempproject::findOrFail($id);
-        $input = $request->validated();
+				//dd($tempproject);
+        //$input = $request->validated();
+				
+				$this->validate($request, [
+					'title'      => 'required|regex:/(^[A-Za-z0-9 -_]+$)+/|max:200',
+					'start_date' => 'required|date|date_format:Y-m-d',
+					'end_date'   => 'required|date|date_format:Y-m-d|after:start_date',
+					'species'    => 'present|array',
+					'exp_strain' => 'present|array',
+					'spcomments' => 'nullable|regex:/(^[A-Za-z0-9 -_]+$)+/',
+				]);
+				
         // check for input file, if present upload it.
-        if( $request->hasFile('userfile') )
+        if( $request->hasFile('projfile') )
         {
           $request->validate([
-            'userfile' => 'required|mimes:pdf|max:4096'
+            'projfile' => 'required|mimes:pdf|max:4096'
           ]);
           // delete old project file
           // get folder name from db, for testing use below
@@ -44,10 +59,13 @@ class EditIAECProjectController extends Controller
           if(	$this->OldFileDelete($piFolder, $oldFileName) ) 
           {
             $result = "file present";
+						//dd("file present");
           }
           else {
             $result = "not exists";
+						//dd("file not present");
           }
+					
           $filename = $this->projFileUpload($request);
         }
 
@@ -58,8 +76,21 @@ class EditIAECProjectController extends Controller
         $tempproject->notes = $this->addNotes($oldNotes, $newNotes);
         $tempproject->update();
 
-        return redirect()->route('projectsmanager.index')
-        ->with('flash_message',	$fm);
+				if( Auth::user()->hasRole('manager') )
+				{
+					return redirect()->route('projectsmanager.index')
+								->with('success',
+										'Project Edited Successfully');
+				}
+				
+				if( Auth::user()->hasRole('pient') )
+				{
+					return redirect()->route('home')
+								->with('success',
+										'Project Edited Successfully');
+				}
+        //return redirect()->route('projectsmanager.index')
+        //->with('flash_message',	$fm);
       }
     }
 }

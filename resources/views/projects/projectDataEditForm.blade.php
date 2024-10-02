@@ -1,8 +1,13 @@
   <div class="card-body">
     @hasexactroles('pient')
     <div class="form-group">
-      <label for="exampleInputEmail1">Principal Investigator*</label>
-      <input type="text" class="form-control" name="pi" id="pi" value="{{ Auth::user()->id }}" placeholder="Project Title">
+      <label for="exampleInputEmail1">Principal Investigator ID*</label>
+      <input type="text" class="form-control" readonly name="pi" id="pi" value="{{ Auth::user()->id }}" placeholder="Project Title">
+    </div>
+
+    <div class="form-group">
+      <label for="exampleInputEmail1">Principal Investigator Name*</label>
+      <input type="text" class="form-control" readonly name="pi_name" id="pi_name" value="{{ Auth::user()->name}}" placeholder="Project Title">
     </div>
     @endhasexactroles
     
@@ -27,6 +32,12 @@
     </div>
     @endhasexactroles
     
+		<div class="form-group">
+      <label for="exampleInputEmail1">Project ID</label>
+      <input type="text" class="form-control" name="tempproject_idx" id="tempproject_idx" 
+      value="{{ $tempproject->tempproject_id }}" readonly placeholder="Project ID">
+    </div>
+		
     <div class="form-group">
       <label for="exampleInputEmail1">Project Title</label>
       <input type="text" class="form-control" name="title" id="title" 
@@ -160,33 +171,33 @@
             <tr bgcolor="#FFFFED">
               <td class="block text-gray-900 text-xs mt-1 mb-1 font-normal">
                 <div class="form-check">
-                  <input type="checkbox" name="exp_strain[]" value="{{ $val->species->species_name.'_'.$val->strain_name }}" class="form-check-input" id="exampleCheck1">
+                  <input type="checkbox" name="exp_strain[]" value="{{ $val->species->species_name.'_'.$val->uuid }}" class="form-check-input" id="exampleCheck1">
                   {{ $val->strain_name }}
                 </div>
               </td>
               <td>
                 <div class="form-check w-20">
-                  <input type="number" name="{{ $val->strain_name }}[]"class="form-control" id="exampleInputEmail1" placeholder="Year 1">
+                  <input type="number" name="{{ $val->uuid }}[]"class="form-control" id="exampleInputEmail1" placeholder="Year 1">
                 </div>
               </td>
               <td>
                 <div class="form-check">
-                  <input type="number" name="{{ $val->strain_name }}[]"class="form-control" id="exampleInputEmail1" placeholder="Year 2">
+                  <input type="number" name="{{ $val->uuid }}[]"class="form-control" id="exampleInputEmail1" placeholder="Year 2">
                 </div>
               </td>
               <td>
                 <div class="form-check">
-                  <input type="number" name="{{ $val->strain_name }}[]"class="form-control" id="exampleInputEmail1" placeholder="Year 3">
+                  <input type="number" name="{{ $val->uuid }}[]"class="form-control" id="exampleInputEmail1" placeholder="Year 3">
                 </div>
               </td>
               <td>
                 <div class="form-check">
-                  <input type="number" name="{{ $val->strain_name }}[]"class="form-control" id="exampleInputEmail1" placeholder="Year 4">
+                  <input type="number" name="{{ $val->uuid }}[]"class="form-control" id="exampleInputEmail1" placeholder="Year 4">
                 </div>
               </td>
               <td>
                 <div class="form-check">
-                  <input type="number" name="{{ $val->strain_name }}[]"class="form-control" id="exampleInputEmail1" placeholder="Year 5">
+                  <input type="number" name="{{ $val->uuid }}[]"class="form-control" id="exampleInputEmail1" placeholder="Year 5">
                 </div>
               </td>
             </tr>
