@@ -73,7 +73,7 @@ class HomeController extends Controller
 		// First login change password done here
 		$flogin = Auth::user()->first_login;
 		$last_pw_change = Auth::user()->last_pwchange;
-		
+		//dd($flogin, $last_pw_change);
 		if($flogin == null){
 			//update first_login with datetime
 			$result = User::where('email', Auth::user()->email)->update([
