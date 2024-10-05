@@ -331,6 +331,10 @@ class CompleteAllottment extends Component
                     // issue table update
                     $irq->issue_status = "issued";
                     $irq->save();
+										// Now implement the Form-D entry here
+										
+										
+										
                     // B2p table insert
                     $nB2p = new B2p();
                     $nB2p->species_id = $irq->species_id;

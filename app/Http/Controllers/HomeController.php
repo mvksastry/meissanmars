@@ -81,11 +81,16 @@ class HomeController extends Controller
 			Auth::logout();
 			return  redirect('/forgot-password');
 		}
-		
-		if($last_pw_change == null)
+		$today = date('Y-m-d H:m:s');
+		$end_date = date('Y-m-d H:m:s', strtotime("-60 days"));
+		if($last_pw_change == null || $end_date > $last_pw_change)
 		{
+			//dd($end_date,$today);
 			//Auth::logout();
-			//return redirect('/forgot-password');
+			return view('profile.pwchange')->with([
+                  'flogin'=>$flogin,
+                  'last_pw_change'=>$last_pw_change,
+      ]);
 		}
 		
 		// all is well from here on
@@ -336,7 +341,8 @@ class HomeController extends Controller
     else {
       $result = User::where('email', $input['email'])->update([
                        'password' => Hash::make($input['password']),
-                       'first_login' => date('Y-m-d')]);
+                       'first_login' => date('Y-m-d'),
+											 'last_pwchange' => date('Y-m-d')]);
       Log::channel('activity')->info('Logged in user [ '.$request->email.' ] password reset successful');
       return  redirect('/home');
     }
