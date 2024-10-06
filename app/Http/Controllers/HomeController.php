@@ -74,23 +74,19 @@ class HomeController extends Controller
 		$flogin = Auth::user()->first_login;
 		$last_pw_change = Auth::user()->last_pwchange;
 		//dd($flogin, $last_pw_change);
-		if($flogin == null){
+		if($flogin == null)
+		{
 			//update first_login with datetime
 			$result = User::where('email', Auth::user()->email)->update([
                        'first_login' => date('Y-m-d')]);
-			Auth::logout();
-			return  redirect('/forgot-password');
+			//Auth::logout();
+			//return  redirect('/forgot-password');
 		}
-		$today = date('Y-m-d H:m:s');
-		$end_date = date('Y-m-d H:m:s', strtotime("-60 days"));
+		//$today = date('Y-m-d');
+		$end_date = date('Y-m-d', strtotime("-60 days"));
 		if($last_pw_change == null || $end_date > $last_pw_change)
 		{
-			//dd($end_date,$today);
-			//Auth::logout();
-			return view('profile.pwchange')->with([
-                  'flogin'=>$flogin,
-                  'last_pw_change'=>$last_pw_change,
-      ]);
+			return redirect()->route('pwchange');
 		}
 		
 		// all is well from here on

@@ -10,6 +10,7 @@ use App\Http\Controllers\DownloadController;
 
 // Profile and Password change
 use App\Http\Controllers\PasswordChangeController;
+use App\Http\Controllers\PWChangeFormController;
 
 //-------------------------------------------------------//
 //kanban
@@ -179,6 +180,10 @@ Route::post('/home/pwupdate', [
     
 Route::middleware(['auth','verified'])->group(function() {    
 
+		Route::get('/pwchange', [
+        'uses' => 'App\Http\Controllers\PWChangeFormController'
+    ])->name('pwchange');
+		
 		Route::post('/password-change', PasswordChangeController::class)->name('change-password');
 
     //------ home routes with checks ------//
