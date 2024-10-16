@@ -226,7 +226,7 @@ class IaecProjects extends Component
           $input['status_date'] = date('Y-m-d');
           $input['issue_status'] = "submitted";
 
-          $input['issue_id'] = null;
+          $input['usage_id'] = null;
           //now post to trait because, everything is ok
           // and get it posted after verification of strain balance.
 
@@ -378,8 +378,8 @@ class IaecProjects extends Component
           $this->number = '';
           $this->cagenumber = '';
           $this->termination = '';
-          $this->duration;
-          $this->expt_desc;
+          $this->duration = null;
+          $this->expt_desc = null;
           $this->products = '';
           $this->remarks = '';
           $this->agree = 0;
