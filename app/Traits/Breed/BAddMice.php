@@ -210,363 +210,364 @@ public function addMice($input)
                     $newMouseEntry->sampleVialTagPosition = $addMiceEntry['sampleVialTagPosition'];
                     $newMouseEntry->version               = $addMiceEntry['version'];
 
-	       Log::channel('coding')->info('array ready for insert, before try');
-           //Stage 5. insert
-           //dd($newMouseEntry);
+				Log::channel('coding')->info('array ready for insert, before try');
+				//Stage 5. insert
+				//dd($newMouseEntry);
+				//$result1 = $newMouseEntry->save();
     try {
           $version = 1;
           //the following three lines are needed for edit not for first posting.
           //$phenotypeKeysInDB   = $this->getPhenotypeKeysMatchingMouseKey($mouse_key);
           //$useScheduleKeysInDB = $this->getAllUseScheduleKeysMatchingMouseKey($mouse_key);
           //$usageKeysInDB       = $this->getAllMouseUseKeysMatchingMouseKey($mouse_key);
-		  switch ($purpose) {
+					switch ($purpose) {
 
-				case "New":
+					case "New":
 
-				Log::channel('coding')->info('case New encountered');
-				//uncomment the line below and delete the line //$result1 = true;
-                //$result4 = $mcmsTables->table('mouse')->insert($addMiceEntry);
-                //dd($newMouseEntry);
-                $result1 = $newMouseEntry->save();
-                //dd($result1);
-                //$result1 = true;
-                if($result1)
-                {
-                     //block 1 begin
-                    Log::channel('coding')->info('Mouse table insert complete');
-                    $maxPhenotypeMouseLinkKey = $this->getMaxPhenotypeMouseLinkKey();
-					if(!empty($phenotypes_Selected))
+					Log::channel('coding')->info('case New encountered');
+					//uncomment the line below and delete the line //$result1 = true;
+					//$result4 = $mcmsTables->table('mouse')->insert($addMiceEntry);
+					//dd($newMouseEntry);
+					$result1 = $newMouseEntry->save();
+					//dd($result1);
+					//$result1 = true;
+					if($result1)
 					{
-						Log::channel('coding')
-                                ->info('phenotypes selected = '. count($phenotypes_Selected));
-
-                        for( $i=0; $i < count($phenotypes_Selected); $i++)
+						//block 1 begin
+						Log::channel('coding')->info('Mouse table insert complete');
+						$maxPhenotypeMouseLinkKey = $this->getMaxPhenotypeMouseLinkKey();
+						if(!empty($phenotypes_Selected))
 						{
-						   	//here in case of new entry, there will not be any
-							//entries in phenotypemouselink table
-							$addSql1 = array(
-                                  '_phenotypeMouseLink_key' => $maxPhenotypeMouseLinkKey,
-                                  '_phenotype_key' => $phenotypes_Selected[$i],
-                                  '_mouse_key' => $mouse_key,
-                                  'version' => $version
-                                );
+							Log::channel('coding')
+													->info('phenotypes selected = '. count($phenotypes_Selected));
 
-                            //$newPhenotypeMouseLinkKey->_phenotypeMouseLink_key => $maxPhenotypeMouseLinkKey;
-                            //$res = $mcmsTables->table('phenotypemouselink')->insert($addSql1);
-                            $newPhenotypemouselink = new Phenotypemouselink();
-                            $newPhenotypemouselink->_phenotype_key = $phenotypes_Selected[$i];
-                            $newPhenotypemouselink->_mouse_key = $mouse_key;
-                            $newPhenotypemouselink->version = $version;
+							for( $i=0; $i < count($phenotypes_Selected); $i++)
+							{
+								//here in case of new entry, there will not be any
+								//entries in phenotypemouselink table
+								$addSql1 = array(
+																	'_phenotypeMouseLink_key' => $maxPhenotypeMouseLinkKey,
+																	'_phenotype_key' => $phenotypes_Selected[$i],
+																	'_mouse_key' => $mouse_key,
+																	'version' => $version
+																);
 
-							$result2 = $newPhenotypemouselink->save();
+								//$newPhenotypeMouseLinkKey->_phenotypeMouseLink_key => $maxPhenotypeMouseLinkKey;
+								//$res = $mcmsTables->table('phenotypemouselink')->insert($addSql1);
+								$newPhenotypemouselink = new Phenotypemouselink();
+								$newPhenotypemouselink->_phenotype_key = $phenotypes_Selected[$i];
+								$newPhenotypemouselink->_mouse_key = $mouse_key;
+								$newPhenotypemouselink->version = $version;
 
-							Log::channel('coding')->info('phenotypes inserted');
-                            // the below line is not needed if the save object works fine
-							//$maxPhenotypeMouseLinkKey = $maxPhenotypeMouseLinkKey + 1;
-                        }
-						Log::channel('coding')->info("Phenotype Mouse Links established for ID [ ".$mouse_id." ] successfull");
-					}
-					else {
-						Log::channel('coding')->info("No phenotype keys selected");
-					}
-                        //block 1 end
-                        // Now, add info to useschedule table, however many useschedules selected by the user
-                        $maxUseScheduleKey = $this->getMaxUseScheduleKey();
-                        $useScheduleKeys = array();
+								$result2 = $newPhenotypemouselink->save();
 
-					if(!empty($use_schedulSelected))
-                    {
-						Log::channel('coding')->info("total use schedules selected =".count($use_schedulSelected));
+								Log::channel('coding')->info('phenotypes inserted');
+								// the below line is not needed if the save object works fine
+								//$maxPhenotypeMouseLinkKey = $maxPhenotypeMouseLinkKey + 1;
+							}
+							Log::channel('coding')->info("Phenotype Mouse Links established for ID [ ".$mouse_id." ] successfull");
+						}
+						else {
+							Log::channel('coding')->info("No phenotype keys selected");
+						}
+						//block 1 end
+						// Now, add info to useschedule table, however many useschedules selected by the user
+						$maxUseScheduleKey = $this->getMaxUseScheduleKey();
+						$useScheduleKeys = array();
 
-                        for( $i=0; $i < count($use_schedulSelected); $i++)
-						{
-							array_push($useScheduleKeys, $maxUseScheduleKey);
+						if(!empty($use_schedulSelected))
+            {
+							Log::channel('coding')->info("total use schedules selected =".count($use_schedulSelected));
 
-							$addSql2 = array(
-                                    '_useSchedule_key' => $maxUseScheduleKey,
-                                    '_mouse_key' => $mouse_key,
-                                    '_useScheduleTerm_key' => $use_schedulSelected[$i],
-                                    '_plugDate_key' => $plugDate_key,
-                                    'startDate' => $dob,
-                                    'comment' => $comment,
-                                    'done' => $done,
-                                    'version' => $version
+              for( $i=0; $i < count($use_schedulSelected); $i++)
+							{
+								array_push($useScheduleKeys, $maxUseScheduleKey);
+
+								$addSql2 = array(
+																	'_useSchedule_key' => $maxUseScheduleKey,
+																	'_mouse_key' => $mouse_key,
+																	'_useScheduleTerm_key' => $use_schedulSelected[$i],
+																	'_plugDate_key' => $plugDate_key,
+																	'startDate' => $dob,
+																	'comment' => $comment,
+																	'done' => $done,
+																	'version' => $version
                             );
 
-                            //$mcmsTables->table('useschedule')->insert($addSql2);
-                            $newEntryUseschedule = new Useschedule();
+								//$mcmsTables->table('useschedule')->insert($addSql2);
+								$newEntryUseschedule = new Useschedule();
 
-                            $newEntryUseschedule->_mouse_key = $mouse_key;
-                            $newEntryUseschedule->_useScheduleTerm_key = $use_schedulSelected[$i];
-                            $newEntryUseschedule->_plugDate_key = $plugDate_key;
-                            $newEntryUseschedule->startDate = $dob;
-                            $newEntryUseschedule->comment = $comment;
-                            $newEntryUseschedule->done = $done;
-                            $newEntryUseschedule->version = $version;
+								$newEntryUseschedule->_mouse_key = $mouse_key;
+								$newEntryUseschedule->_useScheduleTerm_key = $use_schedulSelected[$i];
+								$newEntryUseschedule->_plugDate_key = $plugDate_key;
+								$newEntryUseschedule->startDate = $dob;
+								$newEntryUseschedule->comment = $comment;
+								$newEntryUseschedule->done = $done;
+								$newEntryUseschedule->version = $version;
 
-                            $result3 = $newEntryUseschedule->save();
+								$result3 = $newEntryUseschedule->save();
+							}
+							Log::channel('coding')->info("Use Schedules for Mouse ID [ ".$mouse_key." ] established successfully");
+            }
+						else {
+							Log::channel('coding')->info("No useschedules selected");
 						}
-						Log::channel('coding')->info("Use Schedules for Mouse ID [ ".$mouse_key." ] established successfully");
-                    }
-					else {
-					    Log::channel('coding')->info("No useschedules selected");
+							//block 2 end
+
+							//block 3 begin
+							$plugDate_key = null;
+							$version = 1;
+							$usage_key = $this->getMaxMouseusageKey();
+							$projectedDate = "";
+							// get total number of use schedule terms, daysPostEvent present for a given use schedule
+							//
+							for( $i=0; $i < count($use_schedulSelected); $i++)
+							{
+								//echo " use schedule term key value = ". $use_schedulSelected[$i]; echo "</br>";
+								$daysPostEvent = $this->findAllDaysPostEvent($use_schedulSelected[$i]);
+								$mouseUse = $this->findMouseUseMatchingUseScheduleTermKey($use_schedulSelected[$i]);
+
+								foreach($daysPostEvent as $row)
+								{
+									$daysPostEvent = $row->daysPostEvent;
+									$projectedDate = date('Y-m-d', strtotime($dob. ' + '.$daysPostEvent.' days'));
+									//echo "Date of Birth = ".$dob; echo "</br>";
+									//echo "Projected Date = ".$projectedDate; echo "</br>";
+									$addSql3 = array(
+																	'_usage_key' => $usage_key,
+																	'_mouse_key' => $mouse_key,
+																	'_plugDate_key' =>  $plugDate_key,
+																	'_useSchedule_key' => $useScheduleKeys[$i],
+																	'use' => $mouseUse,
+																	'useAge' => $daysPostEvent,
+																	'projectedDate' => $projectedDate,
+																	'actualDate' => null,
+																	'done' =>  $done,
+																	'comment' => $comment,
+																	'D1' => null,
+																	'D2' => null,
+																	'D3' => null,
+																	'D4' => null,
+																	'D5' => null,
+																	'D6' => null,
+																	'D7' => null,
+																	'D8' => null,
+																	'D9' => null,
+																	'D10' => null,
+																	'version' => 1
+															 );
+									$result4 = $mcmsTables->table('mouseusage')->insert($addSql3);
+									Log::channel('coding')->info("mouse usage inserted for [ ".$mouse_id." ] Successfully");
+									$result4 = null;
+									$projectedDate = "";
+									$usage_key = $usage_key +1;
+								}
+							}
+							//block 3 end
+							$msg = "Mice with ID [ ".$mouse_id." ] Added Successfully";
+							Log::channel('coding')->info($msg);
+							return $msg;
 					}
-                    //block 2 end
+					else {
+						Log::channel('coding')->info("Error: Mice with ID [ ".$mouse_id." ] Addition Failed");
+						return false;
+					}
 
-                    //block 3 begin
-                    $plugDate_key = null;
-                    $version = 1;
-                    $usage_key = $this->getMaxMouseusageKey();
-                    $projectedDate = "";
-                    // get total number of use schedule terms, daysPostEvent present for a given use schedule
-                    //
-                    for( $i=0; $i < count($use_schedulSelected); $i++)
-                    {
-                      //echo " use schedule term key value = ". $use_schedulSelected[$i]; echo "</br>";
-                      $daysPostEvent = $this->findAllDaysPostEvent($use_schedulSelected[$i]);
-                      $mouseUse = $this->findMouseUseMatchingUseScheduleTermKey($use_schedulSelected[$i]);
+					break;
 
-                      foreach($daysPostEvent as $row)
-                      {
-                        $daysPostEvent = $row->daysPostEvent;
-                        $projectedDate = date('Y-m-d', strtotime($dob. ' + '.$daysPostEvent.' days'));
-                        //echo "Date of Birth = ".$dob; echo "</br>";
-                        //echo "Projected Date = ".$projectedDate; echo "</br>";
-                        $addSql3 = array(
-                                        '_usage_key' => $usage_key,
-                                        '_mouse_key' => $mouse_key,
-                                        '_plugDate_key' =>  $plugDate_key,
-                                        '_useSchedule_key' => $useScheduleKeys[$i],
-                                        'use' => $mouseUse,
-                                        'useAge' => $daysPostEvent,
-                                        'projectedDate' => $projectedDate,
-                                        'actualDate' => null,
-                                        'done' =>  $done,
-                                        'comment' => $comment,
-                                        'D1' => null,
-                                        'D2' => null,
-                                        'D3' => null,
-                                        'D4' => null,
-                                        'D5' => null,
-                                        'D6' => null,
-                                        'D7' => null,
-                                        'D8' => null,
-                                        'D9' => null,
-                                        'D10' => null,
-                                        'version' => 1
-                                     );
-                            $result4 = $mcmsTables->table('mouseusage')->insert($addSql3);
-                            Log::channel('coding')->info("mouse usage inserted for [ ".$mouse_id." ] Successfully");
-                            $result4 = null;
-                            $projectedDate = "";
-                            $usage_key = $usage_key +1;
-                        }
-                    }
-                    //block 3 end
-                    $msg = "Mice with ID [ ".$mouse_id." ] Added Successfully";
-					Log::channel('coding')->info($msg);
-					return $msg;
-                }
-                else {
-					Log::channel('coding')->info("Error: Mice with ID [ ".$mouse_id." ] Addition Failed");
-					return false;
-                }
+					case "Edit":
 
-				break;
+						$mouse_key = $this->findMouseKeyMatchingMouseId($mouse_id);
+						// all this code for editing mice entries
+						// first thing to do is to get the mouse data
+						//update the table using the mouse_key value.
+						$result1 = Mouse::where('_mouse_key','=', $mouse_key)->update($addMiceSql);
+						// block 1 non zero code
+						Log::channel('coding')->info("Updated the values of mouse table");
+						/*  steps are as follows:
+						 *  1. first get all phenotype keys containing the mouse key.
+						 *  2. loop through it against the phenotypes selected by the user.
+						 *  3. if a match occurs, keep that entry.
+						 *  4. if no match, then delete that entry in the db.
+						 */
+						Log::channel('coding')->info("phenotype keys present in DB");
 
-				case "Edit":
+						$phenotypeKeysToBeKept = array_intersect($phenotypes_Selected, $phenotypeKeysInDB);
+						//echo "phenotype keys to be retained"; print_r($phenotypeKeysToBeKept);echo "</br>";
+						foreach( $phenotypeKeysToBeKept as $key => $value)
+						{
+								//the corresponding phenotype mouse link keys will also be kept
+								//this for loop is just make sure everything is going on ok
+								// this loop does not do anything except for verfication of data
+								// so it is important.
+								//Log::channel('coding')->info("_phenotype key to be kept = ".$value);
+								//echo "_phenotype key to be kept = ".;echo "</br>";
+						}
+						//whatever values present here can be deleted in the db
+						$phenotypeKeysToBeDel = array_diff($phenotypeKeysInDB, $phenotypes_Selected);
+						foreach( $phenotypeKeysToBeDel as $key => $value)
+						{
+							$delResult = DB::table('phenotypemouselink')
+																			->where('_phenotype_key', '=', $value)
+																			->delete();
+							Log::channel('coding')->info("phenotype key [ ".$value." ] in phenotypemouselink table is deleted");
+						}
 
-					$mouse_key = $this->findMouseKeyMatchingMouseId($mouse_id);
-					// all this code for editing mice entries
-                    // first thing to do is to get the mouse data
-                    //update the table using the mouse_key value.
-                    $result1 = Mouse::where('_mouse_key','=', $mouse_key)->update($addMiceSql);
-                    // block 1 non zero code
-                    Log::channel('coding')->info("Updated the values of mouse table");
-                    /*  steps are as follows:
-                     *  1. first get all phenotype keys containing the mouse key.
-                     *  2. loop through it against the phenotypes selected by the user.
-                     *  3. if a match occurs, keep that entry.
-                     *  4. if no match, then delete that entry in the db.
-                     */
-                    Log::channel('coding')->info("phenotype keys present in DB");
+						$maxPhenotypeMouseLinkKey = $this->getMaxPhenotypeMouseLinkKey();
+						//whatever values present here should be added to the db
+						$phenotypeKeysToBeAdded = array_diff($phenotypes_Selected, $phenotypeKeysToBeKept);
+						foreach( $phenotypeKeysToBeAdded as $key => $value)
+						{
+							//echo "_phenotype key to be added = ".$value;echo "</br>";
+							$newPhenotypeMouseLink = new Phenotypemouselink();
 
-                    $phenotypeKeysToBeKept = array_intersect($phenotypes_Selected, $phenotypeKeysInDB);
-                    //echo "phenotype keys to be retained"; print_r($phenotypeKeysToBeKept);echo "</br>";
-                    foreach( $phenotypeKeysToBeKept as $key => $value)
-                    {
-                        //the corresponding phenotype mouse link keys will also be kept
-                        //this for loop is just make sure everything is going on ok
-                        // this loop does not do anything except for verfication of data
-                        // so it is important.
-                        //Log::channel('coding')->info("_phenotype key to be kept = ".$value);
-                        //echo "_phenotype key to be kept = ".;echo "</br>";
-                    }
-                    //whatever values present here can be deleted in the db
-                    $phenotypeKeysToBeDel = array_diff($phenotypeKeysInDB, $phenotypes_Selected);
-                    foreach( $phenotypeKeysToBeDel as $key => $value)
-                    {
-                        $delResult = DB::table('phenotypemouselink')
-                                                ->where('_phenotype_key', '=', $value)
-                                                ->delete();
-                        Log::channel('coding')->info("phenotype key [ ".$value." ] in phenotypemouselink table is deleted");
-                    }
+							$pheMousLinkSql = array(
+													'_phenotypeMouseLink_key' => $maxPhenotypeMouseLinkKey,
+													'_phenotype_key' => $value,
+													'_mouse_key' => $mouse_key,
+													'version' => $version
+													);
 
-                    $maxPhenotypeMouseLinkKey = $this->getMaxPhenotypeMouseLinkKey();
-                    //whatever values present here should be added to the db
-                    $phenotypeKeysToBeAdded = array_diff($phenotypes_Selected, $phenotypeKeysToBeKept);
-                    foreach( $phenotypeKeysToBeAdded as $key => $value)
-                    {
-                            //echo "_phenotype key to be added = ".$value;echo "</br>";
-                            $newPhenotypeMouseLink = new Phenotypemouselink();
+							$newPhenotypeMouseLink->_phenotype_key = $value;
+							$newPhenotypeMouseLink->_mouse_key = $mouse_key;
+							$newPhenotypeMouseLink->version = $version;
 
-                            $pheMousLinkSql = array(
-                                        '_phenotypeMouseLink_key' => $maxPhenotypeMouseLinkKey,
-                                        '_phenotype_key' => $value,
-                                        '_mouse_key' => $mouse_key,
-                                        'version' => $version
-                                        );
+							$result2 = $newPhenotypeMouseLink->save();
 
-                            $newPhenotypeMouseLink->_phenotype_key = $value;
-                            $newPhenotypeMouseLink->_mouse_key = $mouse_key;
-                            $newPhenotypeMouseLink->version = $version;
+							Log::channel('coding')->info("New PhenotypeMouseLink key [ ".$maxPhenotypeMouseLinkKey." ] inserted");
+							//$maxPhenotypeMouseLinkKey = $maxPhenotypeMouseLinkKey +1;
+						}
 
-                            $result2 = $newPhenotypeMouseLink->save();
+						// block 1 non zero code end
+						// block 2 non zero code begin
+						$plugDate_key = null;
+						$version = 1;
 
-                            Log::channel('coding')->info("New PhenotypeMouseLink key [ ".$maxPhenotypeMouseLinkKey." ] inserted");
-                        //$maxPhenotypeMouseLinkKey = $maxPhenotypeMouseLinkKey +1;
-                    }
+						$usage_key = $this->getMaxMouseusageKey();
+						$projectedDate = "";
+						$useSchKeysForEditing = array();
 
-                    // block 1 non zero code end
-                    // block 2 non zero code begin
-                    $plugDate_key = null;
-                    $version = 1;
+						// before proceeding further, get the matching use schedulekeys
+						// using the use schedule term keys.
+						// this is for edit only
+						$useSchTermKeysInDB = $this->getAllUseSchTermsKeysMatchingMouseKey($mouse_key);
 
-                    $usage_key = $this->getMaxMouseusageKey();
-                    $projectedDate = "";
-                    $useSchKeysForEditing = array();
+						$useSchTermKeysToBeKept = array_intersect($use_schedulSelected, $useSchTermKeysInDB);
+						foreach( $useSchTermKeysToBeKept as $key => $value)
+						{
+							//array_push($useSchKeysForEditing, $value);
+							//the corresponding use sch keys will also be kept
+							//this for loop is just make sure everything is going on ok
+							// this loop does not do anything except for verfication of data
+							// so it is important.
+							//echo "use sch term key to be kept = ".$value;echo "</br>";
+						}
 
-                    // before proceeding further, get the matching use schedulekeys
-                    // using the use schedule term keys.
-                    // this is for edit only
-                    $useSchTermKeysInDB = $this->getAllUseSchTermsKeysMatchingMouseKey($mouse_key);
+						//whatever values present here can be deleted in the db
+						$useSchTermKeysToBeDel = array_diff($useSchTermKeysInDB, $use_schedulSelected);
+						$useScheduleKey = array();
+						Log::channel('coding')->info("Attempting to Delete rows in mouseusage and useschedule tables");
+						foreach( $useSchTermKeysToBeDel as $key => $value)
+						{
+							//echo "use sch term key to be deleted = ".$value;echo "</br>";
+							$useScheduleKey = $this->getUseSchKeyBySchTermKeyAndMouseKey($value, $mouse_key);
+							$useScheduleKeys[] = $useScheduleKey;
+							$delResult = DB::table('mouseusage')
+																					->where('_useSchedule_key', '=', $useScheduleKey)
+																					->where('_mouse_key', '=', $mouse_key)
+																					->delete();
+							Log::channel('coding')->info("Row with UseScheduleKey value [ ".$useScheduleKey." ]deleted from mouseusage table");
 
-                    $useSchTermKeysToBeKept = array_intersect($use_schedulSelected, $useSchTermKeysInDB);
-                    foreach( $useSchTermKeysToBeKept as $key => $value)
-                    {
-                        //array_push($useSchKeysForEditing, $value);
-                        //the corresponding use sch keys will also be kept
-                        //this for loop is just make sure everything is going on ok
-                        // this loop does not do anything except for verfication of data
-                        // so it is important.
-                        //echo "use sch term key to be kept = ".$value;echo "</br>";
-                    }
+							$delResult = DB::table('useschedule')
+																					->where('_useScheduleTerm_key', '=', $value)
+																					->where('_mouse_key', '=', $mouse_key)
+																					->delete();
+							Log::channel('coding')->info("UseScheduleTerm key with value [ ".$value." ] in Useschedule table deleted");
 
-                    //whatever values present here can be deleted in the db
-                    $useSchTermKeysToBeDel = array_diff($useSchTermKeysInDB, $use_schedulSelected);
-                    $useScheduleKey = array();
-                    Log::channel('coding')->info("Attempting to Delete rows in mouseusage and useschedule tables");
-                    foreach( $useSchTermKeysToBeDel as $key => $value)
-                    {
-                        //echo "use sch term key to be deleted = ".$value;echo "</br>";
-                        $useScheduleKey = $this->getUseSchKeyBySchTermKeyAndMouseKey($value, $mouse_key);
-                        $useScheduleKeys[] = $useScheduleKey;
-                        $delResult = DB::table('mouseusage')
-                                                    ->where('_useSchedule_key', '=', $useScheduleKey)
-                                                    ->where('_mouse_key', '=', $mouse_key)
-                                                    ->delete();
-                        Log::channel('coding')->info("Row with UseScheduleKey value [ ".$useScheduleKey." ]deleted from mouseusage table");
+							//print_r($useScheduleKeysInDB); echo "</br>";
+							$useSchKeysForEditing =   array_diff($useScheduleKeysInDB,$useScheduleKeys);
+						}
+						//get fresh use sch key because there were some not deleted and
+						// some were deleted. so get fresh keys number from db and insert it.
+						$maxUseScheduleKey = $this->getMaxUseScheduleKey();
+						//whatever values present here should be added to the db
+						$useSchTermKeysToBeAdded = array_diff($use_schedulSelected, $useSchTermKeysToBeKept);
 
-                        $delResult = DB::table('useschedule')
-                                                    ->where('_useScheduleTerm_key', '=', $value)
-                                                    ->where('_mouse_key', '=', $mouse_key)
-                                                    ->delete();
-                        Log::channel('coding')->info("UseScheduleTerm key with value [ ".$value." ] in Useschedule table deleted");
+						if( count($useSchTermKeysToBeAdded) !=0 )
+						{
+							foreach( $useSchTermKeysToBeAdded as $key => $value)
+							{
+								//echo "Adding new entries useschedule table"; echo "</br>";
+								//echo "use sch term key added = ".$value;echo "</br>";
+								array_push($useSchKeysForEditing, $maxUseScheduleKey);
+								$addUseSchSql = array(
+														'_useSchedule_key' => $maxUseScheduleKey,
+														'_mouse_key' => $mouse_key,
+														'_useScheduleTerm_key' => $value,
+														'_plugDate_key' => $plugDate_key,
+														'startDate' => $dob,
+														'comment' => $comment,
+														//'done' => 0,
+														'version' => $version
+														);
 
-                        //print_r($useScheduleKeysInDB); echo "</br>";
-                        $useSchKeysForEditing =   array_diff($useScheduleKeysInDB,$useScheduleKeys);
-                    }
-                    //get fresh use sch key because there were some not deleted and
-                    // some were deleted. so get fresh keys number from db and insert it.
-                    $maxUseScheduleKey = $this->getMaxUseScheduleKey();
-                    //whatever values present here should be added to the db
-                    $useSchTermKeysToBeAdded = array_diff($use_schedulSelected, $useSchTermKeysToBeKept);
+								$result3 = DB::table('useschedule')->insert($addUseSchSql);
+								//$result3=true;
+								Log::channel('coding')->info("New Useschedule key [ ".$maxUseScheduleKey." ] inserted");
 
-                    if( count($useSchTermKeysToBeAdded) !=0 )
-                    {
-                        foreach( $useSchTermKeysToBeAdded as $key => $value)
-                        {
-                            //echo "Adding new entries useschedule table"; echo "</br>";
-                            //echo "use sch term key added = ".$value;echo "</br>";
-                            array_push($useSchKeysForEditing, $maxUseScheduleKey);
-                            $addUseSchSql = array(
-                                        '_useSchedule_key' => $maxUseScheduleKey,
-                                        '_mouse_key' => $mouse_key,
-                                        '_useScheduleTerm_key' => $value,
-                                        '_plugDate_key' => $plugDate_key,
-                                        'startDate' => $dob,
-                                        'comment' => $comment,
-                                        //'done' => 0,
-                                        'version' => $version
-                                        );
+								$daysPostEvent = $this->findAllDaysPostEvent($value);
+								$mouseUse = $this->findMouseUseMatchingUseScheduleTermKey($value);
 
-                            $result3 = DB::table('useschedule')->insert($addUseSchSql);
-                            //$result3=true;
-                            Log::channel('coding')->info("New Useschedule key [ ".$maxUseScheduleKey." ] inserted");
+								foreach($daysPostEvent as $row)
+								{
+									$daysPostEvent = $row->daysPostEvent;
+									$projectedDate = date('Y-m-d', strtotime($dob. ' + '.$daysPostEvent.' days'));
+									//$msg = $msg. "Date of Birth = ".$dob; echo "</br>";
+									//$msg = $msg. "Projected Date = ".$projectedDate; echo "</br>";
 
-                            $daysPostEvent = $this->findAllDaysPostEvent($value);
-                            $mouseUse = $this->findMouseUseMatchingUseScheduleTermKey($value);
+									$addSql3 = array(
+															'_usage_key' => $usage_key,
+															'_mouse_key' => $mouse_key,
+															'_plugDate_key' =>  $plugDate_key,
+															'_useSchedule_key' => $maxUseScheduleKey,
+															'use' => $mouseUse,
+															'useAge' => $daysPostEvent,
+															'projectedDate' => $projectedDate,
+															'actualDate' => null,
+															'done' =>  0,
+															'comment' => $comment,
+															'D1' => null,
+															'D2' => null,
+															'D3' => null,
+															'D4' => null,
+															'D5' => null,
+															'D6' => null,
+															'D7' => null,
+															'D8' => null,
+															'D9' => null,
+															'D10' => null,
+															'version' => 1
+													 );
 
-                            foreach($daysPostEvent as $row)
-                            {
-                                $daysPostEvent = $row->daysPostEvent;
-                                $projectedDate = date('Y-m-d', strtotime($dob. ' + '.$daysPostEvent.' days'));
-                                //$msg = $msg. "Date of Birth = ".$dob; echo "</br>";
-                                //$msg = $msg. "Projected Date = ".$projectedDate; echo "</br>";
-
-                                $addSql3 = array(
-                                            '_usage_key' => $usage_key,
-                                            '_mouse_key' => $mouse_key,
-                                            '_plugDate_key' =>  $plugDate_key,
-                                            '_useSchedule_key' => $maxUseScheduleKey,
-                                            'use' => $mouseUse,
-                                            'useAge' => $daysPostEvent,
-                                            'projectedDate' => $projectedDate,
-                                            'actualDate' => null,
-                                            'done' =>  0,
-                                            'comment' => $comment,
-                                            'D1' => null,
-                                            'D2' => null,
-                                            'D3' => null,
-                                            'D4' => null,
-                                            'D5' => null,
-                                            'D6' => null,
-                                            'D7' => null,
-                                            'D8' => null,
-                                            'D9' => null,
-                                            'D10' => null,
-                                            'version' => 1
-                                         );
-
-                                $result4 = DB::table('mouseusage')->insert($addSql3);
-                                Log::channel('coding')->info("New Mouseusage key [ ".$usage_key." ] inserted");
-	                            $result4 = true;
-                                $projectedDate = "";
-                                $usage_key = $usage_key +1;
-                            }
-                            $maxUseScheduleKey = $maxUseScheduleKey +1;
-                        }
-                    }
-                    else {
-                        Log::channel('coding')->info("There are [ ".count($useSchKeysForEditing)." ] changes made in the Useschedule & Mouseusage Table");
-                    }
-                    // end of block 2 code
-                    //$updatedUseSchKeysInDB = $this->getAllUseScheduleKeysMatchingMouseKey($mouse_key);
+									$result4 = DB::table('mouseusage')->insert($addSql3);
+									Log::channel('coding')->info("New Mouseusage key [ ".$usage_key." ] inserted");
+									$result4 = true;
+									$projectedDate = "";
+									$usage_key = $usage_key +1;
+								}
+								$maxUseScheduleKey = $maxUseScheduleKey +1;
+							}
+						}
+						else {
+								Log::channel('coding')->info("There are [ ".count($useSchKeysForEditing)." ] changes made in the Useschedule & Mouseusage Table");
+						}
+						// end of block 2 code
+						//$updatedUseSchKeysInDB = $this->getAllUseScheduleKeysMatchingMouseKey($mouse_key);
 
 				break;
 
 				default:
-
+				//dd("No Entries Made");
 		  }
     }
     catch (\Illuminate\Database\QueryException $e ) {

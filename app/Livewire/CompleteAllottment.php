@@ -25,6 +25,8 @@ use App\Models\Room;
 use App\Models\Rack;
 use App\Models\Slot;
 use App\Models\B2p;
+use App\Models\Project;
+use App\Models\Projectstrains;
 
 use App\Models\Breeding\Mouse;
 
@@ -36,12 +38,17 @@ use Illuminate\Pagination\Paginator;
 
 use Validator;
 
+use App\Traits\Notes;
+use App\Traits\FormDEntryAdmin;
+
 class CompleteAllottment extends Component
 {
     use Base;
     use WithPagination;
     use IssueRequest;
-
+		use Notes;
+		use	FormDEntryAdmin;
+	
     //alerts
     public $issueWarning = false, $issueSuccess = false;
     public $msg1, $msg2;
@@ -331,9 +338,11 @@ class CompleteAllottment extends Component
                     // issue table update
                     $irq->issue_status = "issued";
                     $irq->save();
+										
 										// Now implement the Form-D entry here
-										
-										
+										$input['usage_id'] = $issueId;
+										$input['remarks'] = $irq->remarks;
+										$result = $this->enterFormD($irq, $input);
 										
                     // B2p table insert
                     $nB2p = new B2p();

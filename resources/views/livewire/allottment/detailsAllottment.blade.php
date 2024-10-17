@@ -51,7 +51,7 @@
                     $HowManyWeeks = ( strtotime( date('Y-m-d H:i:s')) - strtotime($row['birthDate']) ) / 604800;
                    ?>
                   <td>
-                    {{ floor($HowManyWeeks) }}
+                    {{ floor($HowManyWeeks) }} weeks
                   </td>
                   <td>
                     {{ $row['sex']}}

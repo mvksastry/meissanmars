@@ -35,12 +35,12 @@ trait FormDEntryAdmin
 			$formD['breeder_add'] = "EAF, NCCS, Pune-411007";
 			$formD['approval_date'] = date('Y-m-d');
 			$formD['expt_start_date'] = date('Y-m-d');
-      
+      $formD['expt_desc'] = $row->expt_desc;
+      $formD['expt_end_date'] = $this->addWeeksToDate($$row->duration);
       //dates and description
-      $usageObj = Usage::where('usage_id', $input['usage_id'])->first();
+      //$usageObj = Usage::where('usage_id', $input['usage_id'])->first();
       
-      $formD['expt_desc'] = $usageObj->expt_desc;
-      $formD['expt_end_date'] = $this->addWeeksToDate($usageObj->duration);
+      
 			
 			$formD['remarks'] = $input['remarks'];
 			$res = Iaecproject::with('user')->where('iaecproject_id',$iaecproject_id)->first();

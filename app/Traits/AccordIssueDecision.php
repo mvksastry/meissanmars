@@ -44,14 +44,14 @@ trait AccordIssueDecision
 								->where('issue_status', 'confirmed')
 								->where('usage_id', $input['usage_id'])
 								->get();
-
+			//dd($issueRequest);
 			$sql['remarks'] = $input['remarks'];
 			$sql['status_date'] = date('Y-m-d');
 			$sql['issue_status'] = 'approved';
 			$res = Usage::where('usage_id', $input['usage_id'])->update($sql);
 			
       // now make entry in Form-D table
-			$result = $this->enterFormD($issueRequest, $input);
+			//$result = $this->enterFormD($issueRequest, $input);
 			$msg = "Usage ID:".$input['usage_id']." Approved";
 			return $msg;
 		break;
