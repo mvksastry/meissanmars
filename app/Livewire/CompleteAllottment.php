@@ -370,7 +370,7 @@ class CompleteAllottment extends Component
 
                       // gather data for cages table
                       $cageInfo = new Cage();
-                      $cageInfo->issue_id = $issueId;
+                      $cageInfo->usage_id = $issueId;
                       $cageInfo->iaecproject_id = $irq->iaecproject_id;
                       $cageInfo->requested_by = $irq->pi_id;
                       $cageInfo->species_id = $irq->species_id;
