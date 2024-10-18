@@ -191,37 +191,37 @@ class IaecProjects extends Component
           $input['project_id'] = $this->project_id;
           $input['pi_id'] = Auth::id();
           $input['sex'] = $this->sex;
-          $this->validate(['sex' => 'required|alpha']);
+          //$this->validate(['sex' => 'required|alpha']);
 
           $input['age'] = $this->age;
-          $this->validate(['age' => 'required']);
+          //$this->validate(['age' => 'required']);
 
           $input['ageunit'] = $this->ageunit;
-          $this->validate(['ageunit' => 'required|alpha']);
+          //$this->validate(['ageunit' => 'required|alpha']);
 
           $input['number'] = $this->number;
-          $this->validate(['number' => 'required|numeric']);
+          //$this->validate(['number' => 'required|numeric']);
 
           $input['cagenumber'] = $this->cagenumber;
-          $this->validate(['cagenumber' => 'required|numeric']);
+          //$this->validate(['cagenumber' => 'required|numeric']);
 
           $input['termination'] = $this->termination;
-          $this->validate(['termination' => 'required|regex:/^[\pL\s\- ;0-9_]+$/u|max:150']);
+          //$this->validate(['termination' => 'required|regex:/^[\pL\s\- ;0-9_]+$/u|max:150']);
 
           $input['duration'] = $this->duration;
-          $this->validate(['duration' => 'required|regex:/^[0-9]+$/u|max:52']);
+          //$this->validate(['duration' => 'required|regex:/^[0-9]+$/u|max:52']);
           
           $input['expt_desc'] = $this->expt_desc;
-          $this->validate(['expt_desc' => 'required|regex:/^[\pL\s\- .,;0-9_]+$/u|max:500']);
+          //$this->validate(['expt_desc' => 'required|regex:/^[\pL\s\- .,;0-9_]+$/u|max:500']);
           
           $input['products'] = $this->products;
-          $this->validate(['products' => 'required|regex:/^[\pL\s\- ,;0-9_]+$/u|max:150']);
+          //$this->validate(['products' => 'required|regex:/^[\pL\s\- ,;0-9_]+$/u|max:150']);
 
           $input['remarks'] = $this->remarks;
-          $this->validate(['remarks' => 'required|regex:/^[\pL\s\- ,;0-9_]+$/u|max:150']);
+          //$this->validate(['remarks' => 'required|regex:/^[\pL\s\- ,;0-9_]+$/u|max:150']);
 
           $input['agree'] = $this->agree;
-          $this->validate(['agree' => 'required:numeric']);
+          //$this->validate(['agree' => 'required:numeric']);
 
           $input['status_date'] = date('Y-m-d');
           $input['issue_status'] = "submitted";

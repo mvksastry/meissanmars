@@ -287,7 +287,7 @@
                           <th> Age</th>
                           <th> Number </br> Requested</th>
                           <th> Cages </br>Requested</th>
-                          <th> Actions</th>
+													<th> Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -295,7 +295,8 @@
                         <tr>
                           <td>
                             <label class="inline-flex items-center">
-                              <input type="checkbox" class="form-checkbox" value="{{ $val->usage_id }}" wire:model="issx_id">
+                              <input type="checkbox" class="form-checkbox" 
+															value="{{ $val->usage_id }}" wire:model="issx_id">
                             </label>
                           </td>
                           <td>
@@ -316,6 +317,7 @@
                           <td>
                             {{ $val->cagenumber }}
                           </td>
+													
                           <td>
                             <button wire:click="selectForSearch({{ $val->usage_id }})" class="btn btn-success rounded">Select</button>
                           </td>
@@ -444,29 +446,16 @@
 											<thead>
 												<tr bgcolor="#BBDEFB">												
 													<th style="text-align:center;">
+													@if($issueSuccess)
+														Issue Process Completed Successfully
+													@endif
                           </th>
-													<th></th>
-                          <th></th>
-													<th></th>
-													<th></th>
-													<th></th>
+													
 												</tr>
 											</thead>
 											<tbody>
-                          <tr bgcolor="#E1BEE7"   data-entry-id="">
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                          </tr>
 											</tbody>
-										</table>                      
-									
-										No Information to display
-									
-
+										</table>                      					
 								</div>
 							</div>
 						  </div><!-- /.card-body -->

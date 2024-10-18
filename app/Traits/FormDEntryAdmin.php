@@ -17,32 +17,29 @@ use App\Traits\Notes;
 
 trait FormDEntryAdmin
 {
-	public function enterFormD($issueRequest, $input)
+	public function enterFormD($issueRequest)
 	{
 		foreach($issueRequest as $row)
 		{
-			$iaecproject_id = $row->iaecproject_id;
-			$formD['usage_id'] = $input['usage_id'];
-      $formD['staff_id'] = $row->pi_id;
+			$iaecproject_id = $issueRequest->iaecproject_id;
+			$formD['usage_id'] = $issueRequest->usage_id;
+      $formD['staff_id'] = $issueRequest->pi_id;
 			
 			$formD['entry_date'] = date('Y-m-d');
-			$formD['req_anim_number'] = $row->number;
-			$formD['species'] = $row->species->species_id;
-			$formD['strain'] = $row->strain->strain_id;
-			$formD['sex'] = $row->sex;
-			$formD['age'] = $row->age;
-			$formD['ageunit'] = $row->ageunit;
+			$formD['req_anim_number'] = $issueRequest->number;
+			$formD['species'] = $issueRequest->species->species_id;
+			$formD['strain'] = $issueRequest->strain->strain_id;
+			$formD['sex'] = $issueRequest->sex;
+			$formD['age'] = $issueRequest->age;
+			$formD['ageunit'] = $issueRequest->ageunit;
 			$formD['breeder_add'] = "EAF, NCCS, Pune-411007";
 			$formD['approval_date'] = date('Y-m-d');
 			$formD['expt_start_date'] = date('Y-m-d');
-      $formD['expt_desc'] = $row->expt_desc;
-      $formD['expt_end_date'] = $this->addWeeksToDate($$row->duration);
+      $formD['expt_desc'] = $issueRequest->expt_desc;
+      $formD['expt_end_date'] = $this->addWeeksToDate($issueRequest->duration);
       //dates and description
-      //$usageObj = Usage::where('usage_id', $input['usage_id'])->first();
-      
-      
-			
-			$formD['remarks'] = $input['remarks'];
+      			
+			$formD['remarks'] = $issueRequest->remarks;
 			$res = Iaecproject::with('user')->where('iaecproject_id',$iaecproject_id)->first();
 			foreach($res as $x)
 			{

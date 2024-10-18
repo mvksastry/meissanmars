@@ -4,7 +4,14 @@
       <div class="bg-orange-100 border border-gray-800 rounded shadow">
         <div class="border-b border-gray-800 p-3">
         @if($adr !=  null)
-          <h5 class="font-bold uppercase text-gray-900">Search Results: Total found: @if( empty($this->adr) ) 0 @else {{ count($this->adr) }} @endif ; Checked: {{ count($mice_id) }}</h5>
+          <h5 class="font-bold uppercase text-gray-900">
+					Search Results: Total found: 
+					@if( empty($this->adr) ) 
+						0 
+					@else 
+						{{ count($this->adr) }} 
+					@endif ; 
+					Checked: {{ $total_mice_selected }}</h5>
         @else
           <h5 class="font-bold uppercase text-gray-900">Not Yet Searched </h5>
         @endif
@@ -157,13 +164,44 @@
                 class="form-control px-2 py-1 rounded text-sm" />
               </td>
             </tr>
+						<tr>
+						<td colspan="5">
+						<h5></h5>
+						<h3> {{ $msg1 }} </h3>
+						<h3> {{ $msg2 }} </h3>
+						<h3> {{ $msg7 }} </h3>
+						<h3> {{ $msg6 }} </h3>
+						<h3> {{ $msg3 }} </h3>
+						<h3> {{ $msg4 }} </h3>
+						<h3> {{ $msg5 }} </h3>
+						</td>
+						</tr>
+						
+						@if($validateButton)
+						<tr>
+						<td>
+						Cages Allotted
+						</td>
+						<td colspan="2">
+						<input type="text" class="form-control" name="cageAllotted" wire:model="cages_alloted" id="cageAllotted" placeholder="Cage Allotted">
+						</td>
+						</tr>
+						@endif
+						
+						<tr>
             <td colspan="5">
             </br>
                 <button wire:click="dbQuery()" class="btn btn-primary rounded">Search</button>
-                @if($alotButton)
-                  <button wire:click="alottComplete({{ $val->issue_id }})" class="btn btn-success rounded">Alott</button>
+                
+								@if($validateButton)
+                  <button wire:click="doValidation()" class="btn btn-success rounded">Validate</button>
+                @endif
+								
+								@if($alotButton)
+                  <button wire:click="alottComplete({{ $usage_id }})" class="btn btn-success rounded">Alott</button>
                 @endif
             </td>
+						</tr>
           </tbody>
         </table>
       </div>
