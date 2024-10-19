@@ -89,7 +89,13 @@ for($k = 0; $k < $levels; $k++)
 
                     <span wire:click="markCages('{{ $row['cage_id'] }}')" >
 
-                        <button class="btn btn-success rounded p-1" data-toggle="popover" title="Cage ID: <?php echo $row['cage_id']; ?>" data-trigger="hover" data-content="Cage ID: <?php echo $row['cage_id']; ?>" >
+                        <button class="btn 
+												@if($changeColor)
+													btn-danger
+												@else
+													btn-success 
+												@endif
+												rounded p-1" data-toggle="popover" title="Cage ID: <?php echo $row['cage_id']; ?>" data-trigger="hover" data-content="Cage ID: <?php echo $row['cage_id']; ?>" >
 
                             <i class="fa fa-square" aria-hidden="true"></i>
                          <?php echo sprintf("%02d", $row['slot_id'] ); ?>

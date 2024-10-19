@@ -57,7 +57,7 @@ class IaecUsage extends Component
 
     public $rack_id, $cage_id, $ro_own, $slots, $occups, $rackInfo, $slotInfo, $layoutPiCage;
 
-    public $cageTerm, $selCage, $markedCages, $cageDetailsPi, $caInfos;
+    public $cageTerm=[], $selCage, $markedCages, $cageDetailsPi, $caInfos;
 
     public $appearance, $numdead, $moribund, $housing, $xyz, $notes;
 
@@ -65,6 +65,8 @@ class IaecUsage extends Component
 
     public $cageInduction, $issInfos, $slotInfos, $cagesRequired;
 
+		//change color of buttons
+		public $changeColor=false;
 
     public function render()
     {
@@ -232,9 +234,13 @@ class IaecUsage extends Component
 
   	public function markCages($id)
   	{
-      $this->cageTerm[] = $id;
-      $this->selCage = $this->selCage.$id.";";
+			if(!in_array($id, $this->cageTerm))
+			{ 
+				$this->cageTerm[] = $id;
+				$this->selCage = $this->selCage.$id.";";
+			}
       $this->markedCages = $this->selCage;
+			//$this->changeColor = true;
   	}
 
   	public function clearMarkedCages()

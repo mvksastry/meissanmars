@@ -18,6 +18,7 @@ use App\Models\Slot;
 
 use File;
 use App\Traits\SlotCreation;
+use App\Traits\RackDetailsAmendment;
 
 use Carbon\Carbon;
 use Illuminate\Log\Logger;
@@ -25,7 +26,7 @@ use Log;
 
 class RackController extends Controller
 {
-  use HasRoles, SlotCreation;
+  use HasRoles, SlotCreation, RackDetailsAmendment;
     /**
      * Display a listing of the resource.
      */
@@ -130,9 +131,10 @@ class RackController extends Controller
     {
         $rooms = Room::all();
         $rack = Rack::findOrFail($id);
-				$rmsg = Slot::where('rack_id', $id)->where('status', 'O')->get();
-				//dd($rmsg);
-				if(count($rmsg) > 0)
+				$rStatus = Slot::whereStatus('O')->get();
+				$rStat = Slot::where('rack_id', $id)->get();
+				//dd($rStatus, $rmsg);
+				if(count($rStatus) > 0)
 				{
 					$edit = true;
 					$msg = "Rack Not Empty: Rows, Columns, Shelfs can not be edited";
@@ -145,6 +147,7 @@ class RackController extends Controller
         return view('facility.racks.edit')
           ->with('rooms',$rooms)
           ->with('rack', $rack)
+					->with('rStat', $rStat)
 					->with('msg',$msg)
 					->with('edit', $edit);
      
@@ -157,8 +160,16 @@ class RackController extends Controller
     {
         //
         $purpose = $request['purpose'];
-        
-        $result = $this->editRackInformation($request);
+				
+        $input = $request->all();
+				
+				$input['rack_id'] = intval($id);
+	
+	//dd($input);
+        $result = $this->amendRackInformation($input);
+				
+				return redirect()->route('roomsnracks.index')
+          ->with('flash_message', 'rack'. $result.' added!');
     }
 
     /**

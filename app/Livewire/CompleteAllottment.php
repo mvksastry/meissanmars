@@ -357,120 +357,120 @@ class CompleteAllottment extends Component
 					array_unshift($splitArray, null);
 					unset($splitArray[0]);
 
-                if($freeSlots > $reqCageNum)
-                {
-                  if( count($miceInfos) >= $irq->number )
-                  {
-                    for($k=1; $k<$reqCageNum+1; $k++)
-                    {
-                      $percage = $splitArray[$k];
-                      //first get the ids per cage from miceInfos array
-                      $mids = array_slice($miceInfos, 0, $percage);
-                      $miceInfos = array_slice($miceInfos, $percage);
+					if($freeSlots > $reqCageNum)
+					{
+						if( count($miceInfos) >= $irq->number )
+						{
+							for($k=1; $k<$reqCageNum+1; $k++)
+							{
+								$percage = $splitArray[$k];
+								//first get the ids per cage from miceInfos array
+								$mids = array_slice($miceInfos, 0, $percage);
+								$miceInfos = array_slice($miceInfos, $percage);
 
-                      // gather data for cages table
-                      $cageInfo = new Cage();
-                      $cageInfo->usage_id = $issueId;
-                      $cageInfo->iaecproject_id = $irq->iaecproject_id;
-                      $cageInfo->requested_by = $irq->pi_id;
-                      $cageInfo->species_id = $irq->species_id;
-                      $cageInfo->strain_id = $irq->strain_id;
-                      $cageInfo->animal_number = $percage;
-                      $cageInfo->start_date = date('Y-m-d');
-                      $cageInfo->end_date = date('Y-m-d');
-                      $cageInfo->ack_date = date('Y-m-d');
-                      $cageInfo->cage_status = 'Active';
-                      $cageInfo->notes = 'Cage Issued '.json_encode($mids);
-											$cageInfo->save();
-                      $cage_id = $cageInfo->cage_id;
+								// gather data for cages table
+								$cageInfo = new Cage();
+								$cageInfo->usage_id = $issueId;
+								$cageInfo->iaecproject_id = $irq->iaecproject_id;
+								$cageInfo->requested_by = $irq->pi_id;
+								$cageInfo->species_id = $irq->species_id;
+								$cageInfo->strain_id = $irq->strain_id;
+								$cageInfo->animal_number = $percage;
+								$cageInfo->start_date = date('Y-m-d');
+								$cageInfo->end_date = date('Y-m-d');
+								$cageInfo->ack_date = date('Y-m-d');
+								$cageInfo->cage_status = 'Active';
+								$cageInfo->notes = 'Cage Issued '.json_encode($mids);
+								$cageInfo->save();
+								$cage_id = $cageInfo->cage_id;
 
-                      //now collect data for slots table
-                      //$sInput['rack_id'] = $rackId;
-                      $sInput['cage_id'] = $cage_id;
-                      $sInput['status'] = "O";
+								//now collect data for slots table
+								//$sInput['rack_id'] = $rackId;
+								$sInput['cage_id'] = $cage_id;
+								$sInput['status'] = "O";
 
-                      $res = Slot::where('rack_id', $rackId)
-                                    ->where('status', 'A')
-                                    ->first();
-																		
-											$matchThese = ['slot_id' => $res->slot_id, 'rack_id' => $rackId];
-                      $res = Slot::where($matchThese)->update($sInput);
+								$res = Slot::where('rack_id', $rackId)
+															->where('status', 'A')
+															->first();
+															
+								$matchThese = ['slot_id' => $res->slot_id, 'rack_id' => $rackId];
+								$res = Slot::where($matchThese)->update($sInput);
 
-                      // now change occupancy status from occupied to vacant
-                      // for the breeding cages here.
-                      $res = Mouse::whereIn('ID', $mids)
-                                    ->update(['exitDate' => date('Y-m-d H:i:s'),
-                                  'comment' => "Issued to project id ".$irq->iaecproject_id ]);
-                      //dd($percage, $mids, $miceInfos, $cageInfo, $res );
-                      
-                      //make notebook entry first time when cages are issued.
-                      
-                      $nb = $irq->iaecproject_id."notebook";
-                      $nbe['usage_id']          = $issueId;
-                      $nbe['cage_id']           = $cage_id;
-                      $nbe['protocol_id']       = 0;
-                      $nbe['av_info']           = "";
-                      $nbe['number_animals']    = $percage;
-                      $nbe['staff_id']          = Auth::user()->id;
-                      $nbe['staff_name']        = Auth::user()->name;
-                      $nbe['entry_date']        = date('Y-m-d');
-                      $nbe['expt_date']         = date('Y-m-d');
-                      $nbe['expt_description']  = 'Cage Issued '.json_encode($mids);
-                      $nbe['authorized_person'] = $irq->user->name;
-                      $nbe['signature']         = '[Auto Entry]';
-                      $nbe['remarks']           = 'Auto Entry by In-charge';                   
-                      $qry = DB::table($nb)->insert($nbe);
-                      
-                    }
-                    // issue table update
-                    $irq->issue_status = "issued";
-                    $irq->save();
-										
-										// Now implement the Form-D entry here
-										//$input['usage_id'] = $issueId;
-										//$input['remarks'] = $irq->remarks;
-										$result = $this->enterFormD($this->issueRequest);
-										
-                    // B2p table insert
-                    $nB2p = new B2p();
-                    $nB2p->species_id = $irq->species_id;
-                    $nB2p->strain_id = $irq->strain_id;
-                    $nB2p->issue_id = $issueId;
-                    $nB2p->number_moved = $irq->number;
-                    $nB2p->date_moved = date('Y-m-d');
-                    $nB2p->moved_by = Auth::id();
-                    $nB2p->moved_ids = $miceInfosJson;
-                    $nB2p->comment = "moved to project id [ ".$irq->iaecproject_id." ]";
-                    $nB2p->save();
+								// now change occupancy status from occupied to vacant
+								// for the breeding cages here.
+								$res = Mouse::whereIn('ID', $mids)
+															->update(['exitDate' => date('Y-m-d H:i:s'),
+														'comment' => "Issued to project id ".$irq->iaecproject_id ]);
+								//dd($percage, $mids, $miceInfos, $cageInfo, $res );
+								
+								//make notebook entry first time when cages are issued.
+								
+								$nb = $irq->iaecproject_id."notebook";
+								$nbe['usage_id']          = $issueId;
+								$nbe['cage_id']           = $cage_id;
+								$nbe['protocol_id']       = 0;
+								$nbe['av_info']           = "";
+								$nbe['number_animals']    = $percage;
+								$nbe['staff_id']          = Auth::user()->id;
+								$nbe['staff_name']        = Auth::user()->name;
+								$nbe['entry_date']        = date('Y-m-d');
+								$nbe['expt_date']         = date('Y-m-d');
+								$nbe['expt_description']  = 'Cage Issued '.json_encode($mids);
+								$nbe['authorized_person'] = $irq->user->name;
+								$nbe['signature']         = '[Auto Entry]';
+								$nbe['remarks']           = 'Auto Entry by In-charge';                   
+								$qry = DB::table($nb)->insert($nbe);
+								
+							}
+							// issue table update
+							$irq->issue_status = "issued";
+							$irq->save();
+							
+							// Now implement the Form-D entry here
+							//$input['usage_id'] = $issueId;
+							//$input['remarks'] = $irq->remarks;
+							$result = $this->enterFormD($this->issueRequest);
+							
+							// B2p table insert
+							$nB2p = new B2p();
+							$nB2p->species_id = $irq->species_id;
+							$nB2p->strain_id = $irq->strain_id;
+							$nB2p->issue_id = $issueId;
+							$nB2p->number_moved = $irq->number;
+							$nB2p->date_moved = date('Y-m-d');
+							$nB2p->moved_by = Auth::id();
+							$nB2p->moved_ids = $miceInfosJson;
+							$nB2p->comment = "moved to project id [ ".$irq->iaecproject_id." ]";
+							$nB2p->save();
 
-                    // show message and purge all objects.
-                    
-                    unset($nB2p);
-                    unset($irq);
-                    unset($cageInfo);
-                    unset($this->adr);
-										$this->issueSuccess = true;
-                    $this->updateMode = false;
-                  }
-                  else {
-                    $this->msg1 = "Not enough mice selected for issue ";
-                    $this->issueWarning = true;
-                  }
-                }
-                else {
-                  $this->msg1 = "Not enough free slots in the selected Rack Id ".$rackId;
-                  $this->issueWarning = true;
-                }
-            }
-            else {
-              $this->msg1 = "Mice Not Selected ";
-              $this->issueWarning = true;
-            }
-        }
-        else {
-          $this->msg1 = "Rack Not selected ";
-          $this->issueWarning = true;
-        }
+							// show message and purge all objects.
+							
+							unset($nB2p);
+							unset($irq);
+							unset($cageInfo);
+							unset($this->adr);
+							$this->issueSuccess = true;
+							$this->updateMode = false;
+						}
+						else {
+							$this->msg1 = "Not enough mice selected for issue ";
+							$this->issueWarning = true;
+						}
+					}
+					else {
+						$this->msg1 = "Not enough free slots in the selected Rack Id ".$rackId;
+						$this->issueWarning = true;
+					}
+				}
+				else {
+					$this->msg1 = "Mice Not Selected ";
+					$this->issueWarning = true;
+				}
+			}
+			else {
+				$this->msg1 = "Rack Not selected ";
+				$this->issueWarning = true;
+			}
       // check complete
       //dd($rackId, $this->iss_id, $this->rack_id, $this->issx_id, $this->idmice);
     }
