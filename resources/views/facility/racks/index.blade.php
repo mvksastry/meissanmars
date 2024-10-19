@@ -67,7 +67,7 @@
 													<th>Levels</th>
 													<th>Capacity</th>
                           <th>Occupied</th>
-                          <th>Reserved</th>
+                          <th>Blocked</th>
 													<th>Vacant</th>
                           <th>Action</th>
 												</tr>
@@ -84,9 +84,9 @@
                             
 
                             <td class="">{{ $rack->occupied }}</td>
-                            <td class="">{{ $rack->reserved }}</td>
+                            <td class="">{{ $rack->blocked }}</td>
 														<td class="">{{ $rack->rows*$rack->cols*$rack->levels 
-														- $rack->occupied - $rack->reserved }}
+														- $rack->occupied - $rack->blocked }}
 														</td>
                             <td class="">
                               <a href="{{ route('rack.edit',[$rack->rack_id]) }}">

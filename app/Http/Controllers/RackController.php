@@ -37,7 +37,7 @@ class RackController extends Controller
         {
           $occupied = 0;
           $vacant = 0;
-          $reserved = 0;
+          $blocked = 0;
 					
           $slots = $rack->slots;
 					
@@ -49,12 +49,12 @@ class RackController extends Controller
 						}
 						if($row->status == 'R')
 						{
-							$reserved = $reserved + 1;
+							$blocked = $blocked + 1;
 						}
-							$vacant = count($slots)-$occupied - $reserved;
+							$vacant = count($slots)-$occupied - $blocked;
 					}
             $rack->occupied = $occupied;
-            $rack->reserved = $reserved;
+            $rack->blocked = $blocked;
         }
         //dd($rackInfo);
       return view('facility.racks.index')
