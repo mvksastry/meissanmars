@@ -151,33 +151,54 @@
                               </p>
                             @endif
                           </div>
- 
+													<?php
+														$total = $rack->rows*$rack->cols*$rack->levels;
+													?>
 													<div class="col-xs-12 form-group">
-                            <label for="exampleInputBorderWidth2">Edit Slots: {{ $rack->rows*$rack->cols*$rack->levels }} (Check box for disabling)</label>
-                            
-															<ul class="checkbox-grid">														
-																@foreach($rStat as $row)
-																	@if($row->status == "O" || $row->status == "R")
-																		<li>
-																				<input disabled type="checkbox" name="slot[]" 
-																				value="{{ $row->slot_id }}" />
-																				<label class="form-check-label text-danger font-weight-light" for="defaultCheck2">
-																				ID {{ $row->slot_id }}
-																				</label>
-																		</li> 
-																	@else
-																		<li>
-																				<input type="checkbox" name="slot[]" 
-																				value="{{ $row->slot_id }}" />
-																				<label class="form-check-label text-success font-weight-bold" for="defaultCheck2">
-																				ID {{ $row->slot_id }}
-																				</label>
-																		</li>
-																	@endif
-																@endforeach
-															</ul>
+                            <label for="exampleInputBorderWidth2">
+															Edit Slots: Check box for disabling
+														</label>
+														<ul class="checkbox-grid">														
+															@foreach($rStat as $row)
+																@if($row->status == "O" || $row->status == "R")
+																	<li>
+																		<input disabled type="checkbox" name="slot[]" 
+																		value="{{ $row->slot_id }}" />
+																		<label class="form-check-label text-danger font-weight-light" for="defaultCheck2">
+																			ID {{ $row->slot_id }}
+																		</label>
+																	</li> 
+																@else
+																	<li>
+																		<input type="checkbox" name="slot[]" 
+																		value="{{ $row->slot_id }}" />
+																		<label class="form-check-label text-success font-weight-bold" for="defaultCheck2">
+																			ID {{ $row->slot_id }}
+																		</label>
+																	</li>
+																@endif
+															@endforeach
+														</ul>
 													</div>
 													
+													<div class="col-xs-12 form-group">
+                            <label for="exampleInputBorderWidth2">
+															Edit Slots: Check box for Re-Enabling
+														</label>
+														<ul class="checkbox-grid">														
+															@foreach($rStat as $row)
+																@if($row->status == "R")																		
+																	<li>
+																		<input type="checkbox" name="slotR[]" 
+																		value="{{ $row->slot_id }}" />
+																		<label class="form-check-label text-danger font-weight-bold" for="defaultCheck2">
+																			ID {{ $row->slot_id }}
+																		</label>
+																	</li>
+																@endif
+															@endforeach
+														</ul>
+													</div>
 													
 												<div class="card-footer">
 													<button type="submit" class="btn btn-primary">Submit</button>
