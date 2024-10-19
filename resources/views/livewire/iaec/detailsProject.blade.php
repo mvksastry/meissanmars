@@ -268,11 +268,12 @@
 
 								<tr>
 		      				<td>
-		        					Age
+		        					Age (Number only)
 		      				</td>
 		      				
 		      				<td>
-										<input type="text" class="form-control" id="age" placeholder="Age" wire:model="age">
+										<input type="text" class="form-control" id="age" 
+										placeholder="Age in Number only" wire:model="age">
 		      				</td>
 		    				</tr>
 
@@ -380,7 +381,7 @@
 
 	              <tr>
 	                <td>
-	                  Expt Duration (in weeks)
+	                  Expt Duration (Number only, in weeks)
 	                </td>
 	                <td>
 									<input type="text" class="form-control shadow border rounded" id="duration" placeholder="Number Only " wire:model="duration">
