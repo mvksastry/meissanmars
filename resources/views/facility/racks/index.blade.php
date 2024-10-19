@@ -67,7 +67,8 @@
 													<th>Levels</th>
 													<th>Capacity</th>
                           <th>Occupied</th>
-                          <th>Vacant</th>
+                          <th>Reserved</th>
+													<th>Vacant</th>
                           <th>Action</th>
 												</tr>
 											</thead>
@@ -81,18 +82,12 @@
                             <td class="">{{ $rack->levels }}</td>
                             <td class="">{{ $rack->rows*$rack->cols*$rack->levels }}</td>
                             
-                            @if($rack->occupied == 0 && $rack->vacant == 0)
-                            <td colspan="2"> Slots Not created </td>
-                            <td class="">
-                              <a href="{{ route('rack.edit',[$rack->rack_id]) }}">
-                                <button class="btn btn-sm btn-info">
-                                  Edit
-                                </button>
-                              </a>
-                            </td>                            
-                            @else 
+
                             <td class="">{{ $rack->occupied }}</td>
-                            <td class="">{{ $rack->vacant }}</td>
+                            <td class="">{{ $rack->reserved }}</td>
+														<td class="">{{ $rack->rows*$rack->cols*$rack->levels 
+														- $rack->occupied - $rack->reserved }}
+														</td>
                             <td class="">
                               <a href="{{ route('rack.edit',[$rack->rack_id]) }}">
                                 <button class="btn btn-sm btn-info">
@@ -100,7 +95,7 @@
                                 </button>
                               </a>
                             </td>
-                            @endif
+                            
                           </tr>
                         @endforeach 
 											</tbody>

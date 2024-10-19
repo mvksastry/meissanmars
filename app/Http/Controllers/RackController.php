@@ -33,24 +33,28 @@ class RackController extends Controller
     public function index()
     {
       $rackInfo = Rack::with('room')->with('slots')->get();
-        
         foreach($rackInfo as $rack)
         {
           $occupied = 0;
           $vacant = 0;
-          
+          $reserved = 0;
+					
           $slots = $rack->slots;
-            foreach($slots as $row)
-            {
-              if($row->status == 'O')
-              {
-                $occupied = $occupied + 1; 
-              }else {
-                $vacant = $vacant + 1;
-              }
-            }
+					
+					foreach($slots as $row)
+					{
+						if($row->status == 'O')
+						{
+							$occupied = $occupied + 1; 
+						}
+						if($row->status == 'R')
+						{
+							$reserved = $reserved + 1;
+						}
+							$vacant = count($slots)-$occupied - $reserved;
+					}
             $rack->occupied = $occupied;
-            $rack->vacant = $vacant;
+            $rack->reserved = $reserved;
         }
         //dd($rackInfo);
       return view('facility.racks.index')
