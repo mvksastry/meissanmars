@@ -341,6 +341,10 @@ class CompleteAllottment extends Component
 					//check for space in the rack chosen
 					$rackId = $this->rack_id[0];
 					$freeSlots = $this->rackOccupancy($rackId);
+					
+					//sort racks by occupancy when it is necessary
+					//to accommodate in more than one rack.
+					
 
 					//check for number of cages Requested
 					//$issueId = $this->issx_id[0];
@@ -495,6 +499,12 @@ class CompleteAllottment extends Component
       return count(Slot::where('rack_id', $id)->where('status', 'A')->get());
     }
 
+		public function sortRacksByOccupancy($rack_ids)
+		{
+			
+			
+		}
+		
     public function split($x, $n)
     {
         $narray = [];

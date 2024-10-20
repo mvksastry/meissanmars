@@ -229,7 +229,7 @@ class IaecProjects extends Component
           $input['usage_id'] = null;
           //now post to trait because, everything is ok
           // and get it posted after verification of strain balance.
-dd($input);
+
           $result = $this->postIssueRequest($input);
 
           if($result){
