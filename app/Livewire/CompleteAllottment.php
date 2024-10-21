@@ -357,116 +357,116 @@ class CompleteAllottment extends Component
 			// through the trait already present. only collect
 			// keys of the mice and allott them into cages.
 
-					$issueId = $this->usage_id;
-					$irq = Usage::findOrFail($issueId);
-					//added manual cage number modification.
-					$reqCageNum = $this->cagesGiven;
+			$issueId = $this->usage_id;
+			$irq = Usage::findOrFail($issueId);
+			//added manual cage number modification.
+			$reqCageNum = $this->cagesGiven;
 
-					$miceInfos = $this->idmice; // mice keys are here for issue
-					$miceInfosJson = json_encode($miceInfos); //convert whole array to json
-					$npercage = intdiv($irq->number, $reqCageNum);
+			$miceInfos = $this->idmice; // mice keys are here for issue
+			$miceInfosJson = json_encode($miceInfos); //convert whole array to json
+			$npercage = intdiv($irq->number, $reqCageNum);
 
-					$splitArray = $this->split($irq->number, $reqCageNum);
-					array_unshift($splitArray, null);
-					unset($splitArray[0]);
-					
-					for($k=1; $k<$reqCageNum+1; $k++)
-					{
-						$percage = $splitArray[$k];
-						//first get the ids per cage from miceInfos array
-						$mids = array_slice($miceInfos, 0, $percage);
-						$miceInfos = array_slice($miceInfos, $percage);
-														
-						// gather data for cages table
-						$cageInfo = new Cage();
-						$cageInfo->usage_id = $issueId;
-						$cageInfo->iaecproject_id = $irq->iaecproject_id;
-						$cageInfo->requested_by = $irq->pi_id;
-						$cageInfo->species_id = $irq->species_id;
-						$cageInfo->strain_id = $irq->strain_id;
-						$cageInfo->animal_number = $percage;
-						$cageInfo->start_date = date('Y-m-d');
-						$cageInfo->end_date = date('Y-m-d');
-						$cageInfo->ack_date = date('Y-m-d');
-						$cageInfo->cage_status = 'Active';
-						$cageInfo->notes = 'Cage Issued '.json_encode($mids);
-						$cageInfo->save();
-						$cage_id = $cageInfo->cage_id;
-
-						//now collect data for slots table
-						$sInput['cage_id'] = $cage_id;
-						$sInput['status'] = "O";
-						
-						$res = Slot::where('rack_id', $this->maxSlotRack_id)
-													->where('status', 'A')
-													->first();
-													
-						$matchThese = ['slot_id' => $res->slot_id, 'rack_id' => $this->maxSlotRack_id];
-						$res = Slot::where($matchThese)->update($sInput);
-						
-						// now change occupancy status from occupied to vacant
-						// for the breeding cages here.
-						$res = Mouse::whereIn('ID', $mids)
-													->update(['exitDate' => date('Y-m-d H:i:s'),
-												'comment' => "Issued to project id ".$irq->iaecproject_id ]);
-
-						//make notebook entry first time when cages are issued.
-						$nb = $irq->iaecproject_id."notebook";
-						$nbe['usage_id']          = $issueId;
-						$nbe['cage_id']           = $cage_id;
-						$nbe['protocol_id']       = 0;
-						$nbe['av_info']           = "";
-						$nbe['number_animals']    = $percage;
-						$nbe['staff_id']          = Auth::user()->id;
-						$nbe['staff_name']        = Auth::user()->name;
-						$nbe['entry_date']        = date('Y-m-d');
-						$nbe['expt_date']         = date('Y-m-d');
-						$nbe['expt_description']  = 'Cage Issued '.json_encode($mids);
-						$nbe['authorized_person'] = $irq->user->name;
-						$nbe['signature']         = '[Auto Entry]';
-						$nbe['remarks']           = 'Auto Entry by In-charge';                   
-						$qry = DB::table($nb)->insert($nbe);
+			$splitArray = $this->split($irq->number, $reqCageNum);
+			array_unshift($splitArray, null);
+			unset($splitArray[0]);
 			
-						//now determine the leftover slots to set new rack 								
-						$this->maxSlotValue = $this->maxSlotValue - 1;
-						if($this->maxSlotValue <= 0)
-						{
-							unset($this->RackNSlots[$this->maxSlotRack_id]);
-							if(count($this->RackNSlots) > 0)
-							{
-								$this->maxSlotValue = max($this->RackNSlots);
-								$this->maxSlotRack_id = array_search(max($this->RackNSlots), $this->RackNSlots);
-							}							
-							
-						}
-					}
+			for($k=1; $k<$reqCageNum+1; $k++)
+			{
+				$percage = $splitArray[$k];
+				//first get the ids per cage from miceInfos array
+				$mids = array_slice($miceInfos, 0, $percage);
+				$miceInfos = array_slice($miceInfos, $percage);
+												
+				// gather data for cages table
+				$cageInfo = new Cage();
+				$cageInfo->usage_id = $issueId;
+				$cageInfo->iaecproject_id = $irq->iaecproject_id;
+				$cageInfo->requested_by = $irq->pi_id;
+				$cageInfo->species_id = $irq->species_id;
+				$cageInfo->strain_id = $irq->strain_id;
+				$cageInfo->animal_number = $percage;
+				$cageInfo->start_date = date('Y-m-d');
+				$cageInfo->end_date = date('Y-m-d');
+				$cageInfo->ack_date = date('Y-m-d');
+				$cageInfo->cage_status = 'Active';
+				$cageInfo->notes = 'Cage Issued '.json_encode($mids);
+				$cageInfo->save();
+				$cage_id = $cageInfo->cage_id;
 
-					// issue table update$slotsByRack
-					$irq->issue_status = "issued";
-					$irq->save();
-					
-					// Now implement the Form-D entry here
-					$result = $this->enterFormD($this->issueRequest);
-					
-					// B2p table insert
-					$nB2p = new B2p();
-					$nB2p->species_id = $irq->species_id;
-					$nB2p->strain_id = $irq->strain_id;
-					$nB2p->issue_id = $issueId;
-					$nB2p->number_moved = $irq->number;
-					$nB2p->date_moved = date('Y-m-d');
-					$nB2p->moved_by = Auth::id();
-					$nB2p->moved_ids = $miceInfosJson;
-					$nB2p->comment = "moved to project id [ ".$irq->iaecproject_id." ]";
-					$nB2p->save();
+				//now collect data for slots table
+				$sInput['cage_id'] = $cage_id;
+				$sInput['status'] = "O";
+				
+				$res = Slot::where('rack_id', $this->maxSlotRack_id)
+											->where('status', 'A')
+											->first();
+											
+				$matchThese = ['slot_id' => $res->slot_id, 'rack_id' => $this->maxSlotRack_id];
+				$res = Slot::where($matchThese)->update($sInput);
+				
+				// now change occupancy status from occupied to vacant
+				// for the breeding cages here.
+				$res = Mouse::whereIn('ID', $mids)
+											->update(['exitDate' => date('Y-m-d H:i:s'),
+										'comment' => "Issued to project id ".$irq->iaecproject_id ]);
 
-					// show message and purge all objects.
-					unset($nB2p);
-					unset($irq);
-					unset($cageInfo);
-					unset($this->adr);
-					$this->issueSuccess = true;
-					$this->updateMode = false;
+				//make notebook entry first time when cages are issued.
+				$nb = $irq->iaecproject_id."notebook";
+				$nbe['usage_id']          = $issueId;
+				$nbe['cage_id']           = $cage_id;
+				$nbe['protocol_id']       = 0;
+				$nbe['av_info']           = "";
+				$nbe['number_animals']    = $percage;
+				$nbe['staff_id']          = Auth::user()->id;
+				$nbe['staff_name']        = Auth::user()->name;
+				$nbe['entry_date']        = date('Y-m-d');
+				$nbe['expt_date']         = date('Y-m-d');
+				$nbe['expt_description']  = 'Cage Issued '.json_encode($mids);
+				$nbe['authorized_person'] = $irq->user->name;
+				$nbe['signature']         = '[Auto Entry]';
+				$nbe['remarks']           = 'Auto Entry by In-charge';                   
+				$qry = DB::table($nb)->insert($nbe);
+	
+				//now determine the leftover slots to set new rack 								
+				$this->maxSlotValue = $this->maxSlotValue - 1;
+				if($this->maxSlotValue <= 0)
+				{
+					unset($this->RackNSlots[$this->maxSlotRack_id]);
+					if(count($this->RackNSlots) > 0)
+					{
+						$this->maxSlotValue = max($this->RackNSlots);
+						$this->maxSlotRack_id = array_search(max($this->RackNSlots), $this->RackNSlots);
+					}							
+					
+				}
+			}
+
+			// issue table update$slotsByRack
+			$irq->issue_status = "issued";
+			$irq->save();
+			
+			// Now implement the Form-D entry here
+			$result = $this->enterFormD($this->issueRequest);
+			
+			// B2p table insert
+			$nB2p = new B2p();
+			$nB2p->species_id = $irq->species_id;
+			$nB2p->strain_id = $irq->strain_id;
+			$nB2p->issue_id = $issueId;
+			$nB2p->number_moved = $irq->number;
+			$nB2p->date_moved = date('Y-m-d');
+			$nB2p->moved_by = Auth::id();
+			$nB2p->moved_ids = $miceInfosJson;
+			$nB2p->comment = "moved to project id [ ".$irq->iaecproject_id." ]";
+			$nB2p->save();
+
+			// show message and purge all objects.
+			unset($nB2p);
+			unset($irq);
+			unset($cageInfo);
+			unset($this->adr);
+			$this->issueSuccess = true;
+			$this->updateMode = false;
     }
 
     public function calcTbirthDate()
