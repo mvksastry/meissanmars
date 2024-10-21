@@ -93,46 +93,41 @@ class CompleteAllottment extends Component
     public $strain_name;
     public $RackNSlots, $totalFreeSlots, $maxSlotValue, $maxSlotRack_id;
     public $multiRackDecision = "no", $maxSlotNumber;
-		//public $maxRack_id;
 		
     public function render()
     {
-        if( Auth::user()->hasAnyRole(['manager','pient','investigator', 'researcher', 'veterinarian']) )
-        {
-            $this->rooms = Room::all();
-            $this->racks = Rack::all();
-            //  $roomsR = Room::with('rack')->get();
-            //  $racksR = Rack::with('room')->get();
-            //$vacant = count(Slot::where('status', 'A')->get());
-            $occupied = count(Slot::where('status', 'O')->get());
+			if( Auth::user()->hasAnyRole(['manager','pient','investigator', 'researcher', 'veterinarian']) )
+			{
+				$this->rooms = Room::all();
+				$this->racks = Rack::all();
+				//  $roomsR = Room::with('rack')->get();
+				//  $racksR = Rack::with('room')->get();
+				//$vacant = count(Slot::where('status', 'A')->get());
+				$occupied = count(Slot::where('status', 'O')->get());
 
-            //this query also works
-            $rackInfos = Slot::with('rack')
-                      ->select('rack_id', DB::raw('count(status) as total'))
-                      ->where('status', 'A')
-                      ->groupBy('rack_id')
-                      ->get();
-											
-						
-						
-            $this->liveCheckIssId($this->issx_id);
-            $this->liveCheckRackId($this->rackid);
-            $this->liveCheckedMice($this->idmice);
-						$this->total_mice_selected = count($this->idmice);
-            //get all approved issues and approved places.
-            $this->issues = Usage::with('strain')->where('issue_status', 'approved')->get();
-						
-            return view('livewire.complete-allottment')
-                        ->with('rooms', $this->rooms)
-                        ->with('racks', $this->racks)
-                        ->with('issues', $this->issues)
-                        ->with('rackInfos', $rackInfos);
-                        //->with('srs', $mcx);
-              
-        }
-        else {
-          return view('livewire.permError');
-        }
+				//this query also works
+				$rackInfos = Slot::with('rack')
+									->select('rack_id', DB::raw('count(status) as total'))
+									->where('status', 'A')
+									->groupBy('rack_id')
+									->get();
+	
+				$this->liveCheckIssId($this->issx_id);
+				$this->liveCheckRackId($this->rackid);
+				$this->liveCheckedMice($this->idmice);
+				$this->total_mice_selected = count($this->idmice);
+				//get all approved issues and approved places.
+				$this->issues = Usage::with('strain')->where('issue_status', 'approved')->get();
+				
+				return view('livewire.complete-allottment')
+										->with('rooms', $this->rooms)
+										->with('racks', $this->racks)
+										->with('issues', $this->issues)
+										->with('rackInfos', $rackInfos);						
+			}
+			else {
+				return view('livewire.permError');
+			}
     }
 
     public function liveCheckIssId($id)
@@ -185,7 +180,8 @@ class CompleteAllottment extends Component
       $query = "select * from mouse".$this->sql2.$this->sql3.$this->sql4.$this->sql5.$this->sql6.$this->sql7;
       //dd($query);
 
-      // Test Query for testing UI//take note, it is some how converting lower case mouse to Mouse and 
+      // Test Query for testing UI
+			//take note, it is some how converting lower case mouse to Mouse and 
       //throwing an error.
       /*
       $query = "select * from mouse  where _species_key = 1
@@ -196,62 +192,62 @@ class CompleteAllottment extends Component
       */
       $result = DB::select($query);
       //$result = DB::table('mouse')->select($query); //throwing error in linux not on windows pc
-      
-      
+
       $temp = [];
       $this->adr = [];
 
-        if( count($result) != 0 )
-        {
-            foreach($result as $row){
-                $temp["_mouse_key"] = $row->_mouse_key;
-                $temp["_species_key"] = $row->_species_key;
-                $temp["_strain_key"] = $row->_strain_key;
-                $temp["ID"] = $row->ID;
-                $temp["birthDate"] = $row->birthDate;
-                $temp["sex"] = $row->sex;
-                $temp["_pen_key"] = $row->_pen_key;
-                $temp["diet"] = $row->diet;
-                $temp["origin"] = $row->origin;
-                $temp["comment"] = $row->comment;
-                array_push($this->adr, $temp);
-                $temp=[];
-            }
-						$this->validateButton = true;
-        }
-        else {
-					$this->validateButton = false;
-          //$this->alotButton = false;
-          $this->msg1 = "No Query results, refine search criteria ";
-          $this->issueWarning = true;
-        }
+			if( count($result) != 0 )
+			{
+				foreach($result as $row)
+				{
+					$temp["_mouse_key"] = $row->_mouse_key;
+					$temp["_species_key"] = $row->_species_key;
+					$temp["_strain_key"] = $row->_strain_key;
+					$temp["ID"] = $row->ID;
+					$temp["birthDate"] = $row->birthDate;
+					$temp["sex"] = $row->sex;
+					$temp["_pen_key"] = $row->_pen_key;
+					$temp["diet"] = $row->diet;
+					$temp["origin"] = $row->origin;
+					$temp["comment"] = $row->comment;
+					array_push($this->adr, $temp);
+					$temp=[];
+				}
+				$this->validateButton = true;
+			}
+			else {
+				$this->validateButton = false;
+				//$this->alotButton = false;
+				$this->msg1 = "No Query results, refine search criteria ";
+				$this->issueWarning = true;
+			}
     }
 
 
     public function selectForSearch($id)
     {   
-        $this->usage_id = $id;
-				$this->issx_id = $id;
-        $irq = Usage::with('species')
-                      ->with('user')
-                      ->with('strain')
-                      ->where('usage_id', $id)
-                      ->first();
-				$this->issueRequest = $irq;
-        $this->iss_id = $id;
-        $this->spcx = $irq->species_id;
-        $this->stnx = $irq->strain_id;
-        $this->strain_name = $irq->strain->strain_name;
-        $this->xsex = $irq->sex;
-        $this->age = $irq->age;
-        $this->ageunit = substr($irq->ageunit, 0, 1);
-				$this->required_number = $irq->number;
-        $tDoB = $this->calcTbirthDate();
-        $this->adate = date('Y-m-d', strtotime($tDoB) - 3*86400 );
-        $this->bdate = date('Y-m-d', strtotime($tDoB) + 3*86400 );
-        $this->srs2=null;
-        //dd($this->iss_id, $this->spcx, $this->stnx);
-        $this->updateMode = true;
+			$this->usage_id = $id;
+			$this->issx_id = $id;
+			$irq = Usage::with('species')
+										->with('user')
+										->with('strain')
+										->where('usage_id', $id)
+										->first();
+			$this->issueRequest = $irq;
+			$this->iss_id = $id;
+			$this->spcx = $irq->species_id;
+			$this->stnx = $irq->strain_id;
+			$this->strain_name = $irq->strain->strain_name;
+			$this->xsex = $irq->sex;
+			$this->age = $irq->age;
+			$this->ageunit = substr($irq->ageunit, 0, 1);
+			$this->required_number = $irq->number;
+			$tDoB = $this->calcTbirthDate();
+			$this->adate = date('Y-m-d', strtotime($tDoB) - 3*86400 );
+			$this->bdate = date('Y-m-d', strtotime($tDoB) + 3*86400 );
+			$this->srs2=null;
+			//dd($this->iss_id, $this->spcx, $this->stnx);
+			$this->updateMode = true;
     }
 
 		public function doValidation()
@@ -471,16 +467,16 @@ class CompleteAllottment extends Component
 
     public function calcTbirthDate()
     {
-        $mf = 0;
-        if( strtolower($this->ageunit) == "w" )
-        {
-          $mf = 604800;
-        }
-        if( strtolower($this->ageunit) == "d")
-        {
-          $mf = 86400;
-        }
-        return date('Y-m-d', strtotime(date('Y-m-d')) - (intval($this->age)*$mf));
+			$mf = 0;
+			if( strtolower($this->ageunit) == "w" )
+			{
+				$mf = 604800;
+			}
+			if( strtolower($this->ageunit) == "d")
+			{
+				$mf = 86400;
+			}
+			return date('Y-m-d', strtotime(date('Y-m-d')) - (intval($this->age)*$mf));
     }
 
     //queries
@@ -505,39 +501,39 @@ class CompleteAllottment extends Component
 		
     public function split($x, $n)
     {
-        $narray = [];
-        // If we cannot split the number into exactly 'N' parts
-        if($x < $n){
+			$narray = [];
+			// If we cannot split the number into exactly 'N' parts
+			if($x < $n){
 
-        }
-        else if ($x % $n == 0)
-        {
-            // If x % n == 0 then the minimum difference is 0 and
-            // all numbers are x / n
-              for($i = 0; $i < $n; $i++)
-              {
-                $narray[] = intval($x / $n);
-              }
-        }
-        else
-        {
-            // upto n-(x % n) the values will be x / n
-            // after that the values will be x / n + 1
-            $zp = intval($n - ($x % $n));
-            $pp = intval($x / $n);
-            for ($i = 0; $i < $n; $i++)
-            {
-                if($i >= $zp)
-                {
-                    $narray[] = $pp + 1;
-                }
-                else
-                {
-                    $narray[] = $pp;
-                }
-            }
-        }
-        return $narray;
+			}
+			else if ($x % $n == 0)
+			{
+				// If x % n == 0 then the minimum difference is 0 and
+				// all numbers are x / n
+				for($i = 0; $i < $n; $i++)
+				{
+					$narray[] = intval($x / $n);
+				}
+			}
+			else
+			{
+				// upto n-(x % n) the values will be x / n
+				// after that the values will be x / n + 1
+				$zp = intval($n - ($x % $n));
+				$pp = intval($x / $n);
+				for ($i = 0; $i < $n; $i++)
+				{
+					if($i >= $zp)
+					{
+						$narray[] = $pp + 1;
+					}
+					else
+					{
+						$narray[] = $pp;
+					}
+				}
+			}
+			return $narray;
     }
 
 
