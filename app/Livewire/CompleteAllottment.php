@@ -91,8 +91,10 @@ class CompleteAllottment extends Component
     public $caInfos;
     
     public $strain_name;
-    
-    
+    public $RackNSlots, $totalFreeSlots, $maxSlotValue, $maxSlotRack_id;
+    public $multiRackDecision = "no", $maxSlotNumber;
+		//public $maxRack_id;
+		
     public function render()
     {
         if( Auth::user()->hasAnyRole(['manager','pient','investigator', 'researcher', 'veterinarian']) )
@@ -255,21 +257,23 @@ class CompleteAllottment extends Component
 		public function doValidation()
 		{
 			$this->issueWarning = false;
-			$ca = $this->cages_alloted;
-			
-			
-			
-			
+
 			if( !empty($this->rack_id) )
       {
-				$this->msg1 = "The Selected Rack ID: ".$this->rack_id[0];
+				$this->msg1 = "Sinle/Multiple Racks selected ";
 				$rackId = $this->rack_id[0];
-				//dd($this->rack_id);
+
 				if( count($this->idmice) == $this->required_number )
 				{	
 					$this->msg7=null;
 					$this->msg2 = "Total Mice Selected: ".$this->total_mice_selected;
-					$freeSlots = $this->rackOccupancy($rackId);
+					//$freeSlots = $this->rackOccupancy($rackId); // original line for singe rack
+					
+					$this->RackNSlots = $this->sortRacksByOccupancy($this->rack_id);
+
+					$totalFreeSlots = $this->RackNSlots['total_vacant'];
+					unset($this->RackNSlots['total_vacant']);
+					
 					$issueId = $this->usage_id;
 					
 					if($issueId != null || $issueId >= 0)
@@ -277,8 +281,7 @@ class CompleteAllottment extends Component
 						$this->msg6 = "Issue ID Selected: ".$issueId;
 						$irq = Usage::findOrFail($issueId);
 						$reqCageNum = $irq->cagenumber;
-									
-						//dd($this->cages_alloted);
+						
 						if($this->cages_alloted > 0)
 						{
 							$this->cagesGiven = $this->cages_alloted;
@@ -286,15 +289,36 @@ class CompleteAllottment extends Component
 						else {
 							$this->cagesGiven = $reqCageNum;
 						}
-									
-						if($freeSlots >= $this->cagesGiven)
+				
+						// now take decision, whether one rack is enough or need to 
+						// put multiple racks
+						// find out the required number of Cages find if any number 
+						// in the array is bigger
+						// than the number required. if yes single rack, if no, use 
+						// racks that can sumup crossing the number.
+						
+						$this->maxSlotValue = max($this->RackNSlots);
+						$this->maxSlotRack_id = array_search(max($this->RackNSlots), $this->RackNSlots);
+						ksort($this->RackNSlots);
+						
+						if($this->cagesGiven > $this->maxSlotValue)
 						{
-							$this->msg3 = "Free slots in Rack ".$rackId." are ".$freeSlots.", Need ".$reqCageNum;
+							$this->multiRackDecision = "yes";
+							$selRacks = implode(',', $this->RackNSlots);
+						}
+						else {
+							$selRacks = $this->maxRack_id;
+						}						
+										
+						if($totalFreeSlots >= $this->cagesGiven)
+						{
+							$this->msg3 = "Free slots in Rack(s) ".$selRacks.", Need ".$reqCageNum;
 							$miceInfos = $this->idmice; // mice keys are here for issue
+							
 							if( count($miceInfos) >= $irq->number )
 							{
 								$this->msg4 = "";
-								$this->msg5 = "Total Cages allotted: ".$this->cagesGiven;
+								$this->msg5 = "Total Cages allotted: ".$this->cagesGiven;						
 								$this->alotButton = true;
 							}              
 							else {
@@ -325,34 +349,19 @@ class CompleteAllottment extends Component
     public function alottComplete($id2x)
     {
 			$this->issueWarning = false;
-			if( count($this->rack_id) >= 0 )
-			{
-				if( count($this->idmice) !=0 )
-				{
-					// now implement the display of allotment button
-					// steps as follows:
-					// 1. check for numbers Requested
-					// 2. check for rack space
-					// if both conditions are satisfied, begin allottment
-					// through the trait already present. only collect
-					// keys of the mice and allott them into cages.
-					//$irq = Issue::findOrFail($id);
+			// now implement the display of allotment button
+			// steps as follows:
+			// 1. check for numbers Requested
+			// 2. check for rack space
+			// if both conditions are satisfied, begin allottment
+			// through the trait already present. only collect
+			// keys of the mice and allott them into cages.
 
-					//check for space in the rack chosen
-					$rackId = $this->rack_id[0];
-					$freeSlots = $this->rackOccupancy($rackId);
-					
-					//sort racks by occupancy when it is necessary
-					//to accommodate in more than one rack.
-					
-
-					//check for number of cages Requested
-					//$issueId = $this->issx_id[0];
 					$issueId = $this->usage_id;
 					$irq = Usage::findOrFail($issueId);
-					//$reqCageNum = $irq->cagenumber; //added manual cage number modification.
+					//added manual cage number modification.
 					$reqCageNum = $this->cagesGiven;
-					//dd($issueId, $this->cagesGiven);
+
 					$miceInfos = $this->idmice; // mice keys are here for issue
 					$miceInfosJson = json_encode($miceInfos); //convert whole array to json
 					$npercage = intdiv($irq->number, $reqCageNum);
@@ -360,123 +369,104 @@ class CompleteAllottment extends Component
 					$splitArray = $this->split($irq->number, $reqCageNum);
 					array_unshift($splitArray, null);
 					unset($splitArray[0]);
-
-					if($freeSlots > $reqCageNum)
+					
+					for($k=1; $k<$reqCageNum+1; $k++)
 					{
-						if( count($miceInfos) >= $irq->number )
+						$percage = $splitArray[$k];
+						//first get the ids per cage from miceInfos array
+						$mids = array_slice($miceInfos, 0, $percage);
+						$miceInfos = array_slice($miceInfos, $percage);
+														
+						// gather data for cages table
+						$cageInfo = new Cage();
+						$cageInfo->usage_id = $issueId;
+						$cageInfo->iaecproject_id = $irq->iaecproject_id;
+						$cageInfo->requested_by = $irq->pi_id;
+						$cageInfo->species_id = $irq->species_id;
+						$cageInfo->strain_id = $irq->strain_id;
+						$cageInfo->animal_number = $percage;
+						$cageInfo->start_date = date('Y-m-d');
+						$cageInfo->end_date = date('Y-m-d');
+						$cageInfo->ack_date = date('Y-m-d');
+						$cageInfo->cage_status = 'Active';
+						$cageInfo->notes = 'Cage Issued '.json_encode($mids);
+						$cageInfo->save();
+						$cage_id = $cageInfo->cage_id;
+
+						//now collect data for slots table
+						$sInput['cage_id'] = $cage_id;
+						$sInput['status'] = "O";
+						
+						$res = Slot::where('rack_id', $this->maxSlotRack_id)
+													->where('status', 'A')
+													->first();
+													
+						$matchThese = ['slot_id' => $res->slot_id, 'rack_id' => $this->maxSlotRack_id];
+						$res = Slot::where($matchThese)->update($sInput);
+						
+						// now change occupancy status from occupied to vacant
+						// for the breeding cages here.
+						$res = Mouse::whereIn('ID', $mids)
+													->update(['exitDate' => date('Y-m-d H:i:s'),
+												'comment' => "Issued to project id ".$irq->iaecproject_id ]);
+
+						//make notebook entry first time when cages are issued.
+						$nb = $irq->iaecproject_id."notebook";
+						$nbe['usage_id']          = $issueId;
+						$nbe['cage_id']           = $cage_id;
+						$nbe['protocol_id']       = 0;
+						$nbe['av_info']           = "";
+						$nbe['number_animals']    = $percage;
+						$nbe['staff_id']          = Auth::user()->id;
+						$nbe['staff_name']        = Auth::user()->name;
+						$nbe['entry_date']        = date('Y-m-d');
+						$nbe['expt_date']         = date('Y-m-d');
+						$nbe['expt_description']  = 'Cage Issued '.json_encode($mids);
+						$nbe['authorized_person'] = $irq->user->name;
+						$nbe['signature']         = '[Auto Entry]';
+						$nbe['remarks']           = 'Auto Entry by In-charge';                   
+						$qry = DB::table($nb)->insert($nbe);
+			
+						//now determine the leftover slots to set new rack 								
+						$this->maxSlotValue = $this->maxSlotValue - 1;
+						if($this->maxSlotValue <= 0)
 						{
-							for($k=1; $k<$reqCageNum+1; $k++)
+							unset($this->RackNSlots[$this->maxSlotRack_id]);
+							if(count($this->RackNSlots) > 0)
 							{
-								$percage = $splitArray[$k];
-								//first get the ids per cage from miceInfos array
-								$mids = array_slice($miceInfos, 0, $percage);
-								$miceInfos = array_slice($miceInfos, $percage);
-
-								// gather data for cages table
-								$cageInfo = new Cage();
-								$cageInfo->usage_id = $issueId;
-								$cageInfo->iaecproject_id = $irq->iaecproject_id;
-								$cageInfo->requested_by = $irq->pi_id;
-								$cageInfo->species_id = $irq->species_id;
-								$cageInfo->strain_id = $irq->strain_id;
-								$cageInfo->animal_number = $percage;
-								$cageInfo->start_date = date('Y-m-d');
-								$cageInfo->end_date = date('Y-m-d');
-								$cageInfo->ack_date = date('Y-m-d');
-								$cageInfo->cage_status = 'Active';
-								$cageInfo->notes = 'Cage Issued '.json_encode($mids);
-								$cageInfo->save();
-								$cage_id = $cageInfo->cage_id;
-
-								//now collect data for slots table
-								//$sInput['rack_id'] = $rackId;
-								$sInput['cage_id'] = $cage_id;
-								$sInput['status'] = "O";
-
-								$res = Slot::where('rack_id', $rackId)
-															->where('status', 'A')
-															->first();
-															
-								$matchThese = ['slot_id' => $res->slot_id, 'rack_id' => $rackId];
-								$res = Slot::where($matchThese)->update($sInput);
-
-								// now change occupancy status from occupied to vacant
-								// for the breeding cages here.
-								$res = Mouse::whereIn('ID', $mids)
-															->update(['exitDate' => date('Y-m-d H:i:s'),
-														'comment' => "Issued to project id ".$irq->iaecproject_id ]);
-								//dd($percage, $mids, $miceInfos, $cageInfo, $res );
-								
-								//make notebook entry first time when cages are issued.
-								
-								$nb = $irq->iaecproject_id."notebook";
-								$nbe['usage_id']          = $issueId;
-								$nbe['cage_id']           = $cage_id;
-								$nbe['protocol_id']       = 0;
-								$nbe['av_info']           = "";
-								$nbe['number_animals']    = $percage;
-								$nbe['staff_id']          = Auth::user()->id;
-								$nbe['staff_name']        = Auth::user()->name;
-								$nbe['entry_date']        = date('Y-m-d');
-								$nbe['expt_date']         = date('Y-m-d');
-								$nbe['expt_description']  = 'Cage Issued '.json_encode($mids);
-								$nbe['authorized_person'] = $irq->user->name;
-								$nbe['signature']         = '[Auto Entry]';
-								$nbe['remarks']           = 'Auto Entry by In-charge';                   
-								$qry = DB::table($nb)->insert($nbe);
-								
-							}
-							// issue table update
-							$irq->issue_status = "issued";
-							$irq->save();
+								$this->maxSlotValue = max($this->RackNSlots);
+								$this->maxSlotRack_id = array_search(max($this->RackNSlots), $this->RackNSlots);
+							}							
 							
-							// Now implement the Form-D entry here
-							//$input['usage_id'] = $issueId;
-							//$input['remarks'] = $irq->remarks;
-							$result = $this->enterFormD($this->issueRequest);
-							
-							// B2p table insert
-							$nB2p = new B2p();
-							$nB2p->species_id = $irq->species_id;
-							$nB2p->strain_id = $irq->strain_id;
-							$nB2p->issue_id = $issueId;
-							$nB2p->number_moved = $irq->number;
-							$nB2p->date_moved = date('Y-m-d');
-							$nB2p->moved_by = Auth::id();
-							$nB2p->moved_ids = $miceInfosJson;
-							$nB2p->comment = "moved to project id [ ".$irq->iaecproject_id." ]";
-							$nB2p->save();
-
-							// show message and purge all objects.
-							
-							unset($nB2p);
-							unset($irq);
-							unset($cageInfo);
-							unset($this->adr);
-							$this->issueSuccess = true;
-							$this->updateMode = false;
-						}
-						else {
-							$this->msg1 = "Not enough mice selected for issue ";
-							$this->issueWarning = true;
 						}
 					}
-					else {
-						$this->msg1 = "Not enough free slots in the selected Rack Id ".$rackId;
-						$this->issueWarning = true;
-					}
-				}
-				else {
-					$this->msg1 = "Mice Not Selected ";
-					$this->issueWarning = true;
-				}
-			}
-			else {
-				$this->msg1 = "Rack Not selected ";
-				$this->issueWarning = true;
-			}
-      // check complete
-      //dd($rackId, $this->iss_id, $this->rack_id, $this->issx_id, $this->idmice);
+
+					// issue table update$slotsByRack
+					$irq->issue_status = "issued";
+					$irq->save();
+					
+					// Now implement the Form-D entry here
+					$result = $this->enterFormD($this->issueRequest);
+					
+					// B2p table insert
+					$nB2p = new B2p();
+					$nB2p->species_id = $irq->species_id;
+					$nB2p->strain_id = $irq->strain_id;
+					$nB2p->issue_id = $issueId;
+					$nB2p->number_moved = $irq->number;
+					$nB2p->date_moved = date('Y-m-d');
+					$nB2p->moved_by = Auth::id();
+					$nB2p->moved_ids = $miceInfosJson;
+					$nB2p->comment = "moved to project id [ ".$irq->iaecproject_id." ]";
+					$nB2p->save();
+
+					// show message and purge all objects.
+					unset($nB2p);
+					unset($irq);
+					unset($cageInfo);
+					unset($this->adr);
+					$this->issueSuccess = true;
+					$this->updateMode = false;
     }
 
     public function calcTbirthDate()
@@ -499,10 +489,18 @@ class CompleteAllottment extends Component
       return count(Slot::where('rack_id', $id)->where('status', 'A')->get());
     }
 
-		public function sortRacksByOccupancy($rack_ids)
+		public function sortRacksByOccupancy($rack_id)
 		{
-			
-			
+			$rarray = [];
+			$total_vacant = 0;
+			foreach($rack_id as $row)
+			{
+				$total_count = count(Slot::where('rack_id', $row)->where('status', 'A')->get());
+				$rarray[$row] = $total_count;
+				$total_vacant = $total_vacant + $total_count;
+			}
+			$rarray['total_vacant'] = $total_vacant;
+			return $rarray;
 		}
 		
     public function split($x, $n)
