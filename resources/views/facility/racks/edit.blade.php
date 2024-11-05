@@ -154,9 +154,17 @@
 													<?php
 														$total = $rack->rows*$rack->cols*$rack->levels;
 													?>
+													
 													<div class="col-xs-12 form-group">
                             <label for="exampleInputBorderWidth2">
-															Edit Slots: Check box for disabling
+															Key: <p class="text-warning font-weight-bold">Active Cages</p>
+															<p class="text-success font-weight-bold">Available Slots</p>
+															<p class="text-danger font-weight-bold">Blocked/Reserved Slots</p>
+														</label>
+													</div>
+													<div class="col-xs-12 form-group">
+                            <label for="exampleInputBorderWidth2">
+															Slot Status: Check Green box for disabling
 														</label>
 														<ul class="checkbox-grid">														
 															@foreach($rStat as $row)
@@ -164,8 +172,13 @@
 																	<li>
 																		<input disabled type="checkbox" name="slot[]" 
 																		value="{{ $row->slot_id }}" />
-																		<label class="form-check-label text-danger font-weight-light" for="defaultCheck2">
-																			ID {{ $row->slot_id }}
+																		<label 
+																		@if($row->status == "O")
+																		class="form-check-label text-warning font-weight-bold" for="defaultCheck2">
+																		@else
+																		class="form-check-label text-danger font-weight-light" for="defaultCheck2">
+																		@endif
+																		ID {{ $row->slot_id }}
 																		</label>
 																	</li> 
 																@else
