@@ -9,11 +9,11 @@ use Illuminate\Support\Facades\Auth;
 use DateTime;
 use App\Models\User;
 use App\Models\Project;
-use App\Models\Assent;
+use App\Models\Iaecassent;
 use App\Models\Strain;
 use App\Models\Species;
 use App\Models\Projectstrains;
-use App\Models\Issue;
+use App\Models\Usage;
 
 use App\Traits\Base;
 use App\Traits\StrainConsumption;
@@ -27,16 +27,16 @@ trait IssueRequestQueries
 	
 	public function issueRequestsAllowed()
 	{
-		$res = Assent::where('allowed_id', Auth::id())
+		$res = Iaecassent::where('allowed_id', Auth::id())
 						->where('end_date', '>=', date('Y-m-d'))
-						->where('status', 1)
+						->where('status', 'active')
 						->get();
 		$projIds = array();
 		foreach($res as $row)
 		{
-			$projIds[] = $row->project_id;
+			$projIds[] = $row->iaecproject_id;
 		}
-		return Issue::with('strain')->where('project_id', $projIds)->get();
+		return Usage::with('strain')->where('iaecproject_id', $projIds)->get();
 	}
 	
 	public function fetchIssuesByProjectId($id)

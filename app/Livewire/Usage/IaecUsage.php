@@ -84,6 +84,7 @@ class IaecUsage extends Component
         if( Auth::user()->hasRole('researcher') )
         {
             $issueReqs = $this->issueRequestsAllowed();
+						
             if($this->cageInduction)
             {
               //find empty slots from slot table groupby rack id

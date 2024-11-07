@@ -27,90 +27,89 @@
 		<!-- Main content -->
 		<section class="content">
 			<div class="container-fluid">
+			
         @hasrole('pient')
 					@include('livewire.iaec.flexwrapPiProjects')
 				@endhasrole
 
-				@hasrole('researcher')
-					@include('livewire.iaec.flexwrapPiProjects')
-				@endhasrole
-				
 				<div class="row">
 					<!-- Left col -->
-					<section class="col-lg-12 connectedSortable">
-						<!-- Custom tabs (Charts with tabs)-->
-						<div class="card card-primary card-outline">
-						  <div class="card-header">
-							<h3 class="card-title">
-							  <i class="fas fa-chart-pie mr-1"></i>
-							  Submitted Projects
-							</h3>
-							<div class="card-tools">
-							  <ul class="nav nav-pills ml-auto">
-                  <li class="nav-item"></li>
-                  <li class="nav-item"></li>
-							  </ul>
+					@hasrole('pient')
+						<section class="col-lg-12 connectedSortable">
+							<!-- Custom tabs (Charts with tabs)-->
+							<div class="card card-primary card-outline">
+								<div class="card-header">
+								<h3 class="card-title">
+									<i class="fas fa-chart-pie mr-1"></i>
+									Submitted Projects
+								</h3>
+								<div class="card-tools">
+									<ul class="nav nav-pills ml-auto">
+										<li class="nav-item"></li>
+										<li class="nav-item"></li>
+									</ul>
+								</div>
+								</div><!-- /.card-header -->
+								<div class="card-body">
+									<div class="tab-content p-0">
+									<!-- Morris chart - Sales -->
+										<div class="chart tab-pane active" id="revenue-chart" style="position: relative;">
+											<div class="table-responsive">
+												@if(count($submitProjs) > 0 )
+													<table id="userIndex2" class="table table-bordered table-hover">
+														<thead>
+															<tr>
+																<th> ID </th>
+																<th class="col-6"> Title </th>
+																<th> Status </th>
+																<th> Action</th>
+															</tr>
+														</thead>
+														<tbody>
+															@foreach($submitProjs as $row)
+																<tr>
+																	<td>
+																		<p class=""> {{ $row->tempproject_id }} </p>
+																	</td>
+																	<td>
+																			<p> {{ $row->title }} </p>
+																	</td>
+																	<td>
+																			{{ ucfirst($row->status) }}
+																	</td>
+																	<td>
+																		@if ($row->status == 'submitted')
+																			@hasanyrole('pisg|pient')
+																				<a href="{{ route('projectsmanager.edit',[$row->tempproject_id]) }}">
+																					<button class="btn btn-primary rounded mx-3">Edit</button>
+																				</a>                         
+																			@endhasanyrole
+																		@endif
+																	</td>
+																</tr>
+															@endforeach
+														</tbody>
+													</table>
+												@else
+													<table class='table-auto mx-auto w-full whitespace-nowrap rounded-lg bg-white divide-y divide-gray-300 overflow-hidden'>
+														<thead class="bg-gray-900">
+															<tr class="text-white text-left">
+																<th class="font-semibold text-sm uppercase px-6 py-4"> No Data Found </th>
+															</tr>
+														</thead>
+														<tbody>                          
+														</tbody>
+													</table>
+												@endif
+											</div>
+										</div>
+									</div>
+								</div><!-- /.card-body -->
 							</div>
-						  </div><!-- /.card-header -->
-						  <div class="card-body">
-                <div class="tab-content p-0">
-								<!-- Morris chart - Sales -->
-                  <div class="chart tab-pane active" id="revenue-chart" style="position: relative;">
-                    <div class="table-responsive">
-                      @if(count($submitProjs) > 0 )
-                        <table id="userIndex2" class="table table-bordered table-hover">
-                          <thead>
-                            <tr>
-                              <th> ID </th>
-                              <th class="col-6"> Title </th>
-                              <th> Status </th>
-                              <th> Action</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            @foreach($submitProjs as $row)
-                              <tr>
-                                <td>
-                                  <p class=""> {{ $row->tempproject_id }} </p>
-                                </td>
-                                <td>
-                                    <p> {{ $row->title }} </p>
-                                </td>
-                                <td>
-                                    {{ ucfirst($row->status) }}
-                                </td>
-                                <td>
-                                  @if ($row->status == 'submitted')
-                                    @hasanyrole('pisg|pient')
-                                      <a href="{{ route('projectsmanager.edit',[$row->tempproject_id]) }}">
-                                        <button class="btn btn-primary rounded mx-3">Edit</button>
-                                      </a>                         
-                                    @endhasanyrole
-                                  @endif
-                                </td>
-                              </tr>
-                            @endforeach
-                          </tbody>
-                        </table>
-                      @else
-                        <table class='table-auto mx-auto w-full whitespace-nowrap rounded-lg bg-white divide-y divide-gray-300 overflow-hidden'>
-                          <thead class="bg-gray-900">
-                            <tr class="text-white text-left">
-                              <th class="font-semibold text-sm uppercase px-6 py-4"> No Data Found </th>
-                            </tr>
-                          </thead>
-                          <tbody>                          
-                          </tbody>
-                        </table>
-                      @endif
-                    </div>
-                  </div>
-                </div>
-						  </div><!-- /.card-body -->
-						</div>
-						<!-- /.card -->
-						<!-- /.card -->
-					</section>
+							<!-- /.card -->
+							<!-- /.card -->
+						</section>
+					@endhasrole
         </div>
 				
 				<!-- Main row -->
