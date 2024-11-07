@@ -31,6 +31,10 @@
 					@include('livewire.iaec.flexwrapPiProjects')
 				@endhasrole
 
+				@hasrole('researcher')
+					@include('livewire.iaec.flexwrapPiProjects')
+				@endhasrole
+				
 				<div class="row">
 					<!-- Left col -->
 					<section class="col-lg-12 connectedSortable">

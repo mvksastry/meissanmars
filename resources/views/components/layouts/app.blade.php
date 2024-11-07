@@ -40,6 +40,10 @@
         @include('layouts.menus.pient.pient')
       @endhasexactroles
 			
+      @hasexactroles('researcher')
+        @include('layouts.menus.researcher.researcher')
+      @endhasexactroles
+			
       @hasexactroles('colony_asst')
         @include('layouts.menus.colasst.colasst')
       @endhasexactroles

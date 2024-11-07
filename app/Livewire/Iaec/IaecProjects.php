@@ -99,7 +99,9 @@ class IaecProjects extends Component
         }
 			
         $submitProjs = $this->allowedSubmittedProjectIds();
+				
         $actvProjs = $this->allowedProjectIds();
+				
         //dd($submitProjs, $actvProjs);
         //implement here cost, issues and consumption details one by one
         return view('livewire.iaec.iaec-projects')
