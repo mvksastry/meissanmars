@@ -243,7 +243,7 @@ class HomeController extends Controller
       $approvedIssues = $this->piApprovedIssues();
       $issuedIssues = $this->piIssuedIssues();
       Log::channel('activity')->info('Logged in user [ '.Auth::user()->name.' ] dashboard requested');
-      return view('researcher.researcherHome')->with([
+      return view('layouts.home.researcher.dashboard')->with([
                   'submittedIssues'=>$submittedIssues,
                   'confirmedIssues'=>$confirmedIssues,
                   'approvedIssues'=>$approvedIssues,

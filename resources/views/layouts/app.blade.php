@@ -30,6 +30,10 @@
         @include('layouts.menus.pient.pient')
       @endhasexactroles
 
+			@hasexactroles('researcher')
+        @include('layouts.menus.researcher.researcher')
+      @endhasexactroles
+			
       @hasexactroles('colony_sup')
         @include('layouts.menus.colsup.colsup')
       @endhasexactroles      
