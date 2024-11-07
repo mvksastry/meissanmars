@@ -118,7 +118,7 @@
 						  <div class="card-header">
 							<h3 class="card-title">
 							  <i class="fas fa-chart-pie mr-1"></i>
-							  Active Projects
+							  Active Projects (Click any button, details will appear in 'Result' panel below)
 							</h3>
 							<div class="card-tools">
 							  <ul class="nav nav-pills ml-auto">
