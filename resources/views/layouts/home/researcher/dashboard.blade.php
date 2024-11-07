@@ -65,18 +65,14 @@
                             Active
                           </td>
 													<td></td>
-                          <td>Submitted</td>
+                          <td></td>
 													<td>                        
                           
                           </td>
-													<td>Amended</td>
-													<td>
-                          
-                            </td>
-                            <td>Expired</td>
-													<td>
-                          
-                            </td>
+													<td></td>
+													<td></td>
+                          <td></td>
+													<td></td>
 												</tr>
                         <tr>
                           <td colspan="8">
