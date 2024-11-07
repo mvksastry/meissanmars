@@ -171,12 +171,12 @@
                                     
                                     @hasrole('researcher')
                                       <button wire:click="show( '{{ $row->iaecproject_id }}' )" class="btn btn-primary rounded mx-2">Details</button>
-                                      <button wire:click="formD({{ $row->iaecproject_id }})" class="btn btn-danger rounded mx-2">Form-D</button>
+                                      <button wire:click="showFormDInfo({{ $row->iaecproject_id }})" class="btn btn-danger rounded mx-2">Form-D</button>
                                       <button wire:click="reports({{ $row->iaecproject_id }})" class="btn btn-secondary rounded mx-2">Reports</button>
                                     @endhasrole
                                     
                                     @hasrole('veterinarian')
-                                      <button wire:click="formD({{ $row->iaecproject_id }})" class="btn btn-success  rounded mx-2">Notebook</button>
+                                      <button wire:click="showFormDInfo({{ $row->iaecproject_id }})" class="btn btn-success  rounded mx-2">Notebook</button>
                                       <button wire:click="reports({{ $row->iaecproject_id }})" class="btn btn-secondary  rounded mx-2">Reports</button>
                                     @endhasrole
                                   @endif

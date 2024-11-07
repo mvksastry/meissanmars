@@ -290,253 +290,250 @@ class IaecProjects extends Component
         }
     }
 
-      public function reports($id)
-      {
-          if( Auth::user()->hasAnyRole(['pisg','pient','investigator', 'researcher', 'veterinarian']) )
-          {
-            $this->updateMode = false;
-            $this->updateFormD = false;
-            $this->updateCosts = false;
+		public function reports($id)
+		{
+				if( Auth::user()->hasAnyRole(['pisg','pient','investigator', 'researcher', 'veterinarian']) )
+				{
+					$this->updateMode = false;
+					$this->updateFormD = false;
+					$this->updateCosts = false;
 
-            $this->project_id = $id;
+					$this->project_id = $id;
 
-            $qry = Report::where('iaecproject_id', $id)->get();
+					$qry = Report::where('iaecproject_id', $id)->get();
 
-            $this->projReps = $qry;
+					$this->projReps = $qry;
 
-            $this->updateReports = true;
-          }
-          else {
-            return view('livewire.permError');
-          }
-      }
+					$this->updateReports = true;
+				}
+				else {
+					return view('livewire.permError');
+				}
+		}
 
-      public function costs($id)
-      {
-          $this->updateMode = false;
-          $this->updateFormD = false;
-          $this->updateReports = false;
-          $cageProjectCostInfos = $this->ProjectWiseCost($id);
-          $this->ic = $cageProjectCostInfos[0];
-          $this->pc = $cageProjectCostInfos[1];
-          //dd($cageProjectCostInfos);
-          $this->updateCosts = true;
-      }
+		public function costs($id)
+		{
+				$this->updateMode = false;
+				$this->updateFormD = false;
+				$this->updateReports = false;
+				$cageProjectCostInfos = $this->ProjectWiseCost($id);
+				$this->ic = $cageProjectCostInfos[0];
+				$this->pc = $cageProjectCostInfos[1];
+				//dd($cageProjectCostInfos);
+				$this->updateCosts = true;
+		}
 
-      public function piprojectDownload($id)
-      {
-        //dd($id);
-          $projSearch = Iaecproject::with('user')->where('filename', $id)->where('pi_id', Auth::id() )
-                                              ->first();
-          if(!empty($projSearch) )
-          {
-            // get pis folder, modify the column
-            $instns = "/institutions/";
-            $piFolder = $projSearch->user->folder;
-            $file_path = $instns.$piFolder.'/';
-            //dd($file_path);
-            $headers = array(
-                'Content-Type: application/pdf',
-            );
-            return response()->download(storage_path("app/public/".$file_path.$id));
-          }
-          else {
-            abort(404);  //404 page
-          }
-      }
+		public function piprojectDownload($id)
+		{
+			//dd($id);
+				$projSearch = Iaecproject::with('user')->where('filename', $id)->where('pi_id', Auth::id() )
+																						->first();
+				if(!empty($projSearch) )
+				{
+					// get pis folder, modify the column
+					$instns = "/institutions/";
+					$piFolder = $projSearch->user->folder;
+					$file_path = $instns.$piFolder.'/';
+					//dd($file_path);
+					$headers = array(
+							'Content-Type: application/pdf',
+					);
+					return response()->download(storage_path("app/public/".$file_path.$id));
+				}
+				else {
+					abort(404);  //404 page
+				}
+		}
 
-      public function piReportDownload($id)
-      {
-          $projSearch = Iaecproject::with('user')->where('iaecproject_id', $this->project_id)->where('pi_id', Auth::id() )
-                                              ->first();
-          if(!empty($projSearch) )
-          {
-            // get pis folder, modify the column
-            $instns = "/institutions/";
-            $piFolder = $projSearch->user->folder;
-            $file_path = $instns.$piFolder.'/';
+		public function piReportDownload($id)
+		{
+				$projSearch = Iaecproject::with('user')->where('iaecproject_id', $this->project_id)->where('pi_id', Auth::id() )
+																						->first();
+				if(!empty($projSearch) )
+				{
+					// get pis folder, modify the column
+					$instns = "/institutions/";
+					$piFolder = $projSearch->user->folder;
+					$file_path = $instns.$piFolder.'/';
 
-            $headers = array(
-              'Content-Type: application/pdf',
-            );
-            return response()->download(storage_path("app/public/".$file_path.$id));
-          }
-          else {
-            abort(404);  //404 page
-          }
-      }
+					$headers = array(
+						'Content-Type: application/pdf',
+					);
+					return response()->download(storage_path("app/public/".$file_path.$id));
+				}
+				else {
+					abort(404);  //404 page
+				}
+		}
 
-      // all form resets
-      private function resetInputFields()
-      {
-          $this->title = '';
-      }
+		// all form resets
+		private function resetInputFields()
+		{
+			$this->title = '';
+		}
 
-      public function resetIssueForm(){
-          $this->pstx1 = '';
-          $this->sex = '';
-          $this->age = '';
-          $this->ageunit = '';
-          $this->number = '';
-          $this->cagenumber = '';
-          $this->termination = '';
-          $this->duration = null;
-          $this->expt_desc = null;
-          $this->products = '';
-          $this->remarks = '';
-          $this->agree = 0;
-      }
+		public function resetIssueForm(){
+			$this->pstx1 = '';
+			$this->sex = '';
+			$this->age = '';
+			$this->ageunit = '';
+			$this->number = '';
+			$this->cagenumber = '';
+			$this->termination = '';
+			$this->duration = null;
+			$this->expt_desc = null;
+			$this->products = '';
+			$this->remarks = '';
+			$this->agree = 0;
+		}
 
-      public function resetFormD(){
+		public function resetFormD()
+		{
+			$this->sex = "";
+			$this->age = "";
+			$this->ageunit = "";
+			$this->breeder_add = "";
+			$this->approval_date = "";
+			$this->expt_date = "";
+			$this->expt_description = "";
+			$this->remarks = "";
+		}
 
-          $this->sex = "";
-          $this->age = "";
-          $this->ageunit = "";
-          $this->breeder_add = "";
-          $this->approval_date = "";
-          $this->expt_date = "";
-          $this->expt_description = "";
-          $this->remarks = "";
-      }
+		public function resetNotebook()
+		{
+			$this->idissue = "";
+			$this->idcage = "";
+			$this->dateexpt = "";
+			$this->idprotocol = "";
+			$this->descexpt = "";
+			$this->images = "";
+		}
 
-      public function resetNotebook(){
-          $this->idissue = "";
-          $this->idcage = "";
-          $this->dateexpt = "";
-          $this->idprotocol = "";
-          $this->descexpt = "";
-          $this->images = "";
-      }
+		public function showFormDInfo($id)
+		{
+			if($this->checkProjectAllowedOrNot($id))
+			{
+				$this->updateMode = false;
+				$this->updateFormD = true;
+				$this->updateNotebook = false;
+				//$this->notebookUpdate = false;
+				$this->updateReports = false;
+				$this->updateCosts = false;
 
-      public function showFormDInfo($id)
-      {
-          if($this->checkProjectAllowedOrNot($id))
-          {
-            $this->updateMode = false;
-            $this->updateFormD = true;
-            $this->updateNotebook = false;
-            //$this->notebookUpdate = false;
-            $this->updateReports = false;
-            $this->updateCosts = false;
+				$this->keepHydrated($id);
+			}
+			else {
+				$this->irqMessage = "No Permission to view";
+			}
+		}
 
-            $this->keepHydrated($id);
-          }
-          else {
-            $this->irqMessage = "No Permission to view";
-          }
+		public function nbUpdate($id)
+		{
+			if( Auth::user()->hasAnyRole(['pisg','pilg','piblg','pient','investigator', 'researcher', 'veterinarian']) )
+			{
+				$this->picid = $id;
+				$ids = explode('_', $id);
+				$this->project_id = $ids[0];
+				$this->idissue = $ids[1];
+				$this->idcage = $ids[2];
+				$this->updateMode = false;
+				$this->updateFormD = true;
+				$this->notebookUpdate = true;
+				// table can be retrieved only the DB format not the other way
+				//formd is replaced with notebook table for USA customers
+				$this->keepHydrated($this->project_id);
+				$this->notebookQuerySelect($this->project_id,$this->idissue,$this->idcage);
+			}
+			else {
+				return view('livewire.permError');
+			}
+		}
 
-      }
+		//form-d aka Notebook methods are here.
+		public function saveNotebook()
+		{
+			if( Auth::user()->hasAnyRole(['pisg','pilg','piblg','pient','investigator', 'researcher', 'veterinarian']) )
+			{
+				$this->irqMessage = "";
+				$this->irqMessage = "Welcome, Pay attention to fields";
 
-      public function nbUpdate($id)
-      {
-          if( Auth::user()->hasAnyRole(['pisg','pilg','piblg','pient','investigator', 'researcher', 'veterinarian']) )
-          {
-              $this->picid = $id;
-              $ids = explode('_', $id);
-              $this->project_id = $ids[0];
-              $this->idissue = $ids[1];
-              $this->idcage = $ids[2];
-              $this->updateMode = false;
-              $this->updateFormD = true;
-              $this->notebookUpdate = true;
-              // table can be retrieved only the DB format not the other way
-              //formd is replaced with notebook table for USA customers
-              $this->keepHydrated($this->project_id);
-              $this->notebookQuerySelect($this->project_id,$this->idissue,$this->idcage);
-          }
-          else {
-            return view('livewire.permError');
-          }
+				$table = $this->project_id.'notebook';
 
-      }
+				$max_nb_id = DB::table($table)->max('notebook_id') + 1;
+				$animNum = DB::table($table)->where('cage_id', '=', $this->idcage)->latest()->first();
 
-      //form-d aka Notebook methods are here.
-      public function saveNotebook()
-      {
-        if( Auth::user()->hasAnyRole(['pisg','pilg','piblg','pient','investigator', 'researcher', 'veterinarian']) )
-        {
+				$input['issue_id'] = $this->idissue;
+				$input['cage_id'] = $this->idcage;
+				$input['staff_id'] = Auth::Id();
+				$input['staff_name'] = Auth::user()->name;
+				$input['entry_date'] = date('Y-m-d');
+				$input['number_animals'] = $animNum->number_animals;
+				$input['protocol_id'] = $this->idprotocol;
+				$input['expt_date'] = $this->dateexpt;
+				$input['expt_description'] = $this->descexpt;
+				$input['authorized_person'] = "PI";
+				$input['signature'] = Auth::user()->name;
+				$input['remarks'] = $this->legend;
 
-          $this->irqMessage = "";
-          $this->irqMessage = "Welcome, Pay attention to fields";
+				//now upload image and video files;
+				//for testing, in reality, pass on the user's folder name fromm DB.
+				$piFolder = Auth::user()->folder;
 
-          $table = $this->project_id.'notebook';
+				$destPath = "/institutions"."/".$piFolder."/";
 
-          $max_nb_id = DB::table($table)->max('notebook_id') + 1;
-          $animNum = DB::table($table)->where('cage_id', '=', $this->idcage)->latest()->first();
+				if(count($this->expimages) > 0 )
+				{
 
-          $input['issue_id'] = $this->idissue;
-          $input['cage_id'] = $this->idcage;
-          $input['staff_id'] = Auth::Id();
-          $input['staff_name'] = Auth::user()->name;
-          $input['entry_date'] = date('Y-m-d');
-          $input['number_animals'] = $animNum->number_animals;
-          $input['protocol_id'] = $this->idprotocol;
-          $input['expt_date'] = $this->dateexpt;
-          $input['expt_description'] = $this->descexpt;
-          $input['authorized_person'] = "PI";
-          $input['signature'] = Auth::user()->name;
-          $input['remarks'] = $this->legend;
+					foreach ($this->expimages as $key => $value)
+					{
+						$this->validate([
+							'expimages.*' => 'image|mimes:jpeg,png,jpg|max:2048', // 1MB Max
+						]);
+						$fname = $value->getClientOriginalName();
+						$txe = explode('.', $fname);
+						$code15 = $this->generateCode(15);
+						$imgFileName = $code15."_".Auth::user()->id.'.'.$txe[1];
+						$image = new Image();
+						$image->tablename = $table;
+						$image->notebook_id = $max_nb_id;
+						$image->staff_id = Auth::Id();
+						$image->staff_name = Auth::user()->name;
+						$image->entry_date = date('Y-m-d');
+						$image->cage_id = $this->idcage;
+						$image->image_file = $imgFileName;
+						$image->video_file = null;
+						$image->remarks = $this->legend;
+						//dd($input, $image);
+						$fxt[$key] = $value->storeAs($destPath, $imgFileName);
+						$image->save();
+						$input['av_info'] = 'yes';
+					}
+				}
 
-          //now upload image and video files;
-          //for testing, in reality, pass on the user's folder name fromm DB.
-          $piFolder = Auth::user()->folder;
+				//now post to trait because, everything is ok
+				// and get it posted after verification of strain balance.
+				$result = DB::table($table)->insert($input);
+				//$result = true;
+				if($result)
+				{
+					$msg = "Notebook Update Successful";
+					$this->irqMessage = $msg;
+				}
+				else {
+					$msg = "Notebook Update Failed, Contact Admin";
+					$this->irqMessage = $msg;
+				}
 
-          $destPath = "/institutions"."/".$piFolder."/";
+				$this->resetNotebook();
+				$this->notebookUpdate = false;
+				//$this->resetNotebooks();
 
-          if(count($this->expimages) > 0 )
-          {
+			}
+			else {
+				return view('livewire.permError');
+			}
 
-              foreach ($this->expimages as $key => $value)
-              {
-
-                  $this->validate([
-                    'expimages.*' => 'image|mimes:jpeg,png,jpg|max:2048', // 1MB Max
-                  ]);
-                  $fname = $value->getClientOriginalName();
-                  $txe = explode('.', $fname);
-                  $code15 = $this->generateCode(15);
-                  $imgFileName = $code15."_".Auth::user()->id.'.'.$txe[1];
-                  $image = new Image();
-                  $image->tablename = $table;
-                  $image->notebook_id = $max_nb_id;
-                  $image->staff_id = Auth::Id();
-                  $image->staff_name = Auth::user()->name;
-                  $image->entry_date = date('Y-m-d');
-                  $image->cage_id = $this->idcage;
-                  $image->image_file = $imgFileName;
-                  $image->video_file = null;
-                  $image->remarks = $this->legend;
-                  //dd($input, $image);
-                  $fxt[$key] = $value->storeAs($destPath, $imgFileName);
-                  $image->save();
-                  $input['av_info'] = 'yes';
-              }
-          }
-
-          //now post to trait because, everything is ok
-          // and get it posted after verification of strain balance.
-          $result = DB::table($table)->insert($input);
-          //$result = true;
-          if($result)
-          {
-            $msg = "Notebook Update Successful";
-            $this->irqMessage = $msg;
-          }
-          else {
-            $msg = "Notebook Update Failed, Contact Admin";
-            $this->irqMessage = $msg;
-          }
-
-          $this->resetNotebook();
-          $this->notebookUpdate = false;
-          //$this->resetNotebooks();
-
-        }
-        else {
-          return view('livewire.permError');
-        }
-
-      }
+		}
 
     public function keepHydrated($id)
     {
@@ -556,57 +553,56 @@ class IaecProjects extends Component
 
       if($this->checkProjectAllowedOrNot($id))
       {
-            $qr = array();
-            $qresult = array();
-            $tablename = $id.'notebook';
-            //$tablename = $id.'formd';
-            //$test = Image::where('tablename', $tablename)->get();  
-            $this->nbes = DB::table($tablename)
-                            ->leftJoin('usages','usages.usage_id', '=', $tablename.'.usage_id')
-                            ->leftJoin('cages','cages.cage_id', '=', $tablename.'.cage_id')
-                            ->leftJoin('strains', 'strains.strain_id', '=', 'cages.strain_id')
-                            ->leftJoin('species', 'species.species_id', '=', 'cages.species_id')
-                            ->select()
-                            ->get();
+				$qr = array();
+				$qresult = array();
+				$tablename = $id.'notebook';
+				//$tablename = $id.'formd';
+				//$test = Image::where('tablename', $tablename)->get();  
+				$this->nbes = DB::table($tablename)
+												->leftJoin('usages','usages.usage_id', '=', $tablename.'.usage_id')
+												->leftJoin('cages','cages.cage_id', '=', $tablename.'.cage_id')
+												->leftJoin('strains', 'strains.strain_id', '=', 'cages.strain_id')
+												->leftJoin('species', 'species.species_id', '=', 'cages.species_id')
+												->select()
+												->get();
         }
         else {
-        return view('livewire.permError');
+					return view('livewire.permError');
         }
 
     }
 
     public function notebookQuerySelect($id,$issId,$cagId)
     {
-        // table can be retrieved only the DB format not the other way
-        //formd is replaced with notebook table for USA customers
-        if($this->checkProjectAllowedOrNot($id))
-        {
-           //$tname = $id.'formd';
-            $tname = $id.'notebook';
-            $this->nbqs = DB::table($tname)
-                                ->leftJoin('usages','usages.usage_id', '=', $id.'notebook.usage_id')
-                                ->leftJoin('cages','cages.cage_id', '=', $id.'notebook.cage_id')
-                                ->leftJoin('strains', 'strains.strain_id', '=', 'cages.strain_id')
-                                ->leftJoin('species', 'species.species_id', '=', 'cages.species_id')
-                                ->where($id.'notebook.usage_id', '=', $issId)
-                                ->where($id.'notebook.cage_id', '=', $cagId)
-                                ->select()
-                                ->get();
-                                
-            $imgs = Image::where('tablename', $id.'notebook')->where('cage_id', $cagId)->get();
-            
-            if(count($imgs) != 0)
-            {
-                $this->nbimages = $imgs;
-            }
-            else {
-                $this->nbimages = 'None';
-            }
-        }
-        else {
-            return view('livewire.permError');
-        }
-        
+			// table can be retrieved only the DB format not the other way
+			//formd is replaced with notebook table for USA customers
+			if($this->checkProjectAllowedOrNot($id))
+			{
+				//$tname = $id.'formd';
+				$tname = $id.'notebook';
+				$this->nbqs = DB::table($tname)
+														->leftJoin('usages','usages.usage_id', '=', $id.'notebook.usage_id')
+														->leftJoin('cages','cages.cage_id', '=', $id.'notebook.cage_id')
+														->leftJoin('strains', 'strains.strain_id', '=', 'cages.strain_id')
+														->leftJoin('species', 'species.species_id', '=', 'cages.species_id')
+														->where($id.'notebook.usage_id', '=', $issId)
+														->where($id.'notebook.cage_id', '=', $cagId)
+														->select()
+														->get();
+														
+				$imgs = Image::where('tablename', $id.'notebook')->where('cage_id', $cagId)->get();
+				
+				if(count($imgs) != 0)
+				{
+						$this->nbimages = $imgs;
+				}
+				else {
+						$this->nbimages = 'None';
+				}
+			}
+			else {
+					return view('livewire.permError');
+			}
     }
 
 
@@ -675,8 +671,5 @@ class IaecProjects extends Component
 
     }
     
-
-
-
-
+//////////// class end brace
 }
