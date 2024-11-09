@@ -19,10 +19,10 @@ class PWChangeFormController extends Controller
     public function __invoke(Request $request)
     {
         //
-				//$today = date('Y-m-d');
+				$today = date('Y-m-d');
 				$flogin = Auth::user()->first_login;
 				$last_pw_change = Auth::user()->last_pwchange;
-				
+			
 				return view('profile.pwchange')->with([
                   'flogin'=>$flogin,
                   'last_pw_change'=>$last_pw_change,

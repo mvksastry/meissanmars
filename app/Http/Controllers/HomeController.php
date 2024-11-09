@@ -61,7 +61,7 @@ class HomeController extends Controller
 		//check for expired/suspended account
 		$exp = strtotime(Auth::user()->expiry_date);
 		$tod = strtotime(date('Y-m-d'));
-    
+    //dd($timetag);
 		if( $exp < $tod)
 		{
 		  $msg = "Your Account Expired on ".date('d-m-Y', strtotime(Auth::user()->expiry_date))." Contact Service Provider";
