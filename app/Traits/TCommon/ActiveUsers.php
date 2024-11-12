@@ -10,6 +10,7 @@ use DateTime;
 use App\Models\User;
 use App\Models\Team;
 use App\Models\Resassent;
+use App\Models\Iaecassent;
 
 use App\Traits\TCommon\ResProjectQueries;
 
@@ -58,26 +59,26 @@ trait ActiveUsers
 				//dd($lo);
 				if(count($actvProjs) > 0) 
 				{
-					foreach($actvProjs as $row)
+					foreach($actvProjs as $rowx)
 					{
 						switch ($purpose) {
 							case "resproj":
-								$perm = $this->fetchResprojPermInfos($row->resproject_id, $val->id);
+								$perm = $this->fetchResprojPermInfos($rowx->resproject_id, $val->id);
 							break;
 							
 							case "iaecproj":
-								$perm = $this->fetchIeacprojPermInfos($row->iaecproject_id, $row->id);
+								$perm = $this->fetchIeacprojPermInfos($rowx->iaecproject_id, $row->id);
 							break;
 							
 							default:
 							$perm = null;
 						}					
-						
+						//dd($perm);
 						if($perm != null)
 						{
 							//now check whether the user has permission or not
-							$lx['project_id'] = $row->resproject_id;
-							$lx['title'] = "Proj-".$row->resproject_id." : ".$row->title;
+							$lx['project_id'] = $row->iaecproject_id;
+							$lx['title'] = "Proj-".$row->iaecproject_id." : ".$rowx->title;
 							$lx['title'] = $this->truncateString($lx['title'], 8); 
 						
 							foreach($perm as $valx)
@@ -93,8 +94,8 @@ trait ActiveUsers
 							//Log::channel('activity')->info('[ '.tenant('id')." ] [ ".Auth::user()->name.' ] permissions processed for [ '.$row->resproject_id.']');
 						}
 						else {
-								$lx['project_id'] = $row->resproject_id;
-								$lx['title'] = "Proj-".$row->resproject_id." : ".$row->title;
+								$lx['project_id'] = $row->iaecproject_id;
+								$lx['title'] = "Proj-".$row->iaecproject_id." : ".$rowx->title;
 								$lx['title'] = $this->truncateString($lx['title'], 8); 
 								$lx['tenure_start_date'] = null;
 								$lx['tenure_end_date'] = null;
@@ -129,7 +130,7 @@ trait ActiveUsers
 
 	public function groupUsersUpdate($input, $purpose)
 	{
-	
+		//dd($input, $purpose);
 		//remove null values
 		foreach($input as $key => $val)
 		{
@@ -150,8 +151,9 @@ trait ActiveUsers
 				case "resproj":
 					$fin['start_date'] = date('Y-m-d');
 					$fin['end_date'] = $val;
+					$fin['formd'] = intval($xdf[1])."formd";
 					$fin['notebook'] = intval($xdf[1])."notebook";
-					$fin['status'] = 1;
+					$fin['status'] = "active";
 					//first check if he is already a member of this									
 					$matchThese = [ 'resproject_id'=> intval($xdf[1]),'allowed_id'=>intval($xdf[0]) ];
 					$result = Resassent::updateOrCreate($matchThese,
@@ -164,10 +166,11 @@ trait ActiveUsers
 				case "iaecproj":
 					$fin['start_date'] = date('Y-m-d');
 					$fin['end_date'] = $val;
+					$fin['formd'] = intval($xdf[1])."formd";
 					$fin['notebook'] = intval($xdf[1])."notebook";
-					$fin['status'] = 1;
+					$fin['status'] = "active";
 					//first check if he is already a member of this									
-					$matchThese = ['resproject_id'=> intval($xdf[1]),'allowed_id'=>intval($xdf[0]) ];
+					$matchThese = ['iaecproject_id'=> intval($xdf[1]),'allowed_id'=>intval($xdf[0]) ];
 					$result = Iaecassent::updateOrCreate($matchThese,
 														['start_date'=> $fin['start_date'], 
 														'end_date'=> $fin['end_date'],

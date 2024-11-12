@@ -87,7 +87,7 @@ class OrganizeGroups extends Component
 		$this->actvProjs = Iaecproject::where('pi_id', Auth::user()->id)->where('status', 'active')->get();
 		$this->asProj = $this->projAssignments($this->actvProjs, $this->purpose);
 		$this->rowSpanVal = count($this->actvProjs);
-		//dd($c, $this->actvProjs);
+		//dd($this->asProj, $this->actvProjs);
 		$this->showPanelGroupManage = true;
 		
 		//Log::channel('activity')->info('[ '.tenant('id')." ] [ ".Auth::user()->name.' ] Displayed all the users of IAEC group');

@@ -12,7 +12,7 @@
         <div class="icon">
           <i class="ion ion-bag"></i>
         </div>
-        <a href="{{route('projectsmanager.create') }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+        <a href="#" wire:click.prevent="showIaecGroups()" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
       </div>
     </div>
     <!-- ./col -->
