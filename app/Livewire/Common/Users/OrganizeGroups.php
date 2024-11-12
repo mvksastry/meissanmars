@@ -55,7 +55,7 @@ class OrganizeGroups extends Component
 	//variables
 	public $users, $curUser, $activeHerds, $herdCount;
 	public $user_id = [], $validity_ = [];
-	public $asProj = [];	
+	public $asProj = [], $rowSpanVal;	
 	
 	//panels
 	public $showPanelGroupManage = false;
@@ -84,9 +84,10 @@ class OrganizeGroups extends Component
 		$this->panelTitle = "IAEC Group";
 		$this->purpose = "iaecproj";
         
-		$this->actvProjs = Iaecproject::where('pi_id', Auth::user())->where('status', 'active')->get();
+		$this->actvProjs = Iaecproject::where('pi_id', Auth::user()->id)->where('status', 'active')->get();
 		$this->asProj = $this->projAssignments($this->actvProjs, $this->purpose);
-		
+		$this->rowSpanVal = count($this->actvProjs);
+		//dd($c, $this->actvProjs);
 		$this->showPanelGroupManage = true;
 		
 		//Log::channel('activity')->info('[ '.tenant('id')." ] [ ".Auth::user()->name.' ] Displayed all the users of IAEC group');

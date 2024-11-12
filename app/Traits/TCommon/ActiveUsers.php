@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 use DateTime;
 use App\Models\User;
+use App\Models\Team;
 use App\Models\Resassent;
 
 use App\Traits\TCommon\ResProjectQueries;
@@ -22,13 +23,15 @@ trait ActiveUsers
 
 	public function activeUsers ()
 	{
-		return User::where('role','<>', 'supadmin')->get()->sortBy('role');
+		return Team::with('members')->where('leader_id', Auth::user()->id)->get();
+		//return User::where('role','<>', 'supadmin')->get()->sortBy('role');
 	}
 
 	//add expiry dates to query
 	public function groupMembers()
 	{
-		return User::where('role', '<>','supadmin')->get()->sortBy('role');
+		return Team::with('members')->where('leader_id', Auth::user()->id)->get();
+		//return User::where('role', '<>','supadmin')->get()->sortBy('role');
 	}
 	
 	/**
@@ -48,61 +51,64 @@ trait ActiveUsers
 
 		foreach($gM as $val)
 		{
-			$lo['member_id'] = $val->id;
-			$lo['name'] = $val->name;
-			
-			if(count($actvProjs) > 0) 
+			foreach($val->members as $row)
 			{
-				foreach($actvProjs as $row)
+				$lo['member_id'] = $row->id;
+				$lo['name'] = $row->name;
+				//dd($lo);
+				if(count($actvProjs) > 0) 
 				{
-					switch ($purpose) {
-						case "resproj":
-							$perm = $this->fetchResprojPermInfos($row->resproject_id, $val->id);
-						break;
-						
-						case "iaecproj":
-							$perm = $this->fetchIeacprojPermInfos($row->iaecproject_id, $user_id);
-						break;
-						
-						default:
-						$perm = null;
-					}					
-					
-					if($perm != null)
+					foreach($actvProjs as $row)
 					{
-						//now check whether the user has permission or not
-						$lx['project_id'] = $row->resproject_id;
-						$lx['title'] = "Proj-".$row->resproject_id." : ".$row->title;
-						$lx['title'] = $this->truncateString($lx['title'], 8); 
-					
-						foreach($perm as $valx)
+						switch ($purpose) {
+							case "resproj":
+								$perm = $this->fetchResprojPermInfos($row->resproject_id, $val->id);
+							break;
+							
+							case "iaecproj":
+								$perm = $this->fetchIeacprojPermInfos($row->iaecproject_id, $row->id);
+							break;
+							
+							default:
+							$perm = null;
+						}					
+						
+						if($perm != null)
 						{
-							$lx['tenure_start_date'] = $valx->start_date;
-							$lx['tenure_end_date'] = $valx->end_date;
-							$lx['notebook'] = $valx->notebook;
-							$lx['tenure_status'] = $valx->status;
+							//now check whether the user has permission or not
+							$lx['project_id'] = $row->resproject_id;
+							$lx['title'] = "Proj-".$row->resproject_id." : ".$row->title;
+							$lx['title'] = $this->truncateString($lx['title'], 8); 
+						
+							foreach($perm as $valx)
+							{
+								$lx['tenure_start_date'] = $valx->start_date;
+								$lx['tenure_end_date'] = $valx->end_date;
+								$lx['notebook'] = $valx->notebook;
+								$lx['tenure_status'] = $valx->status;
+							}
+							$lx['allowed'] = "yes";
+							array_push($lo, $lx);
+							unset($lx);
+							//Log::channel('activity')->info('[ '.tenant('id')." ] [ ".Auth::user()->name.' ] permissions processed for [ '.$row->resproject_id.']');
 						}
-						$lx['allowed'] = "yes";
-						array_push($lo, $lx);
-						unset($lx);
-						Log::channel('activity')->info('[ '.tenant('id')." ] [ ".Auth::user()->name.' ] permissions processed for [ '.$row->resproject_id.']');
+						else {
+								$lx['project_id'] = $row->resproject_id;
+								$lx['title'] = "Proj-".$row->resproject_id." : ".$row->title;
+								$lx['title'] = $this->truncateString($lx['title'], 8); 
+								$lx['tenure_start_date'] = null;
+								$lx['tenure_end_date'] = null;
+								$lx['tenure_status'] = null;
+								$lx['notebook'] = null;
+								$lx['allowed'] = "no";
+								array_push($lo, $lx);
+								unset($lx);
+							//Log::channel('activity')->info('[ '.tenant('id')." ] [ ".Auth::user()->name.' ] permissions processed for [ '.$row->resproject_id.']');
+						}
 					}
-					else {
-					    $lx['project_id'] = $row->resproject_id;
-						$lx['title'] = "Proj-".$row->resproject_id." : ".$row->title;
-						$lx['title'] = $this->truncateString($lx['title'], 8); 
-						$lx['tenure_start_date'] = null;
-						$lx['tenure_end_date'] = null;
-						$lx['tenure_status'] = null;
-						$lx['notebook'] = null;
-						$lx['allowed'] = "no";
-						array_push($lo, $lx);
-						unset($lx);
-						Log::channel('activity')->info('[ '.tenant('id')." ] [ ".Auth::user()->name.' ] permissions processed for [ '.$row->resproject_id.']');
-					}
+					array_push($lm, $lo);
+					unset($lo);
 				}
-				array_push($lm, $lo);
-				unset($lo);
 			}
 		}
 		//dd($lm);

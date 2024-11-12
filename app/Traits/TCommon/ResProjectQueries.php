@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 
 use App\Models\Resassent;
 use App\Models\Resproject;
+use App\Models\Iaecassent;
 
 //use File;
 use App\Traits\Base;
@@ -65,7 +66,7 @@ trait ResProjectQueries
 		$res = Resassent::where('resproject_id', $project_id)
 							->where('allowed_id', $user_id)
 							->where('end_date', '>=', date('Y-m-d'))
-							->where('status', 1)
+							->where('status', 'active')
 							->get();
 
 		if( count($res) >= 1 )
@@ -82,7 +83,7 @@ trait ResProjectQueries
 		$res = Iaecassent::where('iaecproject_id', $project_id)
 							->where('allowed_id', $user_id)
 							->where('end_date', '>=', date('Y-m-d'))
-							->where('status', 1)
+							->where('status', 'active')
 							->get();
 
 		if( count($res) >= 1 )

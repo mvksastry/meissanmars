@@ -1,8 +1,8 @@
 <div>
     {{-- Do your work, then step back. --}}
-		    {{-- The whole world belongs to you. --}}
-		  {{-- If you look to others for fulfillment, you will never truly be fulfilled. --}}
-  {{-- Success is as dangerous as failure. --}}
+		{{-- The whole world belongs to you. --}}
+		{{-- If you look to others for fulfillment, you will never truly be fulfilled. --}}
+		{{-- Success is as dangerous as failure. --}}
   <!-- Never delete or modify this div -->
   <!-- Content Wrapper. Contains page content -->
 	<div class="content-wrapper">
@@ -27,8 +27,8 @@
 		<!-- Main content -->
 		<section class="content">
 			<div class="container-fluid">
-        @hasrole('manager')
-					@include('livewire.common.inventory.flexMenuInventory')
+        @hasrole('pient')
+					@include('livewire.common.users.organizeGroupFlexMenu')
 				@endhasrole
 				
 				<!-- Main row -->
@@ -75,10 +75,10 @@
 
 
 
-   {{-- The best athlete wants his opponent at his best. --}}
-	<!--Container-->
-	<!--Console Content-->
-	<div class="flex flex-wrap">	
+		 {{-- The best athlete wants his opponent at his best. --}}
+		<!--Container-->
+		<!--Console Content-->
+		<div class="flex flex-wrap">	
 			
 			    <!--Metric Card 1 -->
 				<!--/End Metric Card 1-->
@@ -121,12 +121,12 @@
 				</div>
 				<!--/End Metric Card 1-->
 				
-	</div>
-	<!--End of Console content-->
-	
-	<!--Divider-->
-	<hr class="border-b-2 border-gray-600 my-2 mx-4">
-	<!--Divider-->
+		</div>
+		<!--End of Console content-->
+		
+		<!--Divider-->
+		<hr class="border-b-2 border-gray-600 my-2 mx-4">
+		<!--Divider-->
 			
 			
 	<div class="flex flex-row flex-wrap flex-grow mt-2">
@@ -144,22 +144,22 @@
 				</div>
 				@if($showPanelGroupManage)
 				    <div class="p-5 overflow-x-auto">
-						<table class='table-auto mx-auto w-full whitespace-nowrap rounded-lg bg-white divide-y divide-red-700 overflow-hidden'>
+					  <table id="userIndex2" class="table table-bordered table-hover">
 							<thead class="bg-gray-900">
 								<tr class="text-white text-left">
-									<th class="font-semibold text-sm uppercase px-6 py-2"> Group User Name </th>
-									<th class="font-semibold text-sm uppercase px-6 py-2"> Project </th>
-									<th class="font-semibold text-sm uppercase px-6 py-2"> Tenure Start </th>
-									<th class="font-semibold text-sm uppercase px-6 py-2"> Valid Till </th>
-									<th class="font-semibold text-sm uppercase px-6 py-2"> Notebook </br> Access </th>
-									<th class="font-semibold text-sm uppercase px-6 py-2"> New </br> Validity </th>
+									<th style="text-align:center;"> Group User Name </th>
+									<th> Project </th>
+									<th> Tenure Start </th>
+									<th> Valid Till </th>
+									<th> Notebook </br> Access </th>
+									<th> New </br> Validity </th>
 								</tr>
 							</thead>
 							@if( count($asProj) > 0 )
 								<tbody>
 									@foreach($asProj as $xcd)
 										<tr class="border-b border-red-400">
-											<td rowspan="{{ count($actvProjs) }}" class="px-6 py-2 text-lg font-bold text-red-900 ">
+											<td rowspan="{{ $rowSpanVal }}" class="px-6 py-2 text-lg font-bold text-red-900 ">
 												{{ $xcd['name'] }} 
 											</td>
 						    				<?php  $user_id = $xcd['member_id']; unset($xcd['name']); unset($xcd['member_id']); ?>
