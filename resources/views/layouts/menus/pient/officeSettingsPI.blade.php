@@ -22,7 +22,7 @@
             <li class="nav-item">
             <a href="/organize-groups" class="nav-link">
               <i class="far fa-circle nav-icon"></i>
-              <p>Organize Group</p>
+              <p>Authorizations</p>
             </a>
             </li>	
           </ul>
