@@ -77,8 +77,8 @@ trait ActiveUsers
 						if($perm != null)
 						{
 							//now check whether the user has permission or not
-							$lx['project_id'] = $row->iaecproject_id;
-							$lx['title'] = "Proj-".$row->iaecproject_id." : ".$rowx->title;
+							$lx['project_id'] = $rowx->iaecproject_id;
+							$lx['title'] = "Proj-".$rowx->iaecproject_id." : ".$rowx->title;
 							$lx['title'] = $this->truncateString($lx['title'], 8); 
 						
 							foreach($perm as $valx)
@@ -94,8 +94,8 @@ trait ActiveUsers
 							//Log::channel('activity')->info('[ '.tenant('id')." ] [ ".Auth::user()->name.' ] permissions processed for [ '.$row->resproject_id.']');
 						}
 						else {
-								$lx['project_id'] = $row->iaecproject_id;
-								$lx['title'] = "Proj-".$row->iaecproject_id." : ".$rowx->title;
+								$lx['project_id'] = $rowx->iaecproject_id;
+								$lx['title'] = "Proj-".$rowx->iaecproject_id." : ".$rowx->title;
 								$lx['title'] = $this->truncateString($lx['title'], 8); 
 								$lx['tenure_start_date'] = null;
 								$lx['tenure_end_date'] = null;
