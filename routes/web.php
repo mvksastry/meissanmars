@@ -66,6 +66,10 @@ use App\Http\Controllers\Breeding\Cvhome\ColonyHomeController;
 use App\Livewire\Iaec\IaecProjects;
 use App\Livewire\Usage\IaecUsage;
 
+//livewire - User & Group Management
+use App\Livewire\Common\Users\CreateUser;
+use App\Livewire\Common\Users\OrganizeGroups;
+
 //Breeding - Routes
 use App\Http\Controllers\Breeding\BreedingHomeController;
 
@@ -214,7 +218,9 @@ Route::middleware(['auth','verified'])->group(function() {
     //Profile routes
     Route::resource('/profile', ProfileController::class);
     
-
+		//IAEC group routes
+    Route::get('create-user', CreateUser::class);
+		Route::get('organize-groups', OrganizeGroups::class);
 
     //-- PI specific : Projects routes
     Route::resource('/projects', ProjectsController::class);   

@@ -11,9 +11,18 @@
         
           <ul class="nav nav-treeview">
             <li class="nav-item">
-            <a href="{{ route('users.index') }}" class="nav-link">
+            <a href="/create-user" class="nav-link">
               <i class="far fa-circle nav-icon"></i>
-              <p>Users</p>
+              <p>Add User</p>
+            </a>
+            </li>	
+          </ul>
+
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+            <a href="/organize-groups" class="nav-link">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Organize Group</p>
             </a>
             </li>	
           </ul>

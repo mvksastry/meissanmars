@@ -70,8 +70,6 @@ class UsersController extends Controller
               'role' => ['required', 'string', 'max:30'],
           ])->validate();
     
-            
-    
           $newUser['folder'] = $this->generateCode(15); //added by ks
   
           //$newUser['password'] = $this->generateCode(10);
