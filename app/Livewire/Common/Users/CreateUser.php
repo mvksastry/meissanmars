@@ -116,10 +116,7 @@ class CreateUser extends Component
 		
 		// now assign Role
     $newUserResult->assignRole($input['role']);
-		
-		//now send mail to the newly registered user using registered event
-    event(new Registered($newUserResult));
-		
+
 		//add new member to group
 		$groupInfo['pi_id'] = Auth::user()->id;
 		$groupInfo['member_id'] = $newUserResult->id;
@@ -130,6 +127,10 @@ class CreateUser extends Component
 		]);
 		
 		$this->userAddMessageSuccess = "Added New User [ ".$input['name']." ]";
+		
+		//now send mail to the newly registered user using registered event
+    event(new Registered($newUserResult));
+		
 		//reset user creation form.
 		$this->resetAddUserForm();
 		
