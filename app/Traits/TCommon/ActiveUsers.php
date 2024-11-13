@@ -174,6 +174,7 @@ trait ActiveUsers
 					$result = Iaecassent::updateOrCreate($matchThese,
 														['start_date'=> $fin['start_date'], 
 														'end_date'=> $fin['end_date'],
+														'formd' => $fin['formd'],
 														'notebook' => $fin['notebook'],
 														'status'=> $fin['status'] ]);
 				break;
