@@ -16,6 +16,7 @@ use Spatie\Permission\Traits\HasRoles;
 use App;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Teaminvitations;
+use Illuminate\Auth\Events\Registered;
 
 use App\Models\Iaecproject;
 use App\Models\Iaecassent;
