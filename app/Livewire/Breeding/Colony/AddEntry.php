@@ -62,7 +62,8 @@ class AddEntry extends Component
 
 	public $cageIdx,  $cageInfos, $idx, $cageNumSuggestion, $newTag, $tagMsg;
 
-	public $countx=0, $cmsg1="", $cmsg2="", $cmsg3="", $cmsg4="", $newCageId, $tagBase, $nt, $origTag;
+	public $countx=0, $cmsg1="", $cmsg2="", $cmsg3="", $cmsg4="", $cmsg5="", $newCageId;
+	public $tagBase, $nt, $origTag;
 
 	//all flags here
 	public $cageCreateFlag, $addToCageFlag, $strainMixingFlag, $genderMixingFlag;
@@ -122,9 +123,9 @@ class AddEntry extends Component
 		$this->iaMessage = "Welcome, Pay attention to fields";
         //dd($this->iaMessage);
 		$input['speciesName'] = $this->speciesName;
-		//$this->validate(['speciesName' => 'required|alpha']);
+		$this->validate(['speciesName' => 'required|alpha']);
 		$input['purpose'] = $this->purpose;
-		//$this->validate(['purpose' => 'required|alpha']);
+		$this->validate(['purpose' => 'required|alpha']);
 		$input['_protocol_key'] = $this->_protocol_key;
 		//$this->validate(['purpose' => 'required|numeric']);
 		$input['_litter_key'] = $this->_litter_key;
@@ -274,6 +275,14 @@ class AddEntry extends Component
 		}
 		else {
 			$this->cmsg4 = "";
+			if($value != "-")
+			{
+				$this->cmsg5 = $value;
+				$this->cmsg4 = "New Code Valid";
+			}
+			else {
+				$this->cmsg5 = "";
+			}
 			$this->addToCageFlag = true;
 		}
 	}

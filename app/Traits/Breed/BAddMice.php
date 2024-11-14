@@ -62,7 +62,7 @@ public function addMice($input)
     $_strain_all         = $input['_strain_all'];
     $_strain_key         = $input['_strain_key'];
     $generation          = $input['_generation_key'];
-    $dob                 = $input['dob'];
+    $dob                 = date('Y-m-d H:i:s', strtotime($input['dob']));
     $_sex_key            = $input['_sex_key'];
     $lifeStatus          = $input['_lifeStatus_key'];
     $_breedingStatus_key = $input['_breedingStatus_key'];

@@ -34,18 +34,26 @@
               <input wire:model.lazy="speciesIdcode" type="text" class="w-1/0" placeholder="{{ $speciesName }} ID Code *"> -
 							<input wire:model.lazy="runner" type="text" class="w-1/20" placeholder="Runner Code *">
 							<input wire:model.prevent="automiceid" type="checkbox" value="true"> Auto ID
-							</br>
-							{{ $cmsg4 }}
 						</td>
             <td >
-              <font color="red">{{ $speciesName }} ID* </font>
+              <font color="red">New {{ $speciesName }} ID : </font>
             </td>
             <td>
-              <input wire:model.lazy="speciesId" type="text" name="speciesId" id="speciesId"
-                  data-validation="custom"  data-validation-regexp="^([A-Z]{2}-[A-Z]{2}-[0-9]{6}-[0-9]{4}-[0-9]{2})$"
-                  data-validation="required" placeholder="{{ $speciesName }} ID *">
+              {{ $cmsg5 }}
             </td>
           </tr>
+
+          <tr bgcolor="#EADDED">
+            <td class="p-2 text-center" colspan="3">
+							<font color="red">{{ $cmsg4 }}</font>
+						</td>
+            <td ></td>
+            <td></td>
+          </tr>					
+					
+					
+					
+					
           <tr bgcolor="#EAEDED">
             <td class="p-2">
               Protocol ID:
@@ -79,16 +87,16 @@
             </td>
             <td colspan="3" >
               <label for="all">
-              <input wire:model.lazy="_strain_all" type="radio" name="_strain_all" id="_strain_all" value="1" > All
+								<input wire:model.lazy="_strain_all" type="radio" name="_strain_all" id="_strain_all" value="1" > All
               </label>
               <label for="activeonly">
                 <input wire:model.lazy="_strain_all" type="radio" name="_strain_all" id="_strain_all" value="2"> Active Only
               </label>
               <select wire:model.lazy="_strain_key" name="_strain_key" id="_strain_key">
                 <option value=""></option>
-                @foreach($strains as $item)
-                  <option value="{{ $item->strain_id }}">{{ $item->strain_name." : ".$item->jrNum }}</option>
-                @endforeach
+									@foreach($strains as $item)
+										<option value="{{ $item->strain_id }}">{{ $item->strain_name." : ".$item->jrNum }}</option>
+									@endforeach
               </select>
             </td>
           </tr>
