@@ -92,7 +92,7 @@ class CompleteAllottment extends Component
     
     public $strain_name;
     public $RackNSlots, $totalFreeSlots, $maxSlotValue, $maxSlotRack_id;
-    public $multiRackDecision = "no", $maxSlotNumber;
+    public $multiRackDecision = "no", $maxSlotNumber, $maxRack_id;
 		
     public function render()
     {
@@ -303,7 +303,7 @@ class CompleteAllottment extends Component
 							$selRacks = implode(',', $this->RackNSlots);
 						}
 						else {
-							$selRacks = $this->maxRack_id;
+							$selRacks = $this->maxSlotRack_id;
 						}						
 										
 						if($totalFreeSlots >= $this->cagesGiven)
