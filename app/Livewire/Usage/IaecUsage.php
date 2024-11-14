@@ -396,7 +396,7 @@ class IaecUsage extends Component
       $cage_id = $exp[0];
       $usage_id = $exp[1];
       $this->irqMessage = "Cage Selected is: ".$idxz;
-      $caInfos = Cage::with('user')
+      $caInfos = Cage::with('user')->with('iaecprojects')
               ->with('strain')
               ->where('cage_id', $cage_id)->get();
       $this->caInfos = $caInfos;

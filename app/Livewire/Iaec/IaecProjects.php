@@ -52,7 +52,7 @@ class IaecProjects extends Component
     use Fileupload;
     use WithFileUploads;
 
-    public $project_id, $title, $start_date, $end_date, $comments;
+    public $project_id, $eafid, $title, $start_date, $end_date, $comments;
     public $date_approved, $filename, $iaec_meeting_info, $iaec_comments;
     public $iaec_approval_ref;
     
@@ -123,6 +123,7 @@ class IaecProjects extends Component
           $this->updateNotebook = false;
           $project = $this->projectById($id);
           $this->project_id = $id;
+					$this->eafid = $project->inst_id;
           $this->title = $project->title;
           $this->start_date = $project->start_date;
           $this->end_date = $project->end_date;

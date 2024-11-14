@@ -140,7 +140,8 @@
                           <thead>
                             <tr>
                               <th> ID </th>
-                              <th class="col-6"> Title </th>
+															<th> EAF ID </th>
+                              <th class="col-4"> Title </th>
                               <th> Status </th>
                               <th> Action</th>
                             </tr>
@@ -150,6 +151,9 @@
                               <tr>
                                 <td>
                                   <p class=""> {{ $row->projectiaec->iaecproject_id }} </p>
+                                </td>
+																<td>
+                                  <p class=""> B-{{ $row->projectiaec->inst_id }} </p>
                                 </td>
                                 <td>
                                     <p> {{ $row->projectiaec->title }} </p>

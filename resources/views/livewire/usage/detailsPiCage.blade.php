@@ -23,8 +23,8 @@
 							<td>{{ $x->usage_id }}</td>
 						</tr>
 						<tr>
-							<td>Project Id</td>
-							<td>{{ $x->iaecproject_id }}</td>
+							<td>EAF ID</td>
+							<td>B-{{ $x->iaecprojects->inst_id }}</td>
 						</tr>
 						<tr>
 							<td>Owner Id</td>

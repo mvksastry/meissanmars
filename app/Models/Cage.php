@@ -32,6 +32,11 @@ class Cage extends Model
     	'notes'
     ];
 
+		public function iaecprojects()
+		{
+			return $this->hasOne(Iaecproject::class, 'iaecproject_id', 'iaecproject_id');
+		}
+		
     public function user()
     {
       return $this->hasOne(User::class, 'id', 'requested_by');

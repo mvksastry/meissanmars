@@ -95,7 +95,7 @@ class Occupancy extends Component
     $this->cage_id = $id;
 		$this->layoutRack = true;
 		$this->irqMessage = "Cage Selected is: ".$id;
-		$caInfos = Cage::with('user')
+		$caInfos = Cage::with('user')->with('iaecprojects')
 						->with('strain')
 						->where('cage_id', $id)->get();
 		$this->caInfos = $caInfos;

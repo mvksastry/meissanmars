@@ -216,6 +216,14 @@
 		        		</tr>
 
 								<tr>
+		          		<td>EAF Id</td>
+									
+									<td>
+										B-{{ $eafid }}
+									</td>
+		        		</tr>
+								
+								<tr>
 		          		<td>Strains</td>
 									
 									<td>
