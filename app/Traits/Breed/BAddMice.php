@@ -10,6 +10,7 @@ use DateTime;
 use App\Traits\Breed\BBase;
 use App\Traits\Breed\BCVTerms;
 
+use App\Models\Breeding\Bcage;
 use App\Models\Breeding\Colony\Mouse;
 use App\Models\Breeding\Cvterms\Phenotypemouselink;
 use App\Models\Breeding\Cvterms\Usescheduleterm;
@@ -66,7 +67,7 @@ public function addMice($input)
     $_sex_key            = $input['_sex_key'];
     $lifeStatus          = $input['_lifeStatus_key'];
     $_breedingStatus_key = $input['_breedingStatus_key'];
-    $cage_id             = $input['cage_id'];
+   // $cage_id             = $input['cage_id']; //this is actually slot_id not cage_id
     $_room_key           = $input['_room_key'];
     $_coatColor_key      = $input['_coatColor_key'];
     $_diet_key           = $input['_diet_key'];
@@ -76,7 +77,7 @@ public function addMice($input)
     $phenotypes          = $input['_phenotype_key'];
     $comments            = $input['comments'];
     $cage_card           = $input['cage_card'];
-
+		
     $species_key         = $this->getSpeciesKeyBySpeciesName($speciesName);
 
     Log::channel('coding')->info('data collection for [ '.$mouse_id.'] insert array seems complete');
@@ -152,14 +153,18 @@ public function addMice($input)
     {
       $done = 0;
     }
-
+		//3. enter the cage details instead of container entries earlier. modified by ks
+		//   on 16-Nov-2024.
+		//		This is done through trait in App\Breed\BAddCageInfo
+					
+					
     //4. inset sql array prepartion.
     $addMiceEntry = array(
                     '_species_key'          => $species_key,
                     '_mouse_key'            => $mouse_key,
                     '_litter_key'           => $_litter_key,
                     '_strain_key'           => $_strain_key,
-                    '_pen_key'              => $cage_id,
+                    '_pen_key'              => 0, //
                     'ID'                    => $mouse_id,
                     'newTag'                => $replacement_tag,
                     'birthDate'             => $dob,

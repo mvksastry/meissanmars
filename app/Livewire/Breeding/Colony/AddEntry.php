@@ -36,6 +36,7 @@ use App\Models\Breeding\Colony\Mouse;
 
 use App\Traits\Breed\BAddMice;
 use App\Traits\Breed\BContainer;
+use App\Traits\Breed\BAddCageInfo;
 
 use Validator;
 
@@ -43,7 +44,7 @@ class AddEntry extends Component
 {
    
 	// display panels/divisions default state
-	use BAddMice, BContainer;
+	use BAddMice, BContainer, BAddCageInfo;
 
 	public $iaMessage;
 
@@ -64,7 +65,7 @@ class AddEntry extends Component
 	public $cageIdx,  $cageInfos, $idx, $cageNumSuggestion, $newTag, $tagMsg;
 
 	public $countx=0, $cmsg1="", $cmsg2="", $cmsg3="", $cmsg4="", $cmsg5="", $newCageId;
-	public $tagBase, $nt, $origTag;
+	public $tagBase, $nt, $origTag, $mice_ids = [], $mice_idx=[];
 
 	//slot id information retrieved
 	public $sarray=[], $rarray=[];
@@ -231,6 +232,8 @@ class AddEntry extends Component
 		$input['_room_key'] = $this->room_id; // changed by ks
 		$input['rack_id'] = $this->rack_id;
 		$input['slot_id'] = $this->cageInfos;
+		$input['_strain_key'] = $input['_strain_key'];
+		$input['_species_key'] = $this->speciesKey;
 		// the line below should set the flag for going ahead
 
 		//dd($input);
@@ -247,9 +250,13 @@ class AddEntry extends Component
 				$this->cmsg2 = "Note: Default limit breached";
 			}
 
+			
+			//input data preparation for cage rack slot info tables;
+
+			array_push($this->mice_idx, $input['speciesId']);
 			//now add to db here
-			//$result = $this->addMice($input);
-			$result = true;
+			$result = $this->addMice($input);
+			//$result = true;
 			//For test comment above result and set result to true.
 			// else opposite. comment out $result = true;
 			
@@ -264,7 +271,15 @@ class AddEntry extends Component
 			{
 				if($this->count == intval($this->deflimit) )
 				{
-					
+					//this means default limit added and hence make the 
+					//entries in the rack, slot, cage ids.
+					//dd($this->mice_ids, $this->mice_idx);
+					$input['animal_count'] = $this->count;
+					$input['mice_ids'] = $this->mice_idx;
+					$result = $this->updateRackSlotCageInfo($input);
+
+					//remove the slot_id from the array as the next one
+					//will get selected later on.
 					unset($this->rarray[0]);
 					
 					if(count($this->rarray) != 0)
@@ -286,6 +301,7 @@ class AddEntry extends Component
 							$this->addToCageFlag = false;
 						}
 						*/
+						$this->mice_idx = [];
 					}
 					else {
 						$this->cageInfos = null;
@@ -303,6 +319,7 @@ class AddEntry extends Component
 			$this->iaMessage = "See Messages for any issue";
 		}
 	}
+	
 /*
 	public function suggestedCage()
 	{
