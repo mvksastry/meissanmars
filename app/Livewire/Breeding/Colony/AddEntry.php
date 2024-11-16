@@ -37,6 +37,7 @@ use App\Models\Breeding\Colony\Mouse;
 use App\Traits\Breed\BAddMice;
 use App\Traits\Breed\BContainer;
 
+use Validator;
 
 class AddEntry extends Component
 {
@@ -58,18 +59,50 @@ class AddEntry extends Component
 	$replacement_tag, $comments, $cage_card, $automiceid, $usenextid, $count=0,
 	$_phenotype_key, $pad=3, $aumIdFlag = false, $lastIdVal=1, $cage_code;
 	
-	public $racks,  $rack_id, $room_id, $slotID, $slotval;
+	public $racks, $racksInRoom=[], $free_slots, $fslot_num, $rack_id, $room_id, $slotID, $slotval;
 
 	public $cageIdx,  $cageInfos, $idx, $cageNumSuggestion, $newTag, $tagMsg;
 
 	public $countx=0, $cmsg1="", $cmsg2="", $cmsg3="", $cmsg4="", $cmsg5="", $newCageId;
 	public $tagBase, $nt, $origTag;
 
+	//slot id information retrieved
+	public $sarray=[], $rarray=[];
+	
 	//all flags here
 	public $cageCreateFlag, $addToCageFlag, $strainMixingFlag, $genderMixingFlag;
+	public $mouseIdFlag=false, $slotSelectFlag=false;
+
+
 
 	public $strainDB, $genderDB, $LiveNewTagCheck, $idsearch, $runner;
 
+	protected $rules = [
+				'speciesIdcode'       => 'required|alpha_dash',
+        'runner'              => 'required|numeric',
+				'_protocol_key'       => 'sometimes|nullable|numeric',
+				'_litter_key'         => 'sometimes|nullable|numeric',
+				'_strain_key'         => 'required|numeric',
+				'_generation_key'     => 'required|alpha_num',
+				'dob'                 => 'required|date_format:Y-m-d',
+				'_sex_key'            => 'required|alpha',
+				'_lifeStatus_key'     => 'required|alpha',
+				'_breedingStatus_key' => 'required|alpha',
+				'_coatColor_key'      => 'sometimes|nullable|alpha_dash',
+				'_diet_key'           => 'sometimes|nullable|numeric',
+				'_owner_key'          => 'required|alpha_dash',
+				'_origin_key'         => 'required|alpha_dash',
+				'tagBase'             => 'required|alpha_dash',
+			//'replacement_tag'     => 'alpha_dash',
+				'cage_card'           => 'sometimes|nullable|regex:/^[\pL\s\- .,;0-9_]+$/u|max:500',
+				'phenotypes'          => 'sometimes|nullable|array',
+				'usescheduleterm_key' => 'sometimes|nullable|array',
+				'comments'            => 'sometimes|nullable|regex:/^[\pL\s\- .,;0-9_]+$/u|max:500',
+				'room_id'             => 'required|numeric',
+			//'cage_id'             => 'required|numeric',
+				'cageInfos'						=> 'required|numeric'
+  ];
+		
   public function render()
   {
     $this->liveMiceIdCheck($this->speciesIdcode);
@@ -79,7 +112,38 @@ class AddEntry extends Component
 
     return view('livewire.breeding.colony.add-entry');
   }
+	
+	public function validateFormInputs()
+	{
+		$this->validate();
+		
+		if($this->mouseIdFlag)
+		{
+			if($this->slotSelectFlag)
+			{
+				$this->addToCageFlag = true;
+			}
+		}
+	}
+	
+	public function updatedSpeciesIdcode($speciesIdcode)
+	{
+		$this->validateOnly($speciesIdcode);
+	}
+	
+	public function updatedRunner($runner)
+	{
+		$this->validateOnly($runner);
+	}
 
+	public function updatedDob($dob)
+	{
+		$this->validateOnly($dob);
+	}
+	
+	
+		
+		
 	public function show($id)
 	{
 		if($id == 1) { $this->iaMessage = "Selected Mice"; }
@@ -104,82 +168,74 @@ class AddEntry extends Component
 		$this->origins = CVOrigin::all();
 		//disable this and find the next available cage id that is empty
 		$this->containerId = Container::max('containerID');
-		$this->cageInfos = $this->suggestedCage();
+		//$this->cageInfos = $this->suggestedCage(); // original line
+		$this->cageInfos = "Not Selected";
 		//$this->cageNumSuggestion = $this->cageInfos;
 		//$this->cage_code = $this->containerId;
+		$this->addToCageFlag = false;
+		$this->cageCreateFlag = false;
 		$this->showEntryForm = true;
-	}
-
-	public function suggestedCage()
-	{
-		$maxContainerID = Container::max('containerID');
-		$cage_id = $maxContainerID + 1;
-		$this->cageCreateFlag = true;
-		return $cage_id;
 	}
 
 	public function post()
 	{
-		$this->iaMessage = "Welcome, Pay attention to fields";
-        //dd($this->iaMessage);
-		$input['speciesName'] = $this->speciesName;
-		$this->validate(['speciesName' => 'required|alpha']);
-		$input['purpose'] = $this->purpose;
-		$this->validate(['purpose' => 'required|alpha']);
-		$input['_protocol_key'] = $this->_protocol_key;
-		//$this->validate(['purpose' => 'required|numeric']);
-		$input['_litter_key'] = $this->_litter_key;
-		//$this->validate(['_litter_key' => 'required|numeric']);
-		$input['_strain_all'] = $this->_strain_all;
+		
+		//$this->validate(['_protocol_key' => 'sometimes|numeric']);
+		//$this->validate(['_litter_key' => 'sometimes|numeric']);
 		//$this->validate(['_strain_all' => 'required|numeric']);
-		$input['_strain_key'] = $this->_strain_key;
-		//$this->validate(['_strain_key' => 'required|numeric']);
-		$input['_generation_key'] = $this->_generation_key;
 		//$this->validate(['_generation_key' => 'required|numeric']);
-		$input['dob'] = $this->dob;
 		//$this->validate(['dob' => 'required|date_format:Y-m-d']);
-		$input['_sex_key'] = $this->_sex_key;
 		//$this->validate(['_sex_key' => 'required|numeric']);
-		$input['_lifeStatus_key'] = $this->_lifeStatus_key;
 		//$this->validate(['lifeStatus' => 'required|numeric']);
-		$input['_breedingStatus_key'] = $this->_breedingStatus_key;
 		//$this->validate(['_breedingStatus_key' => 'required|numeric']);
-		$input['cage_id'] = $this->cage_id;
-		//$this->validate(['cage_id' => 'required|numeric']);
-		$input['_room_key'] = $this->room_id; // changed by ks
-		//$this->validate(['_room_key' => 'required|numeric']);
-		$input['_coatColor_key'] = $this->_coatColor_key;
 		//$this->validate(['_coatColor_key' => 'required|numeric']);
-		$input['_diet_key'] = $this->_diet_key;
 		//$this->validate(['_diet_key' => 'required|numeric']);
-		$input['_owner_key'] = $this->_owner_key;
 		//$this->validate(['_owner_key' => 'required|numeric']);
-		$input['_origin_key'] = $this->_origin_key;
 		//$this->validate(['_origin_key' => 'required|numeric']);
+		//$this->validate(['replacement_tag' => 'required|numeric']);
+		//$this->validate(['cage_card' => 'required|numeric']);
+		//$this->validate(['phenotypes' => 'required|numeric']);
+		//$this->validate(['usescheduleterm_key' => 'required|numeric']);
+		//$this->validate(['cage_id' => 'required|numeric']);
+		//$this->validate(['_room_key' => 'required|numeric']);
+		//$this->validate(['comments' => 'required|numeric']);
+		
+		$this->validate();
+		
+		$this->iaMessage = "Welcome, Pay attention to fields";
+    //dd($this->iaMessage);
+		$input['speciesName'] = $this->speciesName;
+		$input['purpose'] = $this->purpose;
+		$input['_protocol_key'] = $this->_protocol_key;	
+		$input['_litter_key'] = $this->_litter_key;
+		$input['_strain_key'] = $this->_strain_key;
+		$input['_generation_key'] = $this->_generation_key;
+		$input['dob'] = $this->dob;
+		$input['_sex_key'] = $this->_sex_key;
+		$input['_lifeStatus_key'] = $this->_lifeStatus_key;
+		$input['_breedingStatus_key'] = $this->_breedingStatus_key;
+		$input['_coatColor_key'] = $this->_coatColor_key;
+		$input['_diet_key'] = $this->_diet_key;
+		$input['_owner_key'] = $this->_owner_key;
+		$input['_origin_key'] = $this->_origin_key;
 		$origTag = $this->tagBase;
 		$input['replacement_tag'] = $this->tagBase.'-'.strval($this->runner);
 		$this->replacement_tag = $this->tagBase.'-'.strval($this->runner);
-		//$this->validate(['replacement_tag' => 'required|numeric']);
 		$input['cage_card'] = $this->cage_card;
-		//$this->validate(['cage_card' => 'required|numeric']);
 		$input['_phenotype_key'] = $this->_phenotype_key;
-		//$this->validate(['phenotypes' => 'required|numeric']);
 		$input['usescheduleterm_key'] = $this->usescheduleterm_key;
-		//if($input['usescheduleterm_key'] == null) { $input['usescheduleterm_key'] = array(); }
-		//$this->validate(['usescheduleterm_key' => 'required|numeric']);
 		$input['comments'] = $this->comments;
-		//$this->validate(['comments' => 'required|numeric']);
 		$input['speciesId'] = $this->speciesIdcode.'-'.strval($this->runner);
+
 		//check cage selected is correct and ok for strian and gender
-		$input['cage_id'] = $this->cageInfos;
+		$input['_room_key'] = $this->room_id; // changed by ks
+		$input['rack_id'] = $this->rack_id;
+		$input['slot_id'] = $this->cageInfos;
 		// the line below should set the flag for going ahead
-		$this->liveCageMonitor($this->cageInfos);
 
-		if($this->createCageFlag){
-			$this->createCage($this->cageInfos);
-			$this->addToCageFlag = true;
-		}
+		//dd($input);
 
+		//$this->liveCageMonitor($this->cageInfos);
 
 		// at this stage data collection is complete, check also complete
 		if($this->addToCageFlag)
@@ -192,7 +248,12 @@ class AddEntry extends Component
 			}
 
 			//now add to db here
-			$result = $this->addMice($input);
+			//$result = $this->addMice($input);
+			$result = true;
+			//For test comment above result and set result to true.
+			// else opposite. comment out $result = true;
+			
+			
 			//$result = "check container tables";
 			$this->iaMessage = $result;
 			//after addition to db go to next mice id
@@ -203,24 +264,54 @@ class AddEntry extends Component
 			{
 				if($this->count == intval($this->deflimit) )
 				{
-					$this->cageInfos = $this->cageInfos + 1;
-					// disable for testing enable for live
-					if($this->createCage($this->cageInfos)){
-						$this->addToCageFlag = true;
+					
+					unset($this->rarray[0]);
+					
+					if(count($this->rarray) != 0)
+					{
+						$this->rarray = array_values($this->rarray);
+						//$this->cageInfos = $this->cageInfos + 1; //this should be next available slot.
+						$this->cageInfos = $this->rarray[0];
+						// disable for testing enable for live
+						
+						//select next available slot id here if no slots available
+						//close the flag.
+						//dd($this->cageInfos);
+						/*
+						if($this->createCage($this->cageInfos))
+						{
+							$this->addToCageFlag = true;
+						}
+						else {
+							$this->addToCageFlag = false;
+						}
+						*/
 					}
 					else {
+						$this->cageInfos = null;
+						$this->cageInfos = "Select New Rack";
 						$this->addToCageFlag = false;
 					}
 					$this->count = 0;
 				}
+			}
+			else {
+				$this->addToCageFlag = false;
 			}
 		}
 		else{
 			$this->iaMessage = "See Messages for any issue";
 		}
 	}
-
-
+/*
+	public function suggestedCage()
+	{
+		$maxContainerID = Container::max('containerID');
+		$cage_id = $maxContainerID + 1;
+		$this->cageCreateFlag = true;
+		return $cage_id;
+	}
+	
 	public function createCage($cage_id)
 	{
 		$input['cage_id'] = $cage_id;
@@ -232,16 +323,13 @@ class AddEntry extends Component
  
 		if($this->addNew($input))
 		{
-		    //check for empty slot first before returning true
-		    $this->slotval = $this->liveCheckEmptySlot();
 			return true;
 		}
 		else {
 			return false;
 		}
-
 	}
-	
+
 	public function liveCheckEmptySlot()
 	{
 	    $eres = Slot::select('slot_id')
@@ -250,6 +338,7 @@ class AddEntry extends Component
 	                    ->first();
 	   return $eres->slot_id;
 	}
+*/
 
 	public function LiveNewTagCheck($newTag)
 	{
@@ -257,11 +346,10 @@ class AddEntry extends Component
 		if(count($rows) != 0 )
 		{
 			$this->tagMsg = "Invalid Tag, already used";
-			$this->addToCageFlag = false;
 		}
 		else{
 			$this->tagMsg = "";
-			$this->addToCageFlag = true;
+			$this->mouseIdFlag = true;
 		}
 	}
 
@@ -271,74 +359,97 @@ class AddEntry extends Component
 		$rows = Mouse::where('ID', $value)->get();
 		if(count($rows) != 0 || count($rows) != null){
 			$this->cmsg4 = "Code exists, choose another";
-			$this->addToCageFlag = false;
+			//$this->addToCageFlag = false;
+			$this->$mouseIdFlag = false;
 		}
 		else {
 			$this->cmsg4 = "";
-			if($value != "-")
-			{
-				$this->cmsg5 = $value;
-				$this->cmsg4 = "New Code Valid";
-			}
-			else {
-				$this->cmsg5 = "";
-			}
-			$this->addToCageFlag = true;
+				if($value != "-")
+				{
+					$this->cmsg5 = $value;
+					$this->cmsg4 = "New Code Valid";
+					$this->mouseIdFlag = true;
+				}
+				else {
+					$this->cmsg5 = "";
+					//$this->mouseIdFlag = false;
+				}
 		}
 	}
 
 	public function liveCageMonitor($cageIdx)
 	{
-		$result = Container::where('containerID', $cageIdx)->get();
 
-		if( count($result) == 0 || $result == null) {
-			$this->countx = 0;
-			$this->cmsg2 = "Cage Not Found";
-			$this->createCageFlag = true;
-			$this->addToCageFlag = false;
-		}
-		else {
-			$this->checkGenderStrain($cageIdx);
-			$this->createCageFlag = false;
-		}
 	}
 
-	public function checkGenderStrain($cageId)
+/*
+	public function checkGenderStrain($slot_id)
 	{
-		$rows = Mouse::with('strainSelected')->where('_pen_key', $cageId)->get();
-		$str = Mouse::where('_pen_key', $cageId)->first();
-
-		$this->countx = count($rows);
-
-		if($this->countx > 0)
+		//$rows = Mouse::with('strainSelected')->where('_pen_key', $cageId)->get();
+		$cageidr = Slot::where('slot_id', $slot_id)
+										->where('rack_id', $this->rack_id)
+										//->where('status','O')
+										->first();
+										
+		if($cageidr->cage_id != 0)
 		{
+			$str = Mouse::where('_pen_key', $cageId)->first();
 			if($str->sex == $this->_sex_key && $str->_strain_key == intval($this->_strain_key))
 			{
 				$this->cmsg1 = $str->ID;
 				$this->cmsg2 = "Ok to Proceed";
-				$this->addToCageFlag = true;
-				$this->createCageFlag = false;
+				$this->slotSelectFlag = true;
 			}
 			else {
-				$this->addToCageFlag = false;
 				$this->cmsg2 ="Strain/Gender Mixing Possibility";
-				$this->createCageFlag = false;
 			}
 		}
 		else{
-			$this->cmsg1 = "None";
-			$this->cmsg2 = "Empty Cage";
-			$this->addToCageFlag = true;
-			$this->createCageFlag = false;
+			$this->cmsg1 = "";
+			return "Occupied or Non-available slot";
 		}
+		
 	}
+*/
 
 	public function resetForm()
 	{
 
 	}
     
-    
-    
-    
+  public function roomSelected()
+	{
+		$room_id = $this->room_id;
+		$this->racksInRoom = Rack::where('room_id', $room_id)->get();
+		//dd($room_id, $this->racksInRoom);
+	}		
+
+  public function rackSelected()
+	{
+		$rack_id = $this->rack_id;
+		$slots = Slot::where('rack_id', $rack_id)->where('status','A')->get();
+		$this->free_slots = $slots->count();
+		//if no free slots available throw Message
+		if($this->free_slots > 0)
+		{
+			$this->sarray = $slots->toArray();
+			$this->rarray = [];
+			foreach($this->sarray as $row)
+			{
+				$this->rarray[] = $row['slot_id'];
+			}
+			$this->fslot_num = json_encode(array_slice($this->rarray, 0, 5, true));
+			//dd($rarray, $sarray);
+			$this->cageInfos = $this->rarray[0];
+			$this->validateOnly($this->cageInfos);
+			$this->slotSelectFlag = true;
+
+		}
+		else {
+			$this->fslot_num = "No Free slots in rack";
+		}
+		
+	}	  
+	
+	
 }

@@ -34,6 +34,9 @@
               <input wire:model.lazy="speciesIdcode" type="text" class="w-1/0" placeholder="{{ $speciesName }} ID Code *"> -
 							<input wire:model.lazy="runner" type="text" class="w-1/20" placeholder="Runner Code *">
 							<input wire:model.prevent="automiceid" type="checkbox" value="true"> Auto ID
+							</br>
+							@error('speciesIdcode') <span class="text-danger error">{{ $message }}</span> @enderror
+							@error('runner') <span class="text-danger error">{{ $message }}</span> @enderror
 						</td>
             <td >
               <font color="red">New {{ $speciesName }} ID : </font>
@@ -50,10 +53,7 @@
             <td ></td>
             <td></td>
           </tr>					
-					
-					
-					
-					
+
           <tr bgcolor="#EAEDED">
             <td class="p-2">
               Protocol ID:
@@ -67,6 +67,8 @@
                   @endforeach
 								@endif
               </select>
+							</br>
+							@error('_protocol_key') <span class="text-danger error">{{ $message }}</span> @enderror
             </td>
 						<td>
 							<button wire:target.prevent="littersel" class="btn btn-primary btn-sm rounded">Select Litter</button>
@@ -75,9 +77,18 @@
 						<td>
 							<input wire:model.lazy="_litter_key" type="text" name="_litter_key" id="_litter_key"
 								placeholder="Litter Id *" >
+							</br>
+							@error('_litter_key') <span class="text-danger error">{{ $message }}</span> @enderror
 						</td>
           </tr>
+					
           <tr bgcolor="#EADDED">
+						<td>
+						</td>
+						<td>
+						</td>
+						<td>
+						</td>
 						<td>
 						</td>
           </tr>
@@ -87,19 +98,24 @@
             </td>
             <td colspan="3" >
               <label for="all">
+							<!--
 								<input wire:model.lazy="_strain_all" type="radio" name="_strain_all" id="_strain_all" value="1" > All
               </label>
               <label for="activeonly">
                 <input wire:model.lazy="_strain_all" type="radio" name="_strain_all" id="_strain_all" value="2"> Active Only
               </label>
+							-->
               <select wire:model.lazy="_strain_key" name="_strain_key" id="_strain_key">
                 <option value=""></option>
 									@foreach($strains as $item)
 										<option value="{{ $item->strain_id }}">{{ $item->strain_name." : ".$item->jrNum }}</option>
 									@endforeach
               </select>
+							</br>
+							@error('_strain_key') <span class="text-danger error">{{ $message }}</span> @enderror
             </td>
           </tr>
+					
           <tr bgcolor="#EAEDED">
             <td class="p-2">
               <font color="red">Generation*</font>
@@ -111,6 +127,9 @@
                     <option value="{{ $item->generation }}">{{ $item->generation }}</option>
                   @endforeach
                 </select>
+							</br>
+							@error('_generation_key') <span class="text-danger error">{{ $message }}</span> @enderror
+
             </td>
             <td>
 							<font color="red">Date of Birth*</font>
@@ -118,6 +137,9 @@
             <td>
               <input wire:model.lazy="dob" data-validate="required" id="dob" name="dob"
                           		placeholder="YYYY-MM-DD" type="text"/>
+							</br>
+							@error('dob') <span class="text-danger error">{{ $message }}</span> @enderror
+
             </td>
           </tr>
           <tr bgcolor="#EADDED">
@@ -133,6 +155,9 @@
               <label for="Unknown">
                 <input wire:model.lazy="_sex_key" type="radio" name="_sex_key" id="_sex_key" value="U"> Unknown
               </label>
+							</br>
+							@error('_sex_key') <span class="text-danger error">{{ $message }}</span> @enderror
+
             </td>
 						<td>
 							Gender Mixing
@@ -158,6 +183,9 @@
               <label for="unknwon">
                 <input wire:model.lazy="_breedingStatus_key" type="radio" name="_breedingStatus_key" id="_breedingStatus_key" value="U"> Unknown
               </label>
+							</br>
+							@error('_breedingStatus_key') <span class="text-danger error">{{ $message }}</span> @enderror
+
             </td>
 						<td>
 							<font color="red">Life Status*</font>
@@ -169,24 +197,61 @@
 										<option value="{{ $item->lifeStatus }}">{{ $item->description }}</option>
 									@endforeach
 							</select>
+							</br>
+							@error('_lifeStatus_key') <span class="text-danger error">{{ $message }}</span> @enderror
+
 						</td>
           </tr>
+
+          <tr bgcolor="#EAEDED">
+           	<td class="p-2">
+             	<font color="red">Owner / Workgroup*</font>
+           	</td>
+           	<td>
+             	<select wire:model.lazy="_owner_key" name="_owner_key" id="_owner_key">
+					      <option value=""></option>
+               		@foreach($owners as $item)
+                 		<option value="{{ $item->owner }}">{{ $item->owner }}</option>
+               		@endforeach
+             	</select>
+							</br>
+							@error('_owner_key') <span class="text-danger error">{{ $message }}</span> @enderror
+
+           	</td>
+           	<td >
+             	<font color="red">Origin*</font>
+           	</td>
+           	<td >
+             	<select wire:model.lazy="_origin_key" name="_origin_key" id="_origin_key">
+               	<option value=""></option>
+                 	@foreach($origins as $item)
+                 		<option value="{{ $item->Origin }}">{{ $item->Origin }}</option>
+                 	@endforeach
+             	</select>
+							</br>
+							@error('_origin_key') <span class="text-danger error">{{ $message }}</span> @enderror
+
+           	</td>
+          </tr>
+					
 					<tr bgcolor="#EADDED">
             <td class="p-2">
-                <font color="red">Suggested Cage ID*</font>
+                <font color="red">Suggested Slot ID*</font>
               </td >
               <td>
 							{{ $cageNumSuggestion }}
-              <input wire:model.prevent="cageInfos" type="text" name="cage_code" id="cage_code" value="">
+              <input wire:model.prevent="cageInfos" wire:change="changeCageInfos" type="text" name="cage_code" id="cage_code" value="">
 							<input wire:model.prevent="usenextid" type="checkbox" data-validation="custom"  name="usenextid" id="usenextid" value="true" data-validation-regexp="^([0-9])$">
-							Use Next ID
+							Use Next Available ID
+							</br>
+							@error('cageInfos') <span class="text-danger error">{{ $message }}</span> @enderror
             </td>
 
             <td >
-              <button wire:target.prevent="cagesel" class="btn btn-primary btn-sm rounded">Select Cage</button>
+              
             </td >
             <td>
-              <button wire:target.prevent="cagenew" class="btn btn-primary btn-sm rounded">New Cage</button>
+              
             </td>  
           </tr>
 					<tr bgcolor="#EAEDED">
@@ -203,7 +268,7 @@
                 <font color="red">Room*</font>
             </td>
             <td>
-              <select wire:model.lazy="room_id" name="room_id" id="room_id">
+              <select wire:model.lazy="room_id" wire:change="roomSelected" name="room_id" id="room_id">
 								<option value="0"></option>
                   @foreach($rooms as $item)
                     <option value="{{ $item->room_id }}">{{ $item->room_name }}</option>
@@ -220,27 +285,40 @@
              	<font color="red">Rack*</font>
             </td>
             <td>
-             	<select wire:model.lazy="rack_id" name="rack_id" id="rack_id">
+             	<select wire:model.lazy="rack_id" wire:change="rackSelected" name="rack_id" id="rack_id">
 								<option value="0"></option>
-               		@foreach($racks as $item)
+               		@foreach($racksInRoom as $item)
                  		<option value="{{ $item->rack_id }}">{{ $item->rack_name }}</option>
                		@endforeach
              	</select>
             </td>
           </tr>
-          <tr bgcolor="#EAEDED">
+					<tr bgcolor="#EAEDED">
            	<td class="p-2">
            	</td >
            	<td>
            	</td>
            	<td>
-             	<font color="red">Slot* (Auto Next Available)</font>
+							<font color="red">Total Free Slots</font>
            	</td>
            	<td> 
-             	<input wire:model.prevent="slotval" name="slot_id" id="slot_id" type="text" value="{{ $slotID }}">
+							{{ $free_slots }}
 					 	</td>
           </tr>
-          <tr bgcolor="#EADDED">
+					<tr bgcolor="#EAEDED">
+           	<td class="p-2">
+           	</td >
+           	<td>
+           	</td>
+           	<td>
+							<font color="red">First 5 Free Slot ID</font>
+           	</td>
+           	<td> 
+							{{ $fslot_num }}
+					 	</td>
+          </tr>
+
+          <tr bgcolor="#EADDED"> 
            	<td class="p-2">
              	Coat Color
            	</td>
@@ -251,6 +329,9 @@
                  		<option value="{{ $item->coatColor }}">{{ $item->coatColor. " : ".$item->description }}</option>
                		@endforeach
              	</select>
+							</br>
+							@error('_coatColor_key') <span class="text-danger error">{{ $message }}</span> @enderror
+
            	</td>
            	<td>
              	Diet
@@ -262,32 +343,12 @@
                			<option value="{{ $item->diet }}">{{ $item->diet }}</option>
                		@endforeach
              	</select>
+							</br>
+							@error('_diet_key') <span class="text-danger error">{{ $message }}</span> @enderror
+
            	</td>
           </tr>
-          <tr bgcolor="#EAEDED">
-           	<td class="p-2">
-             	<font color="red">Owner / Workgroup*</font>
-           	</td>
-           	<td>
-             	<select wire:model.lazy="_owner_key" name="_owner_key" id="_owner_key">
-					      <option value="0"></option>
-               		@foreach($owners as $item)
-                 		<option value="{{ $item->owner }}">{{ $item->owner }}</option>
-               		@endforeach
-             	</select>
-           	</td>
-           	<td >
-             	<font color="red">Origin*</font>
-           	</td>
-           	<td >
-             	<select wire:model.lazy="_origin_key" name="_origin_key" id="_origin_key">
-               	<option value=""></option>
-                 	@foreach($origins as $item)
-                 		<option value="{{ $item->Origin }}">{{ $item->Origin }}</option>
-                 	@endforeach
-             	</select>
-           	</td>
-          </tr>
+
           <tr bgcolor="#EADDED">
            	<td class="p-2">
              	Replacement Tag Base
@@ -298,6 +359,9 @@
                 data-validate="required|min:3" placeholder="Replacement Tag">
 						</br>
 						{{ $tagMsg }}
+							</br>
+							@error('tagBase') <span class="text-danger error">{{ $message }}</span> @enderror
+
            	</td>
 						<td>
              	Cage Card
@@ -305,6 +369,9 @@
            	<td>
 							<input wire:model.lazy="cage_card" type="text" name="cage_card" id="cage_card"
                	data-validate="required|min:3" placeholder="Cage Card">
+							</br>
+							@error('cage_card') <span class="text-danger error">{{ $message }}</span> @enderror
+
            	</td>
           </tr>
           <tr bgcolor="#EAEDED">
@@ -318,6 +385,9 @@
                     <option value="{{ $item->_phenotype_key }}">{{ $item->phenotype }}</option>
                   @endforeach
              	</select>
+							</br>
+							@error('_phenotype_key') <span class="text-danger error">{{ $message }}</span> @enderror
+
            	</td>
 						<td>
 							Use Schedules
@@ -329,6 +399,9 @@
 									<option value="{{ $item->_useScheduleTerm_key }}">{{ $item->useScheduleTermName }}</option>
 								@endforeach
 							</select>
+							</br>
+							@error('_useScheduleTerm_key') <span class="text-danger error">{{ $message }}</span> @enderror
+
 						</td>
           </tr>
           <tr bgcolor="#EADDED">
@@ -338,26 +411,55 @@
            	<td >
              	<textarea wire:model.lazy="comments" class="form-control" name="comments"
                 id="comments" rows="2"></textarea>
+							</br>
+							@error('comments') <span class="text-danger error">{{ $message }}</span> @enderror
+
            	</td>
 						<td>
-							Add Flag: @if($addToCageFlag) True @else False @endif
+							
 						</td>
 						<td>
-							Create Flag: @if($cageCreateFlag) True @else False @endif
+							
+					</tr>
+					<tr bgcolor="#EAEDED">
+						<td>
+						</td>
+           	<td class="p-2">
+             Create Flag: @if($cageCreateFlag) True @else False @endif
+						</td>
+						<td>
+						 Add Flag: 		@if($addToCageFlag) True @else False @endif
+           	</td>
+						<td>
+						</td>
+					</tr>
+          <tr bgcolor="#EADDED">
+           	<td class="p-2">
+             	Validations
+           	</td>
+           	<td >
+             	<button wire:click="validateFormInputs()" class="btn btn-primary rounded">Validate</button>
+           	</td>
+						<td>
+							<button wire:target.prevent="resetForm()" class="btn btn-primary rounded">Reset Form</button>
+						</td>
+						<td>
+							@if($addToCageFlag) 
+								<button wire:click="post()" class="btn btn-primary rounded">Enter</button>
+							@endif
+						</td>
+							
+					</tr>					
 					<tr bgcolor="#EADDED">
            	<td class="p-2">
            	</td>
            	<td >
            	</td>
 						<td>
-							@if($addToCageFlag)
-							<button wire:click="post()" class="btn btn-primary rounded">Enter</button>
-							@else
 
-							@endif
 						</td>
 						<td>
-							<button wire:target.prevent="resetForm()" class="btn btn-primary rounded">Cancel</button>
+							
 						</td>
          	</tr>
 				</tbody>

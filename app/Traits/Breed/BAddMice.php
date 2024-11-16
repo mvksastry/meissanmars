@@ -59,7 +59,7 @@ public function addMice($input)
     $_mouseProtocol_key  = $input['_protocol_key'];
     $usescheduleterm_key = $input['usescheduleterm_key'];
     $_litter_key         = $input['_litter_key'];
-    $_strain_all         = $input['_strain_all'];
+    //$_strain_all         = $input['_strain_all'];
     $_strain_key         = $input['_strain_key'];
     $generation          = $input['_generation_key'];
     $dob                 = date('Y-m-d H:i:s', strtotime($input['dob']));
