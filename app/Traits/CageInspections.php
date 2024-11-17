@@ -43,6 +43,16 @@ trait CageInspections
       $xyz      = $this->xyz;
       $notes    = $this->notes;
 			
+			if($numdead == null)
+			{
+				$numdead = 0;
+			}
+			
+			if($moribund == null)
+			{
+				$moribund = 0;
+			}			
+			
       if($moribund > 0)
       {
         //reduce the animal number by that many
@@ -64,14 +74,39 @@ trait CageInspections
       {
         $notes = $cnotes.$notes;
       }			
-
-      if($numdead > 0)
+			
+			$total_removed = $numdead + $moribund;
+			
+      if($total_removed > 0)
       {
-        $cageIdInfo->animal_number = $cageIdInfo->animal_number - $numdead;
+				//reduce the animal number by that many
+        $cageIdInfo->animal_number = $cageIdInfo->animal_number - $total_removed;
+				
+				if($cageIdInfo->animal_number == 0)
+				{
+					//check here if the cage empty i.e. animal_number is zero after
+					//removal of dead animals.
+					$cageIdInfo->end_date = date('Y-m-d');
+					$cageIdInfo->ack_date = date('Y-m-d');
+					$cageIdInfo->cage_status = "Finished";
+					$cageIdInfo->notes = "Cage removed";
 
-        $cageIdInfo->save();
-        //reduce the animal number by that many
-        $cnotes = $cnotes.'[ '.$numdead." ] dead removed;";
+					$cageIdInfo->save();
+					//dd($cageIdInfo);
+
+					//rack information also need to be put here?
+					$slotInfo = Slot::where('cage_id', intval($val))->first();
+
+					$slotInfo->cage_id = 0;
+					$slotInfo->status = 'A';
+
+					$slotInfo->save();
+				}
+				else {
+					$cageIdInfo->save();
+				}
+
+        $cnotes = $cnotes.'[ '.$total_removed." ] dead/moribund removed;";
 
         $input['usage_id'] = $cageIdInfo->usage_id;
         $input['cage_id'] = $cageIdInfo->cage_id;
@@ -80,12 +115,15 @@ trait CageInspections
         $input['entry_date'] = date('Y-m-d');
         $input['protocol_id'] = 0;
         $input['expt_date'] = date('Y-m-d');
-        $input['expt_description'] = "Cage observation: [ ".$numdead." ] dead, removed";
+        $input['expt_description'] = "Cage observation: [ ".$total_removed." ] dead, removed";
         $input['authorized_person'] = "PI";
         $input['signature'] = "Auto Entry-Signed";
         $input['remarks'] = "none";
 
         $result = DB::table($nbTable)->insert($input);
+				
+				//also make an entry in respective formD table.
+				
 				
 				//now make an entry in mortality table
 				
@@ -104,7 +142,6 @@ trait CageInspections
 				$mort->date_posted = date('Y-m-d');
 				
 				$mort->save();
-				
       }
 
       $res = Cagenote::updateOrCreate(

@@ -69,7 +69,7 @@ trait CageTermination
       else {
         $info['slot_id'] = $val->slot_id;
         $info['cage_id'] = 0;
-        $info['status'] = "o";
+        $info['status'] = "O";
         array_push($rackInfo, $info);
         $info = array();
       }

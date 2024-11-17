@@ -405,6 +405,43 @@ class CompleteAllottment extends Component
 				$res = Mouse::whereIn('ID', $mids)
 											->update(['exitDate' => date('Y-m-d H:i:s'),
 										'comment' => "Issued to project id ".$irq->iaecproject_id ]);
+				
+				//have to remove from respective breeding cages.
+				/*
+				1. in an iterative process, take mice id, get its, rack, slot, bcage Id
+				2. subtract one from the animal_number column of bcage id
+				3. check if the animal_number is equal to zero.
+				4. if yes, mark that cage for termination and make the slot status as Available
+				5. close that cage_status as "finished".				
+				*/
+				
+				foreach($mids as $row)
+				{
+					$termMice = Mouse::where('ID', $row)->first();
+					$bcage_id = $termMice->bcage_id;
+					$brack_id = $termMice->rack_id;
+					$bslot_id = $termMice->slot_id;
+					
+					$bcq = Bcage::where('bcage_id', $bcage_id)->first();
+					
+					$bcq->animal_number = $bcq->animal_number - 1;
+					
+					if($bcq->animal_number == 0)
+					{
+						$bcq->end_date = date('Y-m-d');
+						$bcq->ack_date = date('Y-m-d');
+						$bcq->cage_status = "Finished";
+						$bcq->notes = "Cage closed";
+						
+						//now free up the slot from the rack.
+						$cInput['cage_id'] = 0; // default value
+						$cInput['status'] = "A"; //available for use
+						
+						$matchThese = ['slot_id' => $bslot_id, 'rack_id' => $brack_id];
+						$res = Slot::where($matchThese)->update($cInput);
+					}
+					$bcq->save();
+				}
 
 				//make notebook entry first time when cages are issued.
 				$nb = $irq->iaecproject_id."notebook";
