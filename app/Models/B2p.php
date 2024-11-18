@@ -24,6 +24,8 @@ class B2p extends Model
 			'issue_id',
 			'number_moved',
 			'date_moved',
+			'cage_destination',
+			'cage_source',
 			'moved_by',
 			'moved_ids',
 			'comment'	

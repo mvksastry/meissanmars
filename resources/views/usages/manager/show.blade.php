@@ -66,6 +66,10 @@
                           <td>Project Id</td>
                           <td>{{ $usageRequest->iaecproject_id }}</td>
                         </tr>
+												<tr>
+                          <td>EAF Id</td>
+                          <td>B-{{ $usageRequest->project->inst_id }}</td>
+                        </tr>
                         <tr>
                           <td>PI</td>
                           <td>{{ $usageRequest->user->name }}</td>

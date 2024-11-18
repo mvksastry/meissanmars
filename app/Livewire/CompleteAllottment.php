@@ -19,6 +19,7 @@ use App\Models\Usage;
 use App\Models\Species;
 use App\Models\Strain;
 use App\Models\Cage;
+use App\Models\Breeding\Bcage;
 use App\Models\Image;
 use App\Models\Notebook;
 use App\Models\Room;
@@ -207,6 +208,8 @@ class CompleteAllottment extends Component
 					$temp["birthDate"] = $row->birthDate;
 					$temp["sex"] = $row->sex;
 					$temp["_pen_key"] = $row->_pen_key;
+					$temp['rack_id'] = $row->rack_id;
+					$temp['slot_id'] = $row->slot_id;
 					$temp["diet"] = $row->diet;
 					$temp["origin"] = $row->origin;
 					$temp["comment"] = $row->comment;
@@ -366,13 +369,16 @@ class CompleteAllottment extends Component
 			array_unshift($splitArray, null);
 			unset($splitArray[0]);
 			
+			$destination = array();
+			$source = array();
+			
 			for($k=1; $k<$reqCageNum+1; $k++)
 			{
 				$percage = $splitArray[$k];
 				//first get the ids per cage from miceInfos array
 				$mids = array_slice($miceInfos, 0, $percage);
 				$miceInfos = array_slice($miceInfos, $percage);
-												
+				//dd($mids);
 				// gather data for cages table
 				$cageInfo = new Cage();
 				$cageInfo->usage_id = $issueId;
@@ -393,15 +399,32 @@ class CompleteAllottment extends Component
 				$sInput['cage_id'] = $cage_id;
 				$sInput['status'] = "O";
 				
+				//for testing comment 391 and 392, 406, 423,424,425
+				// uncomment 393
+				
 				$res = Slot::where('rack_id', $this->maxSlotRack_id)
 											->where('status', 'A')
 											->first();
 											
 				$matchThese = ['slot_id' => $res->slot_id, 'rack_id' => $this->maxSlotRack_id];
-				$res = Slot::where($matchThese)->update($sInput);
+				$slotUpdate = Slot::where($matchThese)->update($sInput);
+				
+				//now make an entry for helping physical transfer of mice to
+				// help colony assistant.
+
+				$dest = array();
+				
+				$dest['cage_id'] = $cage_id;
+				$dest['slot_id'] = $res->slot_id;
+				$dest['rack_id'] = $this->maxSlotRack_id;
+				$dest['mice_ids'] = json_encode($mids);
+				$json_dest = json_encode($dest);
+				
+				array_push($destination, $json_dest);
 				
 				// now change occupancy status from occupied to vacant
 				// for the breeding cages here.
+				
 				$res = Mouse::whereIn('ID', $mids)
 											->update(['exitDate' => date('Y-m-d H:i:s'),
 										'comment' => "Issued to project id ".$irq->iaecproject_id ]);
@@ -422,6 +445,16 @@ class CompleteAllottment extends Component
 					$brack_id = $termMice->rack_id;
 					$bslot_id = $termMice->slot_id;
 					
+					$st[$row]['bcage_id'] = $bcage_id;
+					$st[$row]['brack_id'] = $brack_id;
+					$st[$row]['bslot_id'] = $bslot_id;
+
+					$json_stemp = json_encode($st);
+					//push to array
+					array_push($source, $json_stemp);
+
+					$json_stemp = null;
+					
 					$bcq = Bcage::where('bcage_id', $bcage_id)->first();
 					
 					$bcq->animal_number = $bcq->animal_number - 1;
@@ -440,6 +473,7 @@ class CompleteAllottment extends Component
 						$matchThese = ['slot_id' => $bslot_id, 'rack_id' => $brack_id];
 						$res = Slot::where($matchThese)->update($cInput);
 					}
+					$st=[];
 					$bcq->save();
 				}
 
@@ -470,7 +504,6 @@ class CompleteAllottment extends Component
 						$this->maxSlotValue = max($this->RackNSlots);
 						$this->maxSlotRack_id = array_search(max($this->RackNSlots), $this->RackNSlots);
 					}							
-					
 				}
 			}
 
@@ -488,9 +521,12 @@ class CompleteAllottment extends Component
 			$nB2p->issue_id = $issueId;
 			$nB2p->number_moved = $irq->number;
 			$nB2p->date_moved = date('Y-m-d');
+			$nB2p->cage_destination = json_encode($destination);
+			$nB2p->cage_source = json_encode($source);
 			$nB2p->moved_by = Auth::id();
 			$nB2p->moved_ids = $miceInfosJson;
 			$nB2p->comment = "moved to project id [ ".$irq->iaecproject_id." ]";
+			//dd($destination, $source, $nB2p);
 			$nB2p->save();
 
 			// show message and purge all objects.

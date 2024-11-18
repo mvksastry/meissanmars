@@ -46,9 +46,9 @@ class IaecUsage extends Component
 
     public $irqMessage;
 
-    public $iaecproject_id,$usage_id, $psbi1;
+    public $iaecproject_id,$usage_id, $eaf_id, $psbi1;
 
-    public $strain_name, $sex, $age, $ageunit, $number, $cagenumber;
+    public $strain_id, $strain_name, $sex, $age, $ageunit, $number, $cagenumber;
     public $termination, $products, $remarks, $status_date;
     public $issue_status, $created_at, $updated_at, $psbi, $agree;
     public $duration, $duration_unit, $expt_desc;
@@ -124,17 +124,18 @@ class IaecUsage extends Component
   	{
       $this->irqMessage = "";
       $this->updateMode = true;
-      $issueReq = Usage::with('strain')->where('usage_id', $id)->first();
+      $issueReq = Usage::with('project')->with('strain')->where('usage_id', $id)->first();
       $this->usage_id = $id;
       $this->iaecproject_id = $issueReq->iaecproject_id;
+			$this->eaf_id = $issueReq->project->inst_id;
+			$this->strain_id = $issueReq->strain_id;
       $this->strain_name = $issueReq->strain->strain_name;
-
       $this->sex = $issueReq->sex;
       $this->age = $issueReq->age;
       $this->ageunit = $issueReq->ageunit;
       $this->number = $issueReq->number;
       $this->cagenumber = $issueReq->cagenumber;
-      $this->termination = $issueReq->termination;
+      $this->termination = $issueReq->terminiation;
       $this->duration = $issueReq->duration;
       $this->duration_unit = $issueReq->duration_unit;
       $this->expt_desc = $issueReq->expt_desc;

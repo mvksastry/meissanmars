@@ -28,12 +28,22 @@
 									</td>
        					</tr>
 								<tr>
+           				<td>EAF Id</td>
+									<td>
+										B-{{ $eaf_id }}
+									</td>
+       					</tr>
+								<tr>
            				<td>Strain</td>
 									<td>
 										<select class="form-control shadow appearance-none border rounded" name="psbi1" id="psbi1" wire:model.lazy="psbi1">
 										<option value="">Select</option>
 										@foreach($psbi as $val)
-										<option value="{{ $val['species_id'].";".$val['strain_id'] }}">{{ $val['name'] }}</option>
+										<option value="{{ $val['species_id'].";".$val['strain_id'] }}"
+											@if($val['strain_id'] == $strain_id)
+												selected
+											@endif										
+										>{{ $val['name'] }}</option>
 										@endforeach
 									</select>
 									</td>

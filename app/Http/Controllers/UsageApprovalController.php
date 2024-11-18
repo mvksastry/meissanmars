@@ -82,6 +82,7 @@ class UsageApprovalController extends Controller
     {
         //
       $usageRequest = Usage::with('user')
+									->with('project')
                   ->with('species')
                   ->with('strain')
                   ->where('issue_status', 'confirmed')

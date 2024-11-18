@@ -29,6 +29,8 @@
                   <th> Age </th>
                   <th> Sex </th>
                   <th> Cage # </th>
+									<th> Rack # </th>
+									<th> Slot # </th>
                   <th> Diet </th>
                   <th> Origin </th>
                   <th> Comment</th>
@@ -65,6 +67,12 @@
                   </td>
                   <td>
                     {{ $row['_pen_key']}}
+                  </td>
+									<td>
+                    {{ $row['rack_id']}}
+                  </td>
+									<td>
+                    {{ $row['slot_id']}}
                   </td>
                   <td>
                     {{ $row['diet'] }}
