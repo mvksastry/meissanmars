@@ -229,6 +229,7 @@ class IaecUsage extends Component
       $ex = explode('_', $id);
       $this->cage_id = $ex[0];
       $this->rackInfo = $this->rackOccupancyInfo($id);
+			//dd($this->rackInfo);
       $this->cageDetailsPi = false;
       $this->layoutPiCage = true;
       $this->transferCage = false;

@@ -84,14 +84,12 @@ for($k = 0; $k < $levels; $k++)
                   $row = $rackInfo[$seatNo];
                   if( $row['status'] == 'O' )
                   {
-
 ?>
-
                     <span wire:click="markCages('{{ $row['cage_id'] }}')" >
 
-                        <button class="btn 
+                        <button class="btn
 												@if($changeColor)
-													btn-danger
+													btn-warning
 												@else
 													btn-success 
 												@endif
