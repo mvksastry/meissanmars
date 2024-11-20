@@ -12,6 +12,7 @@ use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Traits\HasRoles;
 
+use App\Models\B2p;
 use App\Models\Cage;
 use App\Models\Usage;
 use App\Models\Occupancies;
@@ -67,6 +68,12 @@ class IaecUsage extends Component
 
 		//change color of buttons
 		public $changeColor=false;
+		
+		// for cage transfer source and destination
+		public $forTransfInfo, $cage_dest, $cage_source;
+		
+		//panel on and off
+		public $sourceDestPanel=false;
 
     public function render()
     {
@@ -94,9 +101,29 @@ class IaecUsage extends Component
             }
         }
 
-        if( Auth::user()->hasRole('facility_help') )
+        if( Auth::user()->hasRole('colony_asst') )
         {
-            $issueReqs = $this->issueRequestsAllowed();
+            $this->forTransfInfo = B2p::where('status', 'issued')->get();
+						
+						//dd($this->forTransfInfo);
+						/*
+						$cage_dest = json_decode($forTransf->cage_destination, true);
+						$cage_source = json_decode($forTransf->cage_source, true);
+						foreach($cage_dest as $row)
+						{
+							$rowx = json_decode($row, true);
+							foreach($rowx as $val)
+							{
+								$dest_cage_id = $rowx['cage_id'];
+								$dest_rack_id = $rowx['rack_id'];
+								$dest_slot_id = $rowx['slot_id'];
+								$mice_ids     = $rowx['mice_ids'];
+								//dd($dest_cage_id, $dest_rack_id, $dest_slot_id, $mice_ids , $cage_source);
+							}
+						}
+						*/
+						//return view('livewire.issues')->with(['issueReqs'=>$issueReqs]);
+						return view('livewire.usage.iaec-usage-colonyasst');
         }
 
         if( Auth::user()->hasRole('veterinarian') )
@@ -109,6 +136,16 @@ class IaecUsage extends Component
 
         //return view('livewire.usage.iaec-usage');
     }
+		
+		public function miceForTransferById($id)
+		{
+			//dd($id);
+			$this->forTransfInfo = B2p::where('b2p_id', $id)->first();
+			$this->cage_dest = json_decode($this->forTransfInfo->cage_destination, true);
+			$this->cage_source = json_decode($this->forTransfInfo->cage_source, true);
+			//dd($this->cage_dest, $this->cage_source);
+			$this->sourceDestPanel=true;
+		}
     
     private function resetInputFields()
   	{
