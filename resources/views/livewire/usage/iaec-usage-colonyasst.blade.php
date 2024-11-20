@@ -139,9 +139,8 @@
 																foreach($cage_dest as $row)
 																{ 
 																	$rowx = json_decode($row, true); 
-																		$mice_ids = $rowx['mice_ids'];
-
-																	?>
+																	$mice_ids = $rowx['mice_ids'];
+														?>
 																		<tr>
 																			<td>
 																			</td>
@@ -218,7 +217,7 @@
 													<thead>
 														<tr>
 															<th>Mice ID</th>
-															<th> Cage ID </th>
+															<th>Breeding Cage ID </th>
 															<th> Rack ID </th>
 															<th> Slot ID </th>
 															
@@ -232,28 +231,26 @@
 																		//dd($rowx);
 																		foreach($rowx as $key => $val)
 																		{
-																	?>
-																		<tr>
-																			<td>
-																			{{ $key }}
-																			</td>
-																			
-																			<td>
-																			{{ $val['bcage_id'] }}
-																			</td>
-																			<td>
-																				{{ $val['brack_id'] }}
-																			</td>
-																			<td>
-																				{{ $val['bslot_id'] }}
-																			</td>																		
-																		</tr>
-																		<?php 
+														?>
+																			<tr>
+																				<td>
+																				{{ $key }}
+																				</td>
+																				
+																				<td>
+																				{{ $val['bcage_id'] }}
+																				</td>
+																				<td>
+																					{{ $val['brack_id'] }}
+																				</td>
+																				<td>
+																					{{ $val['bslot_id'] }}
+																				</td>																		
+																			</tr>
+														<?php 
 																		}
-																	
-															
 																}
-															?>
+														?>
 												
 													</tbody>
 													</table>
