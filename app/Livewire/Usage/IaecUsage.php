@@ -155,6 +155,8 @@ class IaecUsage extends Component
 			{
 				$this->job_msg = null;
 				$this->forTransfById->status = "executed";
+				$this->forTransfById->status_date = date('Y-m-d');
+				$this->forTransfById->status_updated_by = Auth::user()->name;
 				//dd($this->forTransfById);
 				$this->forTransfById->save();
 				$this->sourceDestPanel=false;

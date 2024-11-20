@@ -51,6 +51,7 @@
 								<div class="tab-content p-0">
 									<!-- Morris chart - Sales -->
 									<div class="chart tab-pane active" id="revenue-chart" style="position: relative;">
+									@if(count($forTransfInfo) > 0)
 										<table id="userIndex2" class="table table-bordered table-hover">
 											<thead>
 												<tr>
@@ -83,6 +84,17 @@
 												@endforeach
 											</tbody>
 										</table>
+									@else
+										<table id="userIndex2" class="table table-bordered table-hover">
+											<thead>
+												<tr>
+													<th>Issue IDs not found for transfer</th>													
+												</tr>
+											</thead>
+											<tbody>
+											</tbody>
+										</table>										
+									@endif
 									</div>
 								</div>
 						  </div><!-- /.card-body -->
