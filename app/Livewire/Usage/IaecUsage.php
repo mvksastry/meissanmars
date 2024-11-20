@@ -70,7 +70,8 @@ class IaecUsage extends Component
 		public $changeColor=false;
 		
 		// for cage transfer source and destination
-		public $forTransfInfo, $cage_dest, $cage_source;
+		public $forTransfInfo, $forTransfById, $job_done, $job_msg=null;
+		public $cage_dest, $cage_source;
 		
 		//panel on and off
 		public $sourceDestPanel=false;
@@ -140,11 +141,28 @@ class IaecUsage extends Component
 		public function miceForTransferById($id)
 		{
 			//dd($id);
-			$this->forTransfInfo = B2p::where('b2p_id', $id)->first();
-			$this->cage_dest = json_decode($this->forTransfInfo->cage_destination, true);
-			$this->cage_source = json_decode($this->forTransfInfo->cage_source, true);
+			$this->forTransfById = B2p::where('b2p_id', $id)->first();
+			//dd($this->forTransfById);
+			$this->cage_dest = json_decode($this->forTransfById->cage_destination, true);
+			$this->cage_source = json_decode($this->forTransfById->cage_source, true);
 			//dd($this->cage_dest, $this->cage_source);
 			$this->sourceDestPanel=true;
+		}
+		
+		public function miceTransferUpdate($id)
+		{
+			if($this->job_done == 1)
+			{
+				$this->job_msg = null;
+				$this->forTransfById->status = "executed";
+				//dd($this->forTransfById);
+				$this->forTransfById->save();
+				$this->sourceDestPanel=false;
+			}
+			else {
+				$this->job_msg = " Check 'Job_done' box";
+			}
+			
 		}
     
     private function resetInputFields()

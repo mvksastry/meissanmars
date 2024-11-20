@@ -26,6 +26,7 @@ class B2p extends Model
 			'date_moved',
 			'cage_destination',
 			'cage_source',
+			'status',
 			'moved_by',
 			'moved_ids',
 			'comment'	

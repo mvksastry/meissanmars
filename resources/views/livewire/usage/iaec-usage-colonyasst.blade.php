@@ -62,6 +62,7 @@
 											</thead>
 											<tbody>
 												@foreach($forTransfInfo as $row)
+												<?php $b2p_id = $row->b2p_id ?>
 													<tr>
 														<td>
 														{{ $row->issue_id }}
@@ -76,7 +77,7 @@
 														{{ $row->strain_id }}
 														</td>					
 														<td>
-															<button wire:click="miceForTransferById({{ $row->b2p_id }})" class="btn btn-primary rounded">Details</button>	
+															<button wire:click="miceForTransferById({{ $b2p_id }})" class="btn btn-primary rounded">Details</button>	
 														</td>														
 													</tr>
 												@endforeach
@@ -98,76 +99,6 @@
 
 
 				@if($sourceDestPanel)
-					<!-- Main row -->
-					<div class="row">
-						<!-- Left col -->
-						<section class="col-lg-12 connectedSortable">
-							<!-- Custom tabs (Charts with tabs)-->
-							<div class="card card-primary card-outline">
-								<div class="card-header">
-									<h3 class="card-title">
-										<i class="fas fa-chart-pie mr-1"></i>
-										Destination Cages to be populated
-									</h3>
-									<div class="card-tools">
-										<ul class="nav nav-pills ml-auto">
-											<li class="nav-item"></li>
-											<li class="nav-item"></li>
-										</ul>
-									</div>
-								</div><!-- /.card-header -->
-								<div class="card-body">
-									<div class="tab-content p-0">
-										<!-- Morris chart - Sales xxz-->
-										<div class="chart tab-pane active" id="revenue-chart" style="position: relative;">
-											<table id="userIndex2" class="table table-bordered table-hover">
-												<thead>
-													<tr>
-														<th>ID</th>
-														<th> Cage ID </th>
-														<th> Rack ID </th>
-														<th> Slot ID </th>
-														<th> Mice ID</th>
-													</tr>
-												</thead>
-													<tbody>
-													<?php
-														foreach($cage_dest as $row)
-														{ 
-															$rowx = json_decode($row, true); 
-															$mice_ids = $rowx['mice_ids'];
-													?>
-															<tr>
-																<td>
-																</td>
-																<td>
-																	{{ $rowx['cage_id'] }}
-																</td>
-																<td>
-																	{{ $rowx['rack_id']; }}
-																</td>
-																<td>
-																	{{ $rowx['slot_id'] }}
-																</td>
-																<td>
-																	{{ $mice_ids }}
-																</td>
-															</tr>
-													<?php 
-														}
-													?>
-												</tbody>
-											</table>		
-										</div>
-									</div>
-								</div><!-- /.card-body -->
-							</div>
-							<!-- /.card -->
-							<!-- /.card -->
-						</section>
-					</div>
-					
-					
 					<div class="row">
 						<section class="col-lg-12 connectedSortable">
 							<!-- Custom tabs (Charts with tabs)-->
@@ -190,12 +121,11 @@
 									<div class="chart tab-pane active" id="revenue-chart" style="position: relative;">
 										<table id="userIndex2" class="table table-bordered table-hover">
 											<thead>
+
 												<tr>
 													<th>Mice ID</th>
-													<th>Breeding Cage ID </th>
-													<th> Rack ID </th>
-													<th> Slot ID </th>
-													
+													<th> Move From </th>
+													<th> MoveTo </th>
 												</tr>
 											</thead>
 											<tbody>
@@ -206,20 +136,30 @@
 																//dd($rowx);
 																foreach($rowx as $key => $val)
 																{
+																	
+																	foreach($cage_dest as $krow)
+																	{
+																		$krowx = json_decode($krow, true); 
+																		$mice_ids = json_decode($krowx['mice_ids']);
+																		if(in_array($key, $mice_ids))
+																		{
+																			$toCage_id = $krowx['cage_id'];
+																			$toRack_id = $krowx['rack_id'];
+																			$toSlot_id = $krowx['slot_id'];
+																		}
+																	}
 												?>
 																	<tr>
 																		<td>
 																		{{ $key }}
 																		</td>
 																		<td>
-																		{{ $val['bcage_id'] }}
-																		</td>
+																			BCage: {{ $val['bcage_id'] }}
+																			BRack: {{ $val['brack_id'] }}
+																			BSlot: {{ $val['bslot_id'] }}
+																		</td>								
 																		<td>
-																			{{ $val['brack_id'] }}
-																		</td>
-																		<td>
-																			{{ $val['bslot_id'] }}
-																		</td>																		
+																			Cage: {{ $toCage_id }}; Rack: {{ $toRack_id }}; Slot: {{ $toSlot_id }}
 																	</tr>
 												<?php 
 																}
@@ -227,6 +167,20 @@
 												?>
 											</tbody>
 										</table>
+										<input type="checkbox" wire:model="job_done" name="slot[]" value="1" />
+										<label class="form-check-label text-success font-weight-bold" for="defaultCheck2">
+											Job Done
+										</label>
+										</br>
+										@if($job_msg != null)
+										{{ $job_msg }}
+										@else 
+											
+										@endif
+										</br>					
+										</br>
+										<button wire:click="miceTransferUpdate({{ $b2p_id }})" class="btn btn-primary rounded">Update</button>	
+														
 									</div>
 								</div>
 								</div><!-- /.card-body -->
