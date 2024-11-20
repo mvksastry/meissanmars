@@ -48,45 +48,42 @@
 							</div>
 						  </div><!-- /.card-header -->
 						  <div class="card-body">
-							<div class="tab-content p-0">
-								<!-- Morris chart - Sales -->
-								<div class="chart tab-pane active" id="revenue-chart" style="position: relative;">
-
-  
-                      <table id="userIndex2" class="table table-bordered table-hover">
-                        <thead>
-                          <tr>
-                            <th>Issue ID</th>
-                            <th>No. Mice to Be </br> Transferred </th>
-                            <th>Species ID </th>  
-														<th>Strain ID </th> 														
-                          </tr>
-                        </thead>
-              						<tbody>
-													@foreach($forTransfInfo as $row)
-														<tr>
-															<td>
-															{{ $row->issue_id }}
-															</td>
-															<td>
-															{{ $row->number_moved }}
-															</td>
-															<td>
-															{{ $row->species_id }}
-															</td>
-															<td>
-															{{ $row->strain_id }}
-															</td>					
-															<td>
-																<button wire:click="miceForTransferById({{ $row->b2p_id }})" class="btn btn-primary rounded">Details</button>	
-															</td>														
-														</tr>
-													@endforeach
-                        </tbody>
-                        </table>
-                               		
+								<div class="tab-content p-0">
+									<!-- Morris chart - Sales -->
+									<div class="chart tab-pane active" id="revenue-chart" style="position: relative;">
+										<table id="userIndex2" class="table table-bordered table-hover">
+											<thead>
+												<tr>
+													<th>Issue ID</th>
+													<th>No. Mice to Be </br> Transferred </th>
+													<th>Species ID </th>  
+													<th>Strain ID </th> 														
+												</tr>
+											</thead>
+											<tbody>
+												@foreach($forTransfInfo as $row)
+													<tr>
+														<td>
+														{{ $row->issue_id }}
+														</td>
+														<td>
+														{{ $row->number_moved }}
+														</td>
+														<td>
+														{{ $row->species_id }}
+														</td>
+														<td>
+														{{ $row->strain_id }}
+														</td>					
+														<td>
+															<button wire:click="miceForTransferById({{ $row->b2p_id }})" class="btn btn-primary rounded">Details</button>	
+														</td>														
+													</tr>
+												@endforeach
+											</tbody>
+										</table>
+									</div>
 								</div>
-							</div>
 						  </div><!-- /.card-body -->
 						</div>
 						<!-- /.card -->
@@ -108,79 +105,59 @@
 							<!-- Custom tabs (Charts with tabs)-->
 							<div class="card card-primary card-outline">
 								<div class="card-header">
-								<h3 class="card-title">
-									<i class="fas fa-chart-pie mr-1"></i>
-									Destination Cages to be populated
-								</h3>
-								<div class="card-tools">
-									<ul class="nav nav-pills ml-auto">
-										<li class="nav-item"></li>
-										<li class="nav-item"></li>
-									</ul>
-								</div>
+									<h3 class="card-title">
+										<i class="fas fa-chart-pie mr-1"></i>
+										Destination Cages to be populated
+									</h3>
+									<div class="card-tools">
+										<ul class="nav nav-pills ml-auto">
+											<li class="nav-item"></li>
+											<li class="nav-item"></li>
+										</ul>
+									</div>
 								</div><!-- /.card-header -->
 								<div class="card-body">
 									<div class="tab-content p-0">
-									<!-- Morris chart - Sales xxz-->
+										<!-- Morris chart - Sales xxz-->
 										<div class="chart tab-pane active" id="revenue-chart" style="position: relative;">
-											
-												<table id="userIndex2" class="table table-bordered table-hover">
-													<thead>
-														<tr>
-															<th>ID</th>
-															<th> Cage ID </th>
-															<th> Rack ID </th>
-															<th> Slot ID </th>
-															<th> Mice ID</th>
-														</tr>
-													</thead>
-														<tbody>
-														<?php
-																foreach($cage_dest as $row)
-																{ 
-																	$rowx = json_decode($row, true); 
-																	$mice_ids = $rowx['mice_ids'];
-														?>
-																		<tr>
-																			<td>
-																			</td>
-																			<td>
-																				{{ $rowx['cage_id'] }}
-																			</td>
-																			<td>
-																				{{ $rowx['rack_id']; }}
-																			</td>
-																			<td>
-																				{{ $rowx['slot_id'] }}
-																			</td>
-																			<td>
-																				
-																				{{ $mice_ids }}
-																				
-																				</br>
-																			</td>
-																			
-																		</tr>
-																		<?php 
-																	
-																	
-															
-																}
-															?>
-												
-													</tbody>
-													</table>
-											 
-													<table class='table-auto mx-auto w-full whitespace-nowrap rounded-lg bg-white divide-y divide-gray-300 overflow-hidden'>
-														<thead class="bg-gray-900">
-															<tr class="text-white text-left">
-																<th class="font-semibold text-sm uppercase px-6 py-4"> No Data Found </th>
+											<table id="userIndex2" class="table table-bordered table-hover">
+												<thead>
+													<tr>
+														<th>ID</th>
+														<th> Cage ID </th>
+														<th> Rack ID </th>
+														<th> Slot ID </th>
+														<th> Mice ID</th>
+													</tr>
+												</thead>
+													<tbody>
+													<?php
+														foreach($cage_dest as $row)
+														{ 
+															$rowx = json_decode($row, true); 
+															$mice_ids = $rowx['mice_ids'];
+													?>
+															<tr>
+																<td>
+																</td>
+																<td>
+																	{{ $rowx['cage_id'] }}
+																</td>
+																<td>
+																	{{ $rowx['rack_id']; }}
+																</td>
+																<td>
+																	{{ $rowx['slot_id'] }}
+																</td>
+																<td>
+																	{{ $mice_ids }}
+																</td>
 															</tr>
-														</thead>
-														<tbody>                          
-														</tbody>
-													</table>
-												
+													<?php 
+														}
+													?>
+												</tbody>
+											</table>		
 										</div>
 									</div>
 								</div><!-- /.card-body -->
@@ -211,50 +188,45 @@
 								<div class="tab-content p-0">
 									<!-- Morris chart - Sales -->
 									<div class="chart tab-pane active" id="revenue-chart" style="position: relative;">
-
-		
-												<table id="userIndex2" class="table table-bordered table-hover">
-													<thead>
-														<tr>
-															<th>Mice ID</th>
-															<th>Breeding Cage ID </th>
-															<th> Rack ID </th>
-															<th> Slot ID </th>
-															
-														</tr>
-													</thead>
-														<tbody>
-														<?php
-																foreach($cage_source as $row)
-																{ 
-																	$rowx = json_decode($row, true); 
-																		//dd($rowx);
-																		foreach($rowx as $key => $val)
-																		{
-														?>
-																			<tr>
-																				<td>
-																				{{ $key }}
-																				</td>
-																				
-																				<td>
-																				{{ $val['bcage_id'] }}
-																				</td>
-																				<td>
-																					{{ $val['brack_id'] }}
-																				</td>
-																				<td>
-																					{{ $val['bslot_id'] }}
-																				</td>																		
-																			</tr>
-														<?php 
-																		}
+										<table id="userIndex2" class="table table-bordered table-hover">
+											<thead>
+												<tr>
+													<th>Mice ID</th>
+													<th>Breeding Cage ID </th>
+													<th> Rack ID </th>
+													<th> Slot ID </th>
+													
+												</tr>
+											</thead>
+											<tbody>
+												<?php
+														foreach($cage_source as $row)
+														{ 
+															$rowx = json_decode($row, true); 
+																//dd($rowx);
+																foreach($rowx as $key => $val)
+																{
+												?>
+																	<tr>
+																		<td>
+																		{{ $key }}
+																		</td>
+																		<td>
+																		{{ $val['bcage_id'] }}
+																		</td>
+																		<td>
+																			{{ $val['brack_id'] }}
+																		</td>
+																		<td>
+																			{{ $val['bslot_id'] }}
+																		</td>																		
+																	</tr>
+												<?php 
 																}
-														?>
-												
-													</tbody>
-													</table>
-																		
+														}
+												?>
+											</tbody>
+										</table>
 									</div>
 								</div>
 								</div><!-- /.card-body -->
