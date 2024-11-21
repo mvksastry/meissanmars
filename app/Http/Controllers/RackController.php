@@ -77,6 +77,7 @@ class RackController extends Controller
     public function store(Request $request)
     {
       //Validate name and permissions field
+			/*
       $this->validate($request, [
         'room_id'   => 'required|numeric|min:1',
         'rack_name' => 'required|regex:/(^[A-Za-z0-9 -_]+$)+/|max:50',
@@ -85,7 +86,8 @@ class RackController extends Controller
         'levels'    => 'required|numeric|max:8',
         'notes'     => 'nullable|regex:/(^[A-Za-z0-9 -_]+$)+/|max:250'
       ]);
-
+			*/
+			
       $result = $this->inductNewRack($request);
             
       return redirect()->route('rack.index')
