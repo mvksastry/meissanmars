@@ -431,8 +431,8 @@ class CompleteAllottment extends Component
 				
 				//have to remove from respective breeding cages.
 				/*
-				1. in an iterative process, take mice id, get its, rack, slot, bcage Id
-				2. subtract one from the animal_number column of bcage id
+				1. in an iterative process, take mice id, get its, rack, slot, cage Id
+				2. subtract one from the animal_number column of cage id
 				3. check if the animal_number is equal to zero.
 				4. if yes, mark that cage for termination and make the slot status as Available
 				5. close that cage_status as "finished".				
@@ -441,13 +441,13 @@ class CompleteAllottment extends Component
 				foreach($mids as $row)
 				{
 					$termMice = Mouse::where('ID', $row)->first();
-					$bcage_id = $termMice->bcage_id;
-					$brack_id = $termMice->rack_id;
-					$bslot_id = $termMice->slot_id;
+					//$cage_id = $termMice->cage_id;
+					//$rack_id = $termMice->rack_id;
+					//$slot_id = $termMice->slot_id;
 					
-					$st[$row]['bcage_id'] = $bcage_id;
-					$st[$row]['brack_id'] = $brack_id;
-					$st[$row]['bslot_id'] = $bslot_id;
+					$st[$row]['cage_id'] = $termMice->cage_id;
+					$st[$row]['rack_id'] = $termMice->rack_id;
+					$st[$row]['slot_id'] = $termMice->slot_id;
 
 					$json_stemp = json_encode($st);
 					//push to array
@@ -455,7 +455,7 @@ class CompleteAllottment extends Component
 
 					$json_stemp = null;
 					
-					$bcq = Bcage::where('bcage_id', $bcage_id)->first();
+					$bcq = Cage::where('cage_id', $cage_id)->first();
 					
 					$bcq->animal_number = $bcq->animal_number - 1;
 					
@@ -526,6 +526,7 @@ class CompleteAllottment extends Component
 			$nB2p->moved_by = Auth::id();
 			$nB2p->moved_ids = $miceInfosJson;
 			$nB2p->comment = "moved to project id [ ".$irq->iaecproject_id." ]";
+			$nB2p->status = "issued";
 			//dd($destination, $source, $nB2p);
 			$nB2p->save();
 

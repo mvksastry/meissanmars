@@ -12,6 +12,7 @@ use App\Traits\Breed\BCVTerms;
 
 use App\Models\Slot;
 use App\Models\Breeding\Bcage;
+use App\Models\Cage;
 use App\Models\Breeding\Colony\Mouse;
 
 use App\Models\Breeding\Cvterms\Phenotypemouselink;
@@ -35,34 +36,34 @@ trait BAddCageInfo
 				//$species_key         = $this->getSpeciesKeyBySpeciesName($binput['_species_key']);
 				
 				// gather data for cages table
-				$bcageInfo = new Bcage();
-				$bcageInfo->entered_by = Auth::id();
-				$bcageInfo->species_id = $binput['_species_key'];
-				$bcageInfo->strain_id = $binput['_strain_key'];
-				$bcageInfo->animal_number = $binput['animal_count'];
-				$bcageInfo->mouse_ids = json_encode($binput['mice_ids']);
-				$bcageInfo->start_date = date('Y-m-d');
-				$bcageInfo->end_date = date('Y-m-d');
-				$bcageInfo->ack_date = date('Y-m-d');
-				$bcageInfo->cage_status = 'Active';
-				$bcageInfo->notes = 'Cage created ';
+				$cageInfo = new Cage();
+				$cageInfo->entered_by = Auth::id();
+				$cageInfo->species_id = $binput['_species_key'];
+				$cageInfo->strain_id = $binput['_strain_key'];
+				$cageInfo->animal_number = $binput['animal_count'];
+				$cageInfo->mouse_ids = json_encode($binput['mice_ids']);
+				$cageInfo->start_date = date('Y-m-d');
+				$cageInfo->end_date = date('Y-m-d');
+				$cageInfo->ack_date = date('Y-m-d');
+				$cageInfo->cage_status = 'Active';
+				$cageInfo->notes = 'Cage created ';
 				//dd($bcageInfo);
-				$bcageInfo->save();
-				$bcage_id = $bcageInfo->bcage_id;
+				$cageInfo->save();
+				$cage_id = $cageInfo->cage_id;
 				
 				$rack_id = $binput['rack_id'];
 				$slot_id = $binput['slot_id'];
 				
 				//now collect data for slots table
-				$sInput['cage_id'] = $bcage_id;
+				$sInput['cage_id'] = $cage_id;
 				$sInput['status'] = "O";
 															
 				$matchThese = ['slot_id' => $slot_id, 'rack_id' => $rack_id];
 				$res = Slot::where($matchThese)->update($sInput);
 				
 				//Now update the mice table for cage_slot_rack id here.
-				$mInput['_pen_key'] = $bcage_id;
-				$mInput['bcage_id'] = $bcage_id;
+				$mInput['_pen_key'] = $cage_id;
+				$mInput['cage_id'] = $cage_id;
 				$mInput['rack_id'] = $rack_id;
 				$mInput['slot_id'] = $slot_id;
 				

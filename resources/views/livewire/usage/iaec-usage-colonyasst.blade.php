@@ -166,9 +166,9 @@
 																		{{ $key }}
 																		</td>
 																		<td>
-																			BCage: {{ $val['bcage_id'] }}
-																			BRack: {{ $val['brack_id'] }}
-																			BSlot: {{ $val['bslot_id'] }}
+																			Cage: {{ $val['cage_id'] }}
+																			Rack: {{ $val['rack_id'] }}
+																			Slot: {{ $val['slot_id'] }}
 																		</td>								
 																		<td>
 																			Cage: {{ $toCage_id }}; Rack: {{ $toRack_id }}; Slot: {{ $toSlot_id }}

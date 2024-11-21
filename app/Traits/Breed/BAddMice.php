@@ -11,6 +11,7 @@ use App\Traits\Breed\BBase;
 use App\Traits\Breed\BCVTerms;
 
 use App\Models\Breeding\Bcage;
+use App\Models\Cage;
 use App\Models\Breeding\Colony\Mouse;
 use App\Models\Breeding\Cvterms\Phenotypemouselink;
 use App\Models\Breeding\Cvterms\Usescheduleterm;
