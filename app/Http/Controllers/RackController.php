@@ -88,8 +88,38 @@ class RackController extends Controller
       ]);
 			*/
 			//dd("reached");
-      $result = $this->inductNewRack($request);
-      dd("reached");
+			$resx = Floor::findorFail($request['room_id']);
+    
+			$building_id = $resx->building_id;
+			$floor_id = $resx->floor_id;
+		
+      $rack = new Rack();
+      $rack->building_id = $building_id;
+      $rack->floor_id    = $floor_id;
+      $rack->room_id     = $request['room_id'];
+      $rack->rack_name   = $request['rack_name'];
+      $rack->rows        = $request['rows'];
+      $rack->cols        = $request['cols'];
+      $rack->levels      = $request['levels'];
+      $rack->notes       = $request['notes'];
+			//dd($rack);
+      $rack->save();
+      
+      $rack_id = $rack->rack_id;
+
+      $capacity = $rack->rows*$rack->cols*$rack->levels;
+
+      for($i = 1; $i< $capacity+1; $i++)
+      {
+        $slot = new Slot();
+        $slot->slot_id = $i;  //added on 2-Jan-2022 after change in db
+        $slot->rack_id = $rack_id;
+        $slot->cage_id = 0;
+        $slot->status = 'A';
+        $slot->save();
+      }
+      //$result = $this->inductNewRack($request);
+      //dd("reached");
       return redirect()->route('roomsnracks.index')
           ->with('flash_message',
            'rack'. $result.' added!');
