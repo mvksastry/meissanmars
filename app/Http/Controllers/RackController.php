@@ -90,7 +90,7 @@ class RackController extends Controller
 			
       $result = $this->inductNewRack($request);
             
-      return redirect()->route('rack.index')
+      return redirect()->route('rack')
           ->with('flash_message',
            'rack'. $result.' added!');
     }
