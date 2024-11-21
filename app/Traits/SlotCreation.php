@@ -22,7 +22,7 @@ trait SlotCreation
   public function inductNewRack($request)
   {
 			//first get the building and floor ids
-			$result = Floor::where('room_id', $request['room_id'])->first();
+			$result = Room::where('room_id', $request['room_id'])->first();
     
 			$building_id = $result->building_id;
 			$floor_id = $result->floor_id;
