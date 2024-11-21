@@ -20,12 +20,12 @@ use App\Http\Controllers\KanbanCardsController;
 
 //-------------------------------------------------------//
 //Events
-use App\Http\Controllers\EventController;
-use App\Http\Controllers\CalendarController;
+//use App\Http\Controllers\EventController;
+//use App\Http\Controllers\CalendarController;
 
 //-------------------------------------------------------//
 // PI and Manager specific
-use App\Http\Controllers\ProjectsController;
+//use App\Http\Controllers\ProjectsController;
 use App\Http\Controllers\IaecProjectSubmissionController;
 use App\Http\Controllers\EditIAECProjectController;
 
@@ -200,8 +200,8 @@ Route::middleware(['auth','verified'])->group(function() {
     //Dashboard controller
     Route::resource('kanban', KanbanController::class);
 
-		Route::resource('calendar', CalendarController::class);
-		Route::post('calendar_mass_destroy', ['uses' => 'App\Http\Controllers\CalendarController@massDestroy', 'as' => 'calendar.mass_destroy']);
+//		Route::resource('calendar', CalendarController::class);
+//		Route::post('calendar_mass_destroy', ['uses' => 'App\Http\Controllers\CalendarController@massDestroy', 'as' => 'calendar.mass_destroy']);
 
 		//Kanban Boards routes
 		Route::resource('kanban-boards', KanbanBoardsController::class);	
@@ -212,8 +212,8 @@ Route::middleware(['auth','verified'])->group(function() {
 		Route::post('kanbancards_mass_destroy', ['uses' => 'App\Http\Controllers\KanbanCardsController@massDestroy', 'as' => 'kanban-cards.mass_destroy']);
 
 		//events routes
-		Route::resource('events', EventController::class);	
-		Route::post('events_mass_destroy', ['uses' => 'App\Http\Controllers\EventController@massDestroy', 'as' => 'events.mass_destroy']);
+//		Route::resource('events', EventController::class);	
+//		Route::post('events_mass_destroy', ['uses' => 'App\Http\Controllers\EventController@massDestroy', 'as' => 'events.mass_destroy']);
 
     //Profile routes
     Route::resource('/profile', ProfileController::class);
@@ -223,7 +223,7 @@ Route::middleware(['auth','verified'])->group(function() {
 		Route::get('organize-groups', OrganizeGroups::class);
 
     //-- PI specific : Projects routes
-    Route::resource('/projects', ProjectsController::class);   
+//    Route::resource('/projects', ProjectsController::class);   
     
     //-- PI & Manager specific : IAEC Project submission route
     Route::post('/post-iaec-project', IaecProjectSubmissionController::class);
@@ -357,11 +357,11 @@ Route::middleware(['auth','verified'])->group(function() {
 
 		//roles routes
 		Route::resource('roles', RolesController::class);	
-		Route::post('roles_mass_destroy', ['uses' => 'App\Http\Controllers\RoleController@massDestroy', 'as' => 'roles.mass_destroy']);
+		Route::post('roles_mass_destroy', ['uses' => 'App\Http\Controllers\RolesController@massDestroy', 'as' => 'roles.mass_destroy']);
 
 		//permissions routes
 		Route::resource('permissions', PermissionsController::class);	
-		Route::post('permissions_mass_destroy', ['uses' => 'App\Http\Controllers\PermissionController@massDestroy', 'as' => 'permissions.mass_destroy']);
+		Route::post('permissions_mass_destroy', ['uses' => 'App\Http\Controllers\PermissionsController@massDestroy', 'as' => 'permissions.mass_destroy']);
     
     
 

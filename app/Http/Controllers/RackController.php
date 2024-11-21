@@ -87,34 +87,7 @@ class RackController extends Controller
       ]);
 
       $result = $this->inductNewRack($request);
-      
-      /*
-      $rack = new Rack();
-      $rack->building_id = 1;
-      $rack->floor_id = 1;
-      $rack->room_id = $request['room_id'];
-      $rack->rack_name = $request['rack_name'];
-      $rack->rows = $request['rows'];
-      $rack->cols = $request['cols'];
-      $rack->levels = $request['levels'];
-      $rack->notes = $request['notes'];
-      $rack->save();
-
-      $rack_id = $rack->rack_id;
-
-      $capacity = $rack->rows*$rack->cols*$rack->levels;
-
-      for($i = 1; $i< $capacity+1; $i++)
-      {
-        $slot = new Slot();
-        $slot->slot_id = $i;  //added on 2-Jan-2022 after change in db
-        $slot->rack_id = $rack_id;
-        $slot->cage_id = 0;
-        $slot->status = 'A';
-        $slot->save();
-      }
-      */
-      
+            
       return redirect()->route('rack.index')
           ->with('flash_message',
            'rack'. $result.' added!');
