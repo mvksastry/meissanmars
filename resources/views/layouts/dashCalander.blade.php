@@ -13,10 +13,10 @@
             <i class="fas fa-bars"></i>
           </button>
           <div class="dropdown-menu" role="menu">
-            <a href="{{ route('events.create') }}" class="dropdown-item">Add new event</a>
-            <a href="{{ route('events.index') }}" class="dropdown-item">Clear events</a>
+            <a href="#" class="dropdown-item">Add new event</a>
+            <a href="#" class="dropdown-item">Clear events</a>
             <div class="dropdown-divider"></div>
-            <a href="{{ route('calendar.index') }}" class="dropdown-item">View calendar</a>
+            <a href="#" class="dropdown-item">View calendar</a>
           </div>
         </div>
         <button type="button" class="btn btn-success btn-sm" data-card-widget="collapse">
