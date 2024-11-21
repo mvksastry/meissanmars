@@ -115,7 +115,7 @@ class RackController extends Controller
       }
       */
       
-      return redirect()->route('roomsnracks.index')
+      return redirect()->route('rack.index')
           ->with('flash_message',
            'rack'. $result.' added!');
     }

@@ -106,24 +106,6 @@ class IaecUsage extends Component
         {
             $this->forTransfInfo = B2p::where('status', 'issued')->get();
 						
-						//dd($this->forTransfInfo);
-						/*
-						$cage_dest = json_decode($forTransf->cage_destination, true);
-						$cage_source = json_decode($forTransf->cage_source, true);
-						foreach($cage_dest as $row)
-						{
-							$rowx = json_decode($row, true);
-							foreach($rowx as $val)
-							{
-								$dest_cage_id = $rowx['cage_id'];
-								$dest_rack_id = $rowx['rack_id'];
-								$dest_slot_id = $rowx['slot_id'];
-								$mice_ids     = $rowx['mice_ids'];
-								//dd($dest_cage_id, $dest_rack_id, $dest_slot_id, $mice_ids , $cage_source);
-							}
-						}
-						*/
-						//return view('livewire.issues')->with(['issueReqs'=>$issueReqs]);
 						return view('livewire.usage.iaec-usage-colonyasst');
         }
 
@@ -132,10 +114,7 @@ class IaecUsage extends Component
             $issueReqs = $this->issueRequestsAllowed();
         }
 
-        //return view('livewire.issues')->with(['issueReqs'=>$issueReqs]);
         return view('livewire.usage.iaec-usage')->with(['issueReqs'=>$issueReqs]);
-
-        //return view('livewire.usage.iaec-usage');
     }
 		
 		public function miceForTransferById($id)
@@ -160,6 +139,8 @@ class IaecUsage extends Component
 				//dd($this->forTransfById);
 				$this->forTransfById->save();
 				$this->sourceDestPanel=false;
+				$this->forTransfById = null;
+				$this->job_done = null;
 			}
 			else {
 				$this->job_msg = " Check 'Job_done' box";
