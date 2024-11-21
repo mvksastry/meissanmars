@@ -88,7 +88,7 @@ class RackController extends Controller
       ]);
 			*/
 			//dd("reached");
-			$resx = Floor::findorFail($request['room_id']);
+			$resx = Floor::where('room_id', $request['room_id'])->first();
     
 			$building_id = $resx->building_id;
 			$floor_id = $resx->floor_id;
