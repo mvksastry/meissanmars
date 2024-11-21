@@ -12,6 +12,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 
 use App\Models\Building;
+use App\Models\Floor;
 use App\Models\Rack;
 use App\Models\Room;
 use App\Models\Slot;
@@ -77,7 +78,7 @@ class RackController extends Controller
     public function store(Request $request)
     {
       //Validate name and permissions field
-			/*
+			
       $this->validate($request, [
         'room_id'   => 'required|numeric|min:1',
         'rack_name' => 'required|regex:/(^[A-Za-z0-9 -_]+$)+/|max:50',
@@ -86,8 +87,9 @@ class RackController extends Controller
         'levels'    => 'required|numeric|max:8',
         'notes'     => 'nullable|regex:/(^[A-Za-z0-9 -_]+$)+/|max:250'
       ]);
-			*/
+			
 			//dd("reached");
+			/*
 			$resx = Floor::where('room_id', $request['room_id'])->first();
     
 			$building_id = $resx->building_id;
@@ -118,9 +120,10 @@ class RackController extends Controller
         $slot->status = 'A';
         $slot->save();
       }
-      //$result = $this->inductNewRack($request);
+			*/
+      $result = $this->inductNewRack($request);
       //dd("reached");
-      return redirect()->route('roomsnracks.index')
+      return redirect()->route('rack.index')
           ->with('flash_message',
            'rack'. $result.' added!');
     }

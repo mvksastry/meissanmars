@@ -22,7 +22,7 @@ trait SlotCreation
   public function inductNewRack($request)
   {
 			//first get the building and floor ids
-			$result = Floor::findorFail($request['room_id']);
+			$result = Floor::where('room_id', $request['room_id'])->first();
     
 			$building_id = $result->building_id;
 			$floor_id = $result->floor_id;
@@ -58,7 +58,7 @@ trait SlotCreation
   public function editRackInformation($request)
   {
     //first get the building and floor ids
-    $result = Floor::findorFail($request['room_id']);
+    $result = Floor::findOrFail($request['room_id']);
     
     $building_id = $result->building_id;
     $floor_id    = $result->floor_id;
