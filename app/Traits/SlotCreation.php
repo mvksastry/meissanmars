@@ -36,7 +36,7 @@ trait SlotCreation
       $rack->cols        = $request['cols'];
       $rack->levels      = $request['levels'];
       $rack->notes       = $request['notes'];
-			//dd($rack);
+			dd($rack);
       $rack->save();
       
       $rack_id = $rack->rack_id;
