@@ -87,10 +87,10 @@ class RackController extends Controller
         'notes'     => 'nullable|regex:/(^[A-Za-z0-9 -_]+$)+/|max:250'
       ]);
 			*/
-			dd("reached");
+			//dd("reached");
       $result = $this->inductNewRack($request);
-            
-      return redirect()->route('rack')
+      dd("reached");
+      return redirect()->route('roomsnracks.index')
           ->with('flash_message',
            'rack'. $result.' added!');
     }
