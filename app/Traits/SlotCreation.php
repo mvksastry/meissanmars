@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Rack;
 use App\Models\Slot;
 use App\Models\Floor;
+use App\Models\Room;
 
 use App\Traits\Base;
 use App\Traits\Notes;
