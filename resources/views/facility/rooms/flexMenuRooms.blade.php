@@ -6,8 +6,8 @@
       <!-- small box -->
       <div class="small-box bg-info">
         <div class="inner">
-          <h4>Coming up</h4>
-          <p>New Room</p>
+          <h4>New Room</h4>
+          <p>...</p>
         </div>
         <div class="icon">
           <i class="ion ion-bag"></i>
@@ -23,8 +23,8 @@
       <div class="small-box bg-info">
         <div class="inner">
           <!-- h3><sup style="font-size: 20px"></sup></h3 -->
-          <h4>Coming up</h4>
-          <p>Buildings</p>
+          <h4>Buildings</h4>
+          <p>...</p>
         </div>
         <div class="icon">
           <i class="ion ion-stats-bars"></i>
@@ -55,13 +55,13 @@
       <!-- small box -->
       <div class="small-box bg-warning">
         <div class="inner">
-          <h4>Coming up</h4>
-          <p>Occupancy</p>
+          <h4>Occupancy</h4>
+          <p>...</p>
         </div>
         <div class="icon">
           <i class="ion ion-ios-email-outline"></i>
         </div>
-        <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+        <a href="/occupancy" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
       </div>
     </div>
 
