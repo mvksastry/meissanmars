@@ -137,7 +137,7 @@
 												<tr>
 													<th>Mice ID</th>
 													<th> Move From </th>
-													<th> MoveTo </th>
+													<th> Move To </th>
 												</tr>
 											</thead>
 											<tbody>
