@@ -72,7 +72,7 @@ class AddEntry extends Component
 	
 	//all flags here
 	public $cageCreateFlag, $addToCageFlag, $strainMixingFlag, $genderMixingFlag;
-	public $mouseIdFlag=false, $slotSelectFlag=false;
+	public $mouseIdFlag=false, $mouseTagFlag=false, $slotSelectFlag=false;
 
 
 
@@ -117,13 +117,17 @@ class AddEntry extends Component
 	public function validateFormInputs()
 	{
 		$this->validate();
+		//dd($this->mouseIdFlag);
 		
-		if($this->mouseIdFlag)
+		if($this->mouseIdFlag && $this->mouseTagFlag)
 		{
 			if($this->slotSelectFlag)
 			{
 				$this->addToCageFlag = true;
 			}
+		}
+		else {
+			$this->addToCageFlag = false;
 		}
 	}
 	
@@ -366,7 +370,7 @@ class AddEntry extends Component
 		}
 		else{
 			$this->tagMsg = "";
-			$this->mouseIdFlag = true;
+			$this->mouseTagFlag = true;
 		}
 	}
 
@@ -374,10 +378,11 @@ class AddEntry extends Component
 		$value = $this->speciesIdcode.'-'.strval($this->runner);
 	  //$rows = Mouse::where('ID', 'LIKE',"%{$speciesIdcode}%")->get();
 		$rows = Mouse::where('ID', $value)->get();
+
 		if(count($rows) != 0 || count($rows) != null){
 			$this->cmsg4 = "Code exists, choose another";
 			//$this->addToCageFlag = false;
-			$this->$mouseIdFlag = false;
+			$this->mouseIdFlag = false;
 		}
 		else {
 			$this->cmsg4 = "";
@@ -389,7 +394,7 @@ class AddEntry extends Component
 				}
 				else {
 					$this->cmsg5 = "";
-					//$this->mouseIdFlag = false;
+					$this->mouseIdFlag = false;
 				}
 		}
 	}
