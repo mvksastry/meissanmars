@@ -106,7 +106,7 @@ trait CageInspections
 					$cageIdInfo->save();
 				}
 
-        $cnotes = $cnotes.'[ '.$total_removed." ] dead/moribund removed;";
+        $cnotes = $cnotes.'[ '.$total_removed." ] sacrificed/dead/moribund removed;";
 
         $input['usage_id'] = $cageIdInfo->usage_id;
         $input['cage_id'] = $cageIdInfo->cage_id;

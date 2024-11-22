@@ -80,7 +80,7 @@
   				</tr>
 
           <tr class="mt-10">
-  					<td>Dead</td>
+  					<td>Sacrificed/Dead</td>
   					<td>
   						<input class="form-control" id="numdead" wire:model="numdead" placeholder="# Dead">
   					</td>
