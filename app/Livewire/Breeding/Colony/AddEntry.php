@@ -264,7 +264,6 @@ class AddEntry extends Component
 			//For test comment above result and set result to true.
 			// else opposite. comment out $result = true;
 			
-			
 			//$result = "check container tables";
 			$this->iaMessage = $result;
 			//after addition to db go to next mice id
@@ -465,12 +464,11 @@ class AddEntry extends Component
 			$this->cageInfos = $this->rarray[0];
 			$this->validateOnly($this->cageInfos);
 			$this->slotSelectFlag = true;
-
+			$this->cageCreateFlag = true;
 		}
 		else {
 			$this->fslot_num = "No Free slots in rack";
 		}
-		
 	}	  
 	
 	

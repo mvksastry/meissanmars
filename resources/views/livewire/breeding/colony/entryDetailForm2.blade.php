@@ -1,7 +1,8 @@
 <div class="w-full md-1/2">
 	<div class="bg-purple-100 border border-gray-800 rounded shadow">
-		<div class="border-b border-gray-800 p-3" id="iaMessage">
-			<h5 class="font-bold uppercase text-gray-600">Details: <font color="blue"> {{ $iaMessage }}</font>
+		<div class="border-b p-3" id="iaMessage">
+			<h5 class="font-bold uppercase">
+				Details: <font color="blue"> {{ $iaMessage }}</font>
 			</h5>
 		</div>
 		<div class="p-1">
@@ -22,15 +23,17 @@
 							<input wire:model.lazy="purpose" style="background-color:#EAEDED; font-weight: bold; font-size: 12px;" readonly="readonly" type="text" name="purpose" id="purpose" value="{{ $purpose }}" >
 						</td>
 						<td>
-							Default Limit:
+							Default Cage Limit:
 						</td>
 						<td>
 							<input wire:model.prevent="deflimit" type="text" data-validation="custom"  name="deflimit" id="deflimit" value="5" >
             </td>
           </tr>
           <tr bgcolor="#EADDED">
-            <td class="p-2" colspan="2">
+            <td class="p-2" colspan="">
               <font color="red">{{ $speciesName }} ID Code* </font>
+						</td>
+						<td>
               <input wire:model.lazy="speciesIdcode" type="text" class="w-1/0" placeholder="{{ $speciesName }} ID Code *"> -
 							<input wire:model.lazy="runner" type="text" class="w-1/20" placeholder="Runner Code *">
 							<input wire:model.prevent="automiceid" type="checkbox" value="true"> Auto ID
@@ -105,6 +108,7 @@
                 <input wire:model.lazy="_strain_all" type="radio" name="_strain_all" id="_strain_all" value="2"> Active Only
               </label>
 							-->
+							</label>
               <select wire:model.lazy="_strain_key" name="_strain_key" id="_strain_key">
                 <option value=""></option>
 									@foreach($strains as $item)
@@ -136,7 +140,7 @@
             </td>
             <td>
               <input wire:model.lazy="dob" data-validate="required" id="dob" name="dob"
-                          		placeholder="YYYY-MM-DD" type="text"/>
+                          		placeholder="YYYY-MM-DD" type="date"/>
 							</br>
 							@error('dob') <span class="text-danger error">{{ $message }}</span> @enderror
 
@@ -425,7 +429,7 @@
 						<td>
 						</td>
            	<td class="p-2">
-             Create Flag: @if($cageCreateFlag) True @else False @endif
+             Create Cage Flag: @if($cageCreateFlag) True (Set to Auto) @else False @endif
 						</td>
 						<td>
 						 Add Flag: 		@if($addToCageFlag) True @else False @endif
