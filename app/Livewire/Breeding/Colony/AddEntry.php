@@ -55,9 +55,9 @@ class AddEntry extends Component
 
 	public $showEntryForm, $purpose="New", $_protocol_key, $containerId;
 	public $usescheduleterm_key, $_litter_key, $_strain_all, $_strain_key;
-	public $_generation_key, $dob, $_sex_key, $_lifeStatus_key, $_breedingStatus_key, $cage_id,
-	$_room_key, $_coatColor_key, $_diet_key, $_owner_key, $_origin_key, $cmsg,
-	$replacement_tag, $comments, $cage_card, $automiceid, $usenextid, $count=0,
+	public $_generation_key, $dob, $_sex_key, $_lifeStatus_key='A', $_breedingStatus_key='U', $cage_id,
+	$_room_key, $_coatColor_key, $_diet_key, $_owner_key='EAF-NCCS', $_origin_key='EAF-NCCS', $cmsg,
+	$replacement_tag, $comments, $cage_card, $automiceid=true, $usenextid=true, $count=0,
 	$_phenotype_key, $pad=3, $aumIdFlag = false, $lastIdVal=1, $cage_code;
 	
 	public $racks, $racksInRoom=[], $free_slots, $fslot_num, $rack_id, $room_id, $slotID, $slotval;
