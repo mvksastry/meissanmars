@@ -29,6 +29,7 @@
 							<input wire:model.prevent="deflimit" type="text" data-validation="custom"  name="deflimit" id="deflimit" value="5" >
             </td>
           </tr>
+					
           <tr bgcolor="#EADDED">
             <td class="p-2" colspan="">
               <font color="red">{{ $speciesName }} ID Code* </font>
@@ -54,7 +55,6 @@
 							<font color="red">{{ $cmsg4 }}</font>
 						</td>
             <td ></td>
-            <td></td>
           </tr>					
 
           <tr bgcolor="#EAEDED">
@@ -95,6 +95,7 @@
 						<td>
 						</td>
           </tr>
+					
           <tr bgcolor="#EADDED">
             <td class="p-2">
               <font color="red">Strain*</font>
@@ -123,8 +124,8 @@
           <tr bgcolor="#EAEDED">
             <td class="p-2">
               <font color="red">Generation*</font>
-              </td>
-              <td>
+            </td>
+            <td>
                 <select wire:model.lazy="_generation_key" name="_generation_key" id="_generation_key">
                   <option value=""></option>
                   @foreach($generations as $item)
@@ -133,7 +134,6 @@
                 </select>
 							</br>
 							@error('_generation_key') <span class="text-danger error">{{ $message }}</span> @enderror
-
             </td>
             <td>
 							<font color="red">Date of Birth*</font>
@@ -143,9 +143,9 @@
                           		placeholder="YYYY-MM-DD" type="date"/>
 							</br>
 							@error('dob') <span class="text-danger error">{{ $message }}</span> @enderror
-
             </td>
           </tr>
+					
           <tr bgcolor="#EADDED">
             <td class="p-2"><font color="red">Sex*</font>
             </td>
@@ -161,7 +161,6 @@
               </label>
 							</br>
 							@error('_sex_key') <span class="text-danger error">{{ $message }}</span> @enderror
-
             </td>
 						<td>
 							Gender Mixing
@@ -170,6 +169,7 @@
 							Yes/No
 						</td>
           </tr>
+					
           <tr bgcolor="#EAEDED">
             <td class="p-2">
               <font color="red">Breeding Status*</font>
@@ -189,7 +189,6 @@
               </label>
 							</br>
 							@error('_breedingStatus_key') <span class="text-danger error">{{ $message }}</span> @enderror
-
             </td>
 						<td>
 							<font color="red">Life Status*</font>
@@ -203,7 +202,6 @@
 							</select>
 							</br>
 							@error('_lifeStatus_key') <span class="text-danger error">{{ $message }}</span> @enderror
-
 						</td>
           </tr>
 
@@ -220,7 +218,6 @@
              	</select>
 							</br>
 							@error('_owner_key') <span class="text-danger error">{{ $message }}</span> @enderror
-
            	</td>
            	<td >
              	<font color="red">Origin*</font>
@@ -234,15 +231,14 @@
              	</select>
 							</br>
 							@error('_origin_key') <span class="text-danger error">{{ $message }}</span> @enderror
-
            	</td>
           </tr>
 					
 					<tr bgcolor="#EADDED">
             <td class="p-2">
                 <font color="red">Suggested Slot ID*</font>
-              </td >
-              <td>
+            </td >
+            <td>
 							{{ $cageNumSuggestion }}
               <input wire:model.prevent="cageInfos" wire:change="changeCageInfos" type="text" name="cage_code" id="cage_code" value="">
 							<input wire:model.prevent="usenextid" type="checkbox" data-validation="custom"  name="usenextid" id="usenextid" value="true" data-validation-regexp="^([0-9])$">
@@ -250,14 +246,12 @@
 							</br>
 							@error('cageInfos') <span class="text-danger error">{{ $message }}</span> @enderror
             </td>
-
             <td >
-              
             </td >
             <td>
-              
             </td>  
           </tr>
+					
 					<tr bgcolor="#EAEDED">
             <td class="p-2">
                 <font color="red">Live Information</font>
@@ -280,6 +274,7 @@
               </select>
             </td>
           </tr>
+					
           <tr bgcolor="#EAEDED">
            	<td class="p-2">   	
             </td>
@@ -297,16 +292,19 @@
              	</select>
             </td>
           </tr>
+					
 					<tr bgcolor="#EAEDED">
            	<td class="p-2">
+							<font color="red">Total Free Slots</font>
            	</td >
            	<td>
+							{{ $free_slots }}
            	</td>
            	<td>
-							<font color="red">Total Free Slots</font>
+							<font color="red">First 5 Free Slot ID</font>
            	</td>
            	<td> 
-							{{ $free_slots }}
+							{{ $fslot_num }}
 					 	</td>
           </tr>
 					<tr bgcolor="#EAEDED">
@@ -315,10 +313,10 @@
            	<td>
            	</td>
            	<td>
-							<font color="red">First 5 Free Slot ID</font>
+							
            	</td>
            	<td> 
-							{{ $fslot_num }}
+							
 					 	</td>
           </tr>
 
@@ -335,7 +333,6 @@
              	</select>
 							</br>
 							@error('_coatColor_key') <span class="text-danger error">{{ $message }}</span> @enderror
-
            	</td>
            	<td>
              	Diet
@@ -349,7 +346,6 @@
              	</select>
 							</br>
 							@error('_diet_key') <span class="text-danger error">{{ $message }}</span> @enderror
-
            	</td>
           </tr>
 
@@ -361,11 +357,10 @@
 					    <input wire:model.lazy="tagBase" type="text">
              	<input wire:model.lazy="replacement_tag" type="text" name="replacement_tag" id="replacement_tag"
                 data-validate="required|min:3" placeholder="Replacement Tag">
-						</br>
-						{{ $tagMsg }}
+								</br>
+								{{ $tagMsg }}
 							</br>
 							@error('tagBase') <span class="text-danger error">{{ $message }}</span> @enderror
-
            	</td>
 						<td>
              	Cage Card
@@ -375,9 +370,10 @@
                	data-validate="required|min:3" placeholder="Cage Card">
 							</br>
 							@error('cage_card') <span class="text-danger error">{{ $message }}</span> @enderror
-
            	</td>
           </tr>
+					
+					@if($displayPTandUS)
           <tr bgcolor="#EAEDED">
            	<td class="p-2">
              	Phenotypes
@@ -391,7 +387,6 @@
              	</select>
 							</br>
 							@error('_phenotype_key') <span class="text-danger error">{{ $message }}</span> @enderror
-
            	</td>
 						<td>
 							Use Schedules
@@ -405,9 +400,10 @@
 							</select>
 							</br>
 							@error('_useScheduleTerm_key') <span class="text-danger error">{{ $message }}</span> @enderror
-
 						</td>
           </tr>
+					@endif
+					
           <tr bgcolor="#EADDED">
            	<td class="p-2">
              	Comments
@@ -417,14 +413,13 @@
                 id="comments" rows="2"></textarea>
 							</br>
 							@error('comments') <span class="text-danger error">{{ $message }}</span> @enderror
-
            	</td>
 						<td>
-							
 						</td>
 						<td>
-							
+						</td>
 					</tr>
+					
 					<tr bgcolor="#EAEDED">
 						<td>
 						</td>
@@ -437,10 +432,15 @@
 						<td>
 						</td>
 					</tr>
+					
           <tr bgcolor="#EADDED">
            	<td class="p-2">
-             	Validations
-           	</td>
+						@if($displayPTandUS)
+             	<button wire:click="offPhenTypesUseSch()" class="btn btn-primary rounded">Off PT & US</button>
+           	@else
+							<button wire:click="showPhenTypesUseSch()" class="btn btn-primary rounded">PhenType & Use Sch</button>
+						@endif
+						</td>
            	<td >
              	<button wire:click="validateFormInputs()" class="btn btn-primary rounded">Validate</button>
            	</td>
@@ -452,20 +452,19 @@
 								<button wire:click="post()" class="btn btn-primary rounded">Enter</button>
 							@endif
 						</td>
-							
-					</tr>					
+					</tr>	
+					
 					<tr bgcolor="#EADDED">
            	<td class="p-2">
            	</td>
            	<td >
            	</td>
 						<td>
-
 						</td>
 						<td>
-							
 						</td>
          	</tr>
+					
 				</tbody>
 			</table>
 		<!-- Submit Button -->

@@ -73,7 +73,7 @@ class AddEntry extends Component
 	//all flags here
 	public $cageCreateFlag, $addToCageFlag, $strainMixingFlag, $genderMixingFlag;
 	public $mouseIdFlag=false, $mouseTagFlag=false, $slotSelectFlag=false;
-
+	public $displayPTandUS=false;
 
 
 	public $strainDB, $genderDB, $LiveNewTagCheck, $idsearch, $runner;
@@ -432,7 +432,17 @@ class AddEntry extends Component
 		
 	}
 */
-
+	public function showPhenTypesUseSch()
+	{
+		//dd("reached");
+		$this->displayPTandUS = true;
+	}
+	
+	public function offPhenTypesUseSch()
+	{
+		$this->displayPTandUS = false;
+	}
+	
 	public function resetForm()
 	{
 
