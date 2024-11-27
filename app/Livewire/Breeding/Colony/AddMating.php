@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 use App\Models\Breeding\Cvterms\CVSpecies;
 use App\Models\Breeding\Cvterms\UseScheduleTerm;
 use App\Models\Breeding\Cvterms\CVProtocol;
-use App\Models\Breeding\Cvterms\Strain;
+//use App\Models\Breeding\Cvterms\Strain;
 use App\Models\Breeding\Cvterms\CVGeneration;
 use App\Models\Breeding\Cvterms\CVPhenotype;
 use App\Models\Breeding\Cvterms\Lifestatus;
@@ -31,6 +31,7 @@ use App\Models\Breeding\Cvterms\Container;
 use App\Models\Breeding\Cvterms\CVMatingtype;
 use App\Models\Breeding\Colony\Mouse;
 use App\Models\Breeding\Colony\Mating;
+use App\Models\Strain;
 
 // Traits below
 use App\Traits\Breed\BEditMice;
@@ -46,15 +47,16 @@ class AddMating extends Component
     public $iaMessage;
 
     //form state declarations
-    public $showMatingEntryForm, $showEntrySearchForm = false, $formCageSelect =false, $formCageNew = false;
+    public $showMatingEntryForm, $showEntrySearchForm = false; 
+		public $formCageSelect =false, $formCageNew = false;
 
-    public $strains, $generations, $diets;
+    public $strains, $generations, $diets, $strain_id;
 
     //variable declarations
     public $speciesName, $purpose, $newmatingId;
     public $dam1Key, $dam1Msg, $dam2Key, $dam2Msg, $sireKey, $sireMsg;
-    public $dam1Id, $dam2Id, $sireId, $diet_key, $strain_key, $matgType, $generation_key;
-    public $genotypeneed, $ownerwg, $matingDate,  $weantime, $cage_id, $weannote, $comments;
+    public $dam1Id, $dam2Id, $sireId, $diet_key, $strain_key, $matgType=1, $generation_key;
+    public $genotypeneed, $ownerwg="EAF-NCCS", $matingDate,  $weantime, $cage_id, $weannote, $comments;
     public $matingType, $species_name, $lifestatus, $owners, $dam1=1, $dam2=2, $sire=3;
 
     public $rooms, $cageChars, $cageParams, $cageName, $cageStatus, $cageRooms, $datex;
@@ -65,6 +67,8 @@ class AddMating extends Component
 
     public $asdam1, $asdam2, $assire, $iaSearchMessage, $searchFor;
     //status declarations
+		
+
 
     public function render()
     {
@@ -75,6 +79,8 @@ class AddMating extends Component
       return view('livewire.breeding.colony.add-mating');
     }
 
+
+		
 		public function rackSelCheck($room_id)
 		{
 			$this->racksInRoom = Rack::where('room_id', $room_id)->get();
@@ -84,13 +90,13 @@ class AddMating extends Component
     public function dam1IdCheck($dam1Id)
     {
       $qry = Mouse::with('strainSelected')->where('ID', $this->dam1Id)->where('sex', 'F')->first();
-      if(!empty($qry))
+			if(!empty($qry))
       {
           $this->dam1Key = $qry->_mouse_key;
           $qry2 = Mating::where('_dam1_key', $qry->_mouse_key)
                           ->orWhere('_dam2_key', $qry->_mouse_key)->get();
           if(count($qry2) == 0 ){
-              $this->dam1Strain = $qry->strainSelected->strainName;
+              $this->dam1Strain = $qry->strainSelected->strain_name;
               $this->dam1CageId = $qry->_pen_key;
               $this->dam1Diet = $qry->diet;
               $this->dam1Msg = 'Yes; No Entries';
@@ -152,7 +158,7 @@ class AddMating extends Component
       if($id == 1) { $speciesName = "Mice"; $this->iaMessage = "Selected Mice"; }
       if($id == 4) { $speciesName = "Rat";  $this->iaMessage = "Selected Rat"; }
           $this->speciesName = $speciesName;
-          $this->strains = Strain::where('_species_key', $id)->get();
+          $this->strains = Strain::where('species_id', $id)->get();
           $this->generations = CVGeneration::all();
           $this->matingType = CVMatingtype::all();
           $this->diets = CVDiet::where('_species_key', $id)->get();
@@ -164,17 +170,18 @@ class AddMating extends Component
 
     public function search($speciesName)
     {
-
       $exr = explode('_', $speciesName);
 
       $this->species_name = $speciesName;
+			
       if( $exr[0] == "Mice" )     { $_species_key = 1; }
       if( $exr[0] == "Rat" )      { $_species_key = 2; }
       if( $exr[0] == "Rabbit" )   { $_species_key = 3; }
       if( $exr[0] == "Guinea_Pig"){ $_species_key = 4; }
       
       $this->searchFor = $exr[1];
-      $this->strains = Strain::where('_species_key', $_species_key)->get();
+      $this->strains = Strain::where('species_id', $_species_key)->get();
+			//dd($this->strains);
       $this->generations = CVGeneration::all();
       $this->matingType = CVMatingtype::all();
       $this->lifestatus = Lifestatus::all();

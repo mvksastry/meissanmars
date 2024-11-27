@@ -15,7 +15,7 @@ trait BEntrySearch
     use BBase, BCVTerms;
 
 
-	public function searchEntry($input)
+		public function searchEntry($input)
     {
         // 1. setting the db
         //$mcmsTables = $this->setMcmsDB();
@@ -43,11 +43,11 @@ trait BEntrySearch
         $fromDate     = $input['dobfrom'];
         $toDate       = $input['dobto'];
         $owner_key    = $input['_owner_key'];
+//dd($mouse_id, $mouseIdParam);
 
         $species_key = $this->getSpeciesKeyBySpeciesName($species_name);
 
-        $baseSqlStatement = "select * from mouse join strain on strain._strain_key = mouse._strain_key
-                            where mouse._species_key = ".$species_key;
+        $baseSqlStatement = "select * from mouse join strains on strains.strain_id = mouse._strain_key where mouse._species_key = ".$species_key;
 
         //dd($mouseIdParam);
 
@@ -132,7 +132,7 @@ trait BEntrySearch
             $qr['searchFor'] = $input['searchFor'];
             $qr['_mouse_key'] = $row->_mouse_key;
             $qr['ID'] = $row->ID;
-            $qr['strainName'] = $row->strainName;
+            $qr['strainName'] = $row->strain_name;
             $qr['generation'] = $row->generation;
             $qr['protocol'] = $row->protocol;
             $qr['birthDate'] = $row->birthDate;

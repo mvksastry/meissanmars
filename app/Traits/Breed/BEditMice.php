@@ -19,7 +19,7 @@ trait BEditMice
 
   public    $iaMessage, $id, $_mouse_key, $_owner_key, $dobto, $dobfrom, $_sex_key, $cage_id,
             $cageIdParam, $lifeStatus, $_strain_key, $mouse_id,
-            $mouseId_contains, $species_name, $queryResult, $searchFor;
+            $mouseId_contains="contains", $species_name, $queryResult, $searchFor;
 
 	public function pullDetails()
     {

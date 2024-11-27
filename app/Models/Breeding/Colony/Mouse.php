@@ -2,7 +2,7 @@
 
 namespace App\Models\Breeding\Colony;
 
-use App\Models\Breeding\Cvterms\Strain;
+use App\Models\Strain;
 use App\Models\Breeding\Cvterms\CVProtocol;
 use App\Models\Breeding\Cvterms\CVGeneration;
 use App\Models\Breeding\Cvterms\Lifestatus;
@@ -77,7 +77,7 @@ class Mouse extends Model
 
     public function strainSelected()
     {
-      return $this->hasOne(Strain::class, '_strain_key', '_strain_key');
+      return $this->hasOne(Strain::class, 'strain_id', '_strain_key');
     }
 
     public function genSelected()

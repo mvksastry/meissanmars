@@ -45,7 +45,7 @@
 						<select wire:model.lazy="_strain_key" name="_strain_key" id="_strain_key">
 							<option value=""></option>
 								@foreach($strains as $item)
-									<option value="{{ $item->_strain_key }}">{{ $item->strainName." : ".$item->jrNum }}</option>
+									<option value="{{ $item->strain_id }}">{{ $item->strain_name." : ".$item->jrNum }}</option>
 								@endforeach
 						</select>
 					</td>
@@ -94,11 +94,11 @@
 						Date of Birth
 					</td>
 					<td>
-						<input wire:model.lazy="dobfrom" id="dobfrom" name="dobfrom" type="text"/>
+						<input wire:model.lazy="dobfrom" id="dobfrom" name="dobfrom" type="date"/>
 						<label class="px-2">
 						To
 					</label>
-						<input wire:model.lazy="dobto" id="dobto" name="dobto" type="text"/>
+						<input wire:model.lazy="dobto" id="dobto" name="dobto" type="date"/>
 					</td>
 			 	</tr>
 

@@ -307,16 +307,15 @@
 							{{ $fslot_num }}
 					 	</td>
           </tr>
+					
 					<tr bgcolor="#EAEDED">
            	<td class="p-2">
            	</td >
            	<td>
            	</td>
            	<td>
-							
            	</td>
            	<td> 
-							
 					 	</td>
           </tr>
 
