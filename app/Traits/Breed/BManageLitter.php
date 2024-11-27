@@ -11,9 +11,9 @@ use App\Traits\Breed\BBase;
 use App\Traits\Breed\BCVTerms;
 
 
-use App\Models\Breeding\Colon\Mouse;
-use App\Models\Breeding\Colon\Mating;
-use App\Models\Breeding\Colon\Litter;
+use App\Models\Breeding\Colony\Mouse;
+use App\Models\Breeding\Colony\Mating;
+use App\Models\Breeding\Colony\Litter;
 use App\Models\Breeding\Cvterms\Phenotypemouselink;
 use App\Models\Breeding\Cvterms\Usescheduleterm;
 use App\Models\Breeding\Cvterms\Useschedule;
@@ -87,7 +87,7 @@ trait BManageLitter
 
 	       Log::channel('coding')->info('array ready for insert, before try');
            //Stage 5. insert
-           //dd($newMouseEntry);
+           dd($newLitterEntry);
            try {
                // ehck for duplicate entry and prevent it
                $qry = Litter::where('_mating_key', $input['matKey'])->first();

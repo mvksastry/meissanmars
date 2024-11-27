@@ -7,7 +7,6 @@
 			<table class="w-full p-5 text-sm text-gray-900">
 				<thead>
 					<div id="iaMessage">
-						
 						</br>
 						Must Select option in gray cells
 					</div>
@@ -33,6 +32,7 @@
 							@endif
 						</td>
 					</tr>
+					
 					<tr>
             <td class="border px-2  text-xs text-red-600 p-1" colspan="2">
               @if(!empty($mqryResult))

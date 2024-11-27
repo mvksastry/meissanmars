@@ -87,10 +87,10 @@ trait BMatingSearch
 
         */
 
-        //dd($baseSqlStatement);
+        dd($baseSqlStatement);
         //echo "Query to be executed = ".$baseSqlStatement;echo "</br>";
         $result = DB::select($baseSqlStatement);
-        //dd($result);
+        dd($result);
         $res = array();
         foreach($result as $row)
         {

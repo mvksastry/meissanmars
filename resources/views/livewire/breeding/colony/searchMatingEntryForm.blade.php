@@ -36,7 +36,7 @@
 						<select wire:model.lazy="strainKey">
 							<option value=""></option>
 								@foreach($strains as $item)
-									<option value="{{ $item->_strain_key }}">{{ $item->strainName." : ".$item->jrNum }}</option>
+									<option value="{{ $item->strain_id }}">{{ $item->strain_name." : ".$item->jrNum }}</option>
 								@endforeach
 						</select>
 					</td>
@@ -47,11 +47,11 @@
 						Mating Date
 					</td>
 					<td>
-						<input wire:model.lazy="fromDate" type="text"/>
+						<input wire:model.lazy="fromDate" type="date"/>
 						<label class="px-2">
 						To
 					</label>
-						<input wire:model.lazy="toDate" type="text"/>
+						<input wire:model.lazy="toDate" type="date"/>
 					</td>
 			 	</tr>
 

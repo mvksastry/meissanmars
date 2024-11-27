@@ -21,7 +21,7 @@ use App\Models\Breeding\Cvterms\CVSpecies;
 use App\Models\Breeding\Cvterms\Container;
 use App\Models\Breeding\Cvterms\Lifestatus;
 use App\Models\Breeding\Cvterms\Owner;
-use App\Models\Breeding\Cvterms\Strain;
+use App\Models\Strain;
 use App\Models\Breeding\Cvterms\Usescheduleterm;
 
 use App\Models\Breeding\Colony\Litter;
@@ -135,7 +135,7 @@ class AddLitter extends Component
     if($speciesName == "Mice") { $this->spKey = 1; }
     if($speciesName == "Rat") { $this->spKey = 4; }
 
-    $this->strains = Strain::where('_species_key', $this->spKey)->get();
+    $this->strains = Strain::where('species_id', $this->spKey)->get();
     $this->lifestatus = Lifestatus::all();
     $this->owners = Owner::all();
 
