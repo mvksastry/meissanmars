@@ -1,11 +1,12 @@
 <div class="w-full md-1/2">
 	<div class="bg-purple-100 border border-gray-800 rounded shadow">
 		<div class="border-b border-gray-800 p-1" id="iaMessage">
-			<h5 class="font-bold uppercase text-gray-600" >Details: <font color="blue">{{ $iaMessage }}</font>
+			<h5 class="font-bold uppercase text-gray-600" >
+				Details: <font color="blue">{{ $iaMessage }}</font>
 			</h5>
 		</div>
 		<div class="p-1 text-xs-bold">
-			<table class="w-full p-5 text-xs-bold text-gray-800" style="font-size: 12px;">
+			<table class="w-full p-5 text-sm text-gray-800" style="font-size: 16px;">
 				<thead>
 				</thead>
 				<tbody>
@@ -173,34 +174,54 @@
        		<tr bgcolor="#EADDED">
          		<td class="p-2">
 							<font color="red">Cage ID</font>
-             		</td>
-             		<td>
-                <input wire:model.lazy="cage_id" value="standard" type="text">
             </td>
-						<td colspan="2">
-							<button wire:click.prevent="cageSearch()" class="btn btn-primary btn-sm rounded">Select Cage</button>
-							<button wire:click.prevent="cageNew()" class="btn btn-primary btn-sm rounded">New Cage</button>
+            <td>
+              <input wire:model.lazy="cage_id" value="standard" type="text">
+							(Auto Select)
+            </td>
+						<td>
+							Room*
 						</td>
-						<td colspan="2">
+						<td>
+							<select wire:model.lazy="room_id" wire:change="roomSelected" name="room_id" id="room_id">
+                <option value="-1"></option>
+								@foreach($rooms as $val)
+                <option value="{{ $val->room_id }}">{{ $val->room_name }}</option>
+								@endforeach
+              </select>
+						</td>
+						<td>
+							<font color="red">Rack*</font>
+						</td>
+						<td>
+						<select wire:model.lazy="rack_id" wire:change="rackSelected" name="rack_id" id="rack_id">
+								<option value="0"></option>
+               		@foreach($racksInRoom as $item)
+                 		<option value="{{ $item->rack_id }}">{{ $item->rack_name }}</option>
+               		@endforeach
+             	</select>
 						</td>
           </tr>
+					
 					<tr bgcolor="#EADDED">
             <td class="p-2">
 
             </td >
-            <td>
+           	<td class="p-2">
+							<font color="red">Total Free Slots</font>
+           	</td >
+           	<td>
+							{{ $free_slots }}
+           	</td>
+           	<td>
+							<font color="red">First 5 Free Slot ID</font>
+           	</td>
+           	<td> 
+							{{ $fslot_num }}
+					 	</td>
 
-            </td>
-
             <td>
             </td>
-            <td>
-						</td>
-
-						<td>
-            </td>
-            <td>
-						</td>
 					</tr>
 					<tr bgcolor="#EAEDED">
             <td class="p-2" >

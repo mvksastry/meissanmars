@@ -201,7 +201,7 @@
 								<div class="chart tab-pane active" id="revenue-chart" style="position: relative;">
                   <!-- Show the selection form-->
                   @if($formCageSelect)
-                      @include('livewire.breeding.colony.formCageSelect')
+                      @include('livewire.breeding.colony.formRoomRackSelect')
                   @endif								
 								</div>
 							</div>

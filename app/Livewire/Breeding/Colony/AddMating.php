@@ -21,8 +21,6 @@ use App\Models\Breeding\Cvterms\CVProtocol;
 use App\Models\Breeding\Cvterms\CVGeneration;
 use App\Models\Breeding\Cvterms\CVPhenotype;
 use App\Models\Breeding\Cvterms\Lifestatus;
-use App\Models\Room;
-use App\Models\Rack;
 use App\Models\Breeding\Cvterms\CVCoatcolor;
 use App\Models\Breeding\Cvterms\CVDiet;
 use App\Models\Breeding\Cvterms\Owner;
@@ -31,6 +29,10 @@ use App\Models\Breeding\Cvterms\Container;
 use App\Models\Breeding\Cvterms\CVMatingtype;
 use App\Models\Breeding\Colony\Mouse;
 use App\Models\Breeding\Colony\Mating;
+
+use App\Models\Rack;
+use App\Models\Room;
+use App\Models\Slot;
 use App\Models\Strain;
 
 // Traits below
@@ -60,7 +62,7 @@ class AddMating extends Component
     public $matingType, $species_name, $lifestatus, $owners, $dam1=1, $dam2=2, $sire=3;
 
     public $rooms, $cageChars, $cageParams, $cageName, $cageStatus, $cageRooms, $datex;
-		public $racksInRoom=[];
+		
     public $cageCreateMessage="", $cageComment, $dam1CageId, $dam2CageId, $sireCageId;
 
     public $dam1Strain, $dam2Strain, $sireStrain, $dam1Diet, $dam2Diet, $sireDiet;
@@ -68,8 +70,37 @@ class AddMating extends Component
     public $asdam1, $asdam2, $assire, $iaSearchMessage, $searchFor;
     //status declarations
 		
+		//Rooms, Rack, and Slot selection variables
+		public $racks, $racksInRoom=[], $free_slots, $fslot_num;
+		public $rack_id, $room_id, $slotID, $slotval, $cageInfos;
+		//public $showRacks=false;
 
-
+	protected $rules = [
+		//		'speciesIdcode'       => 'required|alpha_dash',
+    //    'runner'              => 'required|numeric',
+		//		'_protocol_key'       => 'sometimes|nullable|numeric',
+		//		'_litter_key'         => 'sometimes|nullable|numeric',
+		//		'_strain_key'         => 'required|numeric',
+		//		'_generation_key'     => 'required|alpha_num',
+		//		'dob'                 => 'required|date_format:Y-m-d',
+		//		'_sex_key'            => 'required|alpha',
+		//		'_lifeStatus_key'     => 'required|alpha',
+		//		'_breedingStatus_key' => 'required|alpha',
+		//		'_coatColor_key'      => 'sometimes|nullable|alpha_dash',
+		//		'_diet_key'           => 'sometimes|nullable|numeric',
+		//		'_owner_key'          => 'required|alpha_dash',
+		//		'_origin_key'         => 'required|alpha_dash',
+		//		'tagBase'             => 'required|alpha_dash',
+		//	//'replacement_tag'     => 'alpha_dash',
+		//		'cage_card'           => 'sometimes|nullable|regex:/^[\pL\s\- .,;0-9_]+$/u|max:500',
+		//		'phenotypes'          => 'sometimes|nullable|array',
+		//		'usescheduleterm_key' => 'sometimes|nullable|array',
+		//		'comments'            => 'sometimes|nullable|regex:/^[\pL\s\- .,;0-9_]+$/u|max:500',
+		//		'room_id'             => 'required|numeric',
+			//'cage_id'             => 'required|numeric',
+				'cageInfos'						=> 'required|numeric'
+  ];
+	
     public function render()
     {
       $this->dam1IdCheck($this->dam1Id);
@@ -83,7 +114,7 @@ class AddMating extends Component
 		
 		public function rackSelCheck($room_id)
 		{
-			$this->racksInRoom = Rack::where('room_id', $room_id)->get();
+			//$this->racksInRoom = Rack::where('room_id', $room_id)->get();
 			//dd($racksInRooms);
 		}
 
@@ -157,14 +188,15 @@ class AddMating extends Component
     {
       if($id == 1) { $speciesName = "Mice"; $this->iaMessage = "Selected Mice"; }
       if($id == 4) { $speciesName = "Rat";  $this->iaMessage = "Selected Rat"; }
-          $this->speciesName = $speciesName;
-          $this->strains = Strain::where('species_id', $id)->get();
-          $this->generations = CVGeneration::all();
-          $this->matingType = CVMatingtype::all();
-          $this->diets = CVDiet::where('_species_key', $id)->get();
-          $this->owners = Owner::all();
-          $this->purpose = "New";
-
+			$this->speciesName = $speciesName;
+			$this->strains = Strain::where('species_id', $id)->get();
+			$this->generations = CVGeneration::all();
+			$this->matingType = CVMatingtype::all();
+			$this->diets = CVDiet::where('_species_key', $id)->get();
+			$this->owners = Owner::all();
+			$this->purpose = "New";
+			$this->rooms = Room::all();
+			$this->racks = Rack::all();
       $this->showMatingEntryForm = true;
     }
 
@@ -321,5 +353,44 @@ class AddMating extends Component
 
     }
 
+
+		public function roomSelected()
+		{
+			$this->fslot_num = "";
+			$this->cageInfos = null;
+			$this->free_slots = null;
+			$room_id = $this->room_id;
+			$this->racksInRoom = Rack::where('room_id', $room_id)->get();
+			//dd($room_id, $this->racksInRoom);
+		}		
+
+		public function rackSelected()
+		{
+			$rack_id = $this->rack_id;
+			$slots = Slot::where('rack_id', $rack_id)->where('status','A')->get();
+			$this->free_slots = $slots->count();
+			//if no free slots available throw Message
+			if($this->free_slots > 0)
+			{
+				$this->sarray = $slots->toArray();
+				$this->rarray = [];
+				foreach($this->sarray as $row)
+				{
+					$this->rarray[] = $row['slot_id'];
+				}
+				$this->fslot_num = json_encode(array_slice($this->rarray, 0, 5, true));
+				//dd($rarray, $sarray);
+				$this->cageInfos = $this->rarray[0];
+				$this->cage_id = $this->rarray[0];
+				//dd($this->cageInfos);
+				//$this->validateOnly($this->cageInfos);
+				//$this->slotSelectFlag = true;
+				//$this->cageCreateFlag = true;
+			}
+			else {
+				$this->fslot_num = "No Free slots in rack";
+			}
+		}	
+	
     
 }
