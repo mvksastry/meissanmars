@@ -39,6 +39,9 @@
 							<font color="red">Breeding Status*</font>
 						</td>
 						<td align="center">
+							<font color="red">Exit Date*</font>
+						</td>
+						<td align="center">
 							<font color="red">Origin</font>
 						</td>
 						<td align="center">
@@ -75,6 +78,9 @@
 						</td>
 						<td align="center" >
 							{{ $row['breedingStatus'] }}
+						</td>
+						<td align="center" >
+							{{ $row['exit_date'] }}
 						</td>
 						<td align="center" >
 							{{ $row['origin'] }}

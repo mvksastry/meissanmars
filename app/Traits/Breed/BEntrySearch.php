@@ -50,6 +50,8 @@ trait BEntrySearch
         $baseSqlStatement = "select * from mouse join strains on strains.strain_id = mouse._strain_key where mouse._species_key = ".$species_key;
 
         //dd($mouseIdParam);
+				
+				$baseSqlStatement = $baseSqlStatement." AND mouse.exitDate IS NULL ";
 
         if( $mouseIdParam == "contains")
         {
@@ -139,6 +141,7 @@ trait BEntrySearch
             $qr['sex'] = $row->sex;
             $qr['lifeStatus'] = $row->lifeStatus;
             $qr['breedingStatus'] = $row->breedingStatus;
+						$qr['exit_date'] = $row->exitDate;
             $qr['origin'] = $row->origin;
             $qr['owner'] = $row->owner;
             //$qr['comment'] = $row->comment; // not picking up due to query, to be resolved later
