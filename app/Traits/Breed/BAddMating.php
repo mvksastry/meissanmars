@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Log;
 
 trait BAddMating
 {
-    use BBase;
+  use BBase;
 
 	use BCVTerms;
 
@@ -59,7 +59,8 @@ public function addMating($input)
     }
 
     $matingKey = Mating::max('_mating_key') + 1;
-    $newMatingId = Mating::max('matingID') + 1;
+    $this->newMatingId = Mating::max('matingID') + 1;
+		//dd($this->newMatingId);
     $matingUnitTypeKey = null; //entry for second table
 
     $newMatingEntry = new Mating();
@@ -70,8 +71,8 @@ public function addMating($input)
     $newMatingEntry->_dam1_key       = $input['dam1Key'];
     $newMatingEntry->_dam2_key       = $input['dam2Key'];
     $newMatingEntry->_sire_key       = $input['sireKey'];
-    $newMatingEntry->_strain_key     = $input['strain_key'];
-    $newMatingEntry->matingID        = $newMatingId;
+    $newMatingEntry->_strain_key     = $input['_strain_key'];
+    $newMatingEntry->matingID        = $this->newMatingId;
     $newMatingEntry->suggestedPenID  = $input['cage_id'];
     $newMatingEntry->weanTime        = $input['weantime'];
     $newMatingEntry->matingDate      = $input['matingDate'];
@@ -85,27 +86,27 @@ public function addMating($input)
     //data collection complete
     //dd($newMatingEntry);
 
-    Log::channel('coding')->info('Data collection for mating id [ '.$newMatingId.'] complete');
+    Log::channel('coding')->info('Data collection for mating id [ '.$this->newMatingId.'] complete');
 
        //Stage 5. insert
        //dd($newMouseEntry);
-  try {
+		try {
         $result = $newMatingEntry->save();
-        Log::channel('coding')->info('Mating Id [ '.$newMatingId.' ] creation success');
+        Log::channel('coding')->info('Mating Id [ '.$this->newMatingId.' ] creation success');
 
         if(!empty($input['dam1Key'])){
             $mUnitTypeKey  = 1;
-            $result = $this->insertNewMULK($matingKey, $input['dam1Key'], $sampleKey=null, $mUnitTypeKey);
+            //$result = $this->insertNewMULK($matingKey, $input['dam1Key'], $sampleKey=null, $mUnitTypeKey);
             Log::channel('coding')->info('Mating unit link Id for [ '.$input['dam1Key'].' ] success');
         }
         if(!empty($input['dam2Key'])){
             $mUnitTypeKey  = 1;
-            $result = $this->insertNewMULK($matingKey, $input['dam2Key'], $sampleKey=null, $mUnitTypeKey);
+            //$result = $this->insertNewMULK($matingKey, $input['dam2Key'], $sampleKey=null, $mUnitTypeKey);
             Log::channel('coding')->info('Mating unit link Id for [ '.$input['dam2Key'].' ] success');
         }
         if(!empty($input['sireKey'])){
             $mUnitTypeKey  = 2;
-            $result = $this->insertNewMULK($matingKey, $input['sireKey'], $sampleKey=null, $mUnitTypeKey);
+            //$result = $this->insertNewMULK($matingKey, $input['sireKey'], $sampleKey=null, $mUnitTypeKey);
             Log::channel('coding')->info('Mating unit link Id for [ '.$input['sireKey'].' ] success');
         }
     }
@@ -113,7 +114,7 @@ public function addMating($input)
     catch (\Illuminate\Database\QueryException $e ) {
                 $result2Fail = $mcmsTables->rollback();
                 $eMsg = $e->getMessage();
-                dd($eMsg);
+                //dd($eMsg);
                 $qResultMsg = $qResultMsg."</br>".$eMsg."</br>";
                 $result1 = false;
     }

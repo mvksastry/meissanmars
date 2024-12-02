@@ -39,11 +39,15 @@ use App\Models\Strain;
 use App\Traits\Breed\BEditMice;
 use App\Traits\Breed\BContainer;
 use App\Traits\Breed\BAddMating;
+use App\Traits\Breed\BAddCageInfo;
+
+use Validator;
+use Livewire\Attributes\Validate;
 
 class AddMating extends Component
 {
     // display panels/divisions default state
-    use BEditMice, BContainer, BAddMating;
+    use BEditMice, BContainer, BAddMating, BAddCageInfo;
 
     //message here
     public $iaMessage;
@@ -51,6 +55,10 @@ class AddMating extends Component
     //form state declarations
     public $showMatingEntryForm, $showEntrySearchForm = false; 
 		public $formCageSelect =false, $formCageNew = false;
+		
+		//flags
+		public $dam1flag=false, $dam2flag=false, $sireflag=false;
+		public $allFlagsClear=false;
 
     public $strains, $generations, $diets, $strain_id;
 
@@ -58,7 +66,7 @@ class AddMating extends Component
     public $speciesName, $purpose, $newmatingId;
     public $dam1Key, $dam1Msg, $dam2Key, $dam2Msg, $sireKey, $sireMsg;
     public $dam1Id, $dam2Id, $sireId, $diet_key, $strain_key, $matgType=1, $generation_key;
-    public $genotypeneed, $ownerwg="EAF-NCCS", $matingDate,  $weantime, $cage_id, $weannote, $comments;
+    public $genotypeneed, $ownerwg="EAF-NCCS", $matingDate,  $weantime, $slot_id, $weannote, $comments;
     public $matingType, $species_name, $lifestatus, $owners, $dam1=1, $dam2=2, $sire=3;
 
     public $rooms, $cageChars, $cageParams, $cageName, $cageStatus, $cageRooms, $datex;
@@ -76,30 +84,26 @@ class AddMating extends Component
 		//public $showRacks=false;
 
 	protected $rules = [
-		//		'speciesIdcode'       => 'required|alpha_dash',
-    //    'runner'              => 'required|numeric',
-		//		'_protocol_key'       => 'sometimes|nullable|numeric',
-		//		'_litter_key'         => 'sometimes|nullable|numeric',
-		//		'_strain_key'         => 'required|numeric',
-		//		'_generation_key'     => 'required|alpha_num',
-		//		'dob'                 => 'required|date_format:Y-m-d',
-		//		'_sex_key'            => 'required|alpha',
-		//		'_lifeStatus_key'     => 'required|alpha',
-		//		'_breedingStatus_key' => 'required|alpha',
-		//		'_coatColor_key'      => 'sometimes|nullable|alpha_dash',
-		//		'_diet_key'           => 'sometimes|nullable|numeric',
-		//		'_owner_key'          => 'required|alpha_dash',
-		//		'_origin_key'         => 'required|alpha_dash',
-		//		'tagBase'             => 'required|alpha_dash',
-		//	//'replacement_tag'     => 'alpha_dash',
-		//		'cage_card'           => 'sometimes|nullable|regex:/^[\pL\s\- .,;0-9_]+$/u|max:500',
-		//		'phenotypes'          => 'sometimes|nullable|array',
-		//		'usescheduleterm_key' => 'sometimes|nullable|array',
-		//		'comments'            => 'sometimes|nullable|regex:/^[\pL\s\- .,;0-9_]+$/u|max:500',
-		//		'room_id'             => 'required|numeric',
-			//'cage_id'             => 'required|numeric',
-				'cageInfos'						=> 'required|numeric'
+
+		'strain_key'     => 'required|numeric',
+		'generation_key' => 'required|alpha_num',
+		'ownerwg'        => 'required|alpha_dash',
+		'matingDate'     => 'required|date',
+		'weantime'       => 'required|numeric',
+		'room_id'        => 'required|numeric',
+		'rack_id'        => 'required|numeric',
+		'slot_id'        => 'required|numeric',
+
+		'diet_key'       => 'sometimes|nullable|numeric',
+		'matgType'       => 'sometimes|nullable|numeric',		
+
+		'genotypeneed'   => 'sometimes|nullable|boolean',
+		'weannote'       => 'sometimes|nullable|regex:/^[\pL\s\- .,;0-9_]+$/u|max:500',
+		'comments'       => 'sometimes|nullable|regex:/^[\pL\s\- .,;0-9_]+$/u|max:500',
+		
   ];
+	
+
 	
     public function render()
     {
@@ -110,7 +114,25 @@ class AddMating extends Component
       return view('livewire.breeding.colony.add-mating');
     }
 
-
+		public function clearAllFlagsForEntry()
+		{
+			$this->allFlagsClear = false;
+			$this->validate();
+			
+			if($this->dam1flag || $this->dam2flag)
+			{
+				if($this->sireflag)
+				{
+					$this->allFlagsClear = true;
+				}
+			}
+		}
+		
+		public function changeStrainInfos()
+		{
+			
+			
+		}
 		
 		public function rackSelCheck($room_id)
 		{
@@ -131,6 +153,7 @@ class AddMating extends Component
               $this->dam1CageId = $qry->_pen_key;
               $this->dam1Diet = $qry->diet;
               $this->dam1Msg = 'Yes; No Entries';
+							$this->dam1flag = true;
           }
           else {
               $this->dam1Msg = 'No; Part of other';
@@ -153,6 +176,7 @@ class AddMating extends Component
               $this->dam2CageId = $qry->_pen_key;
               $this->dam2Diet = $qry->diet;
               $this->dam2Msg = 'Yes; No Entries';
+							$this->dam2flag = true;
           }
           else {
               $this->dam2Msg = 'No; Part of other';
@@ -174,6 +198,7 @@ class AddMating extends Component
               $this->sireCageId = $qry->_pen_key;
               $this->sireDiet = $qry->diet;
               $this->sireMsg = 'Yes; No Entries';
+							$this->sireflag = true;
           }
           else {
               $this->sireMsg = 'No; Part of other';
@@ -227,50 +252,112 @@ class AddMating extends Component
       $this->iaMessage = "Welcome, Pay attention to fields";
 
       $input['speciesName'] = $this->speciesName;
-      //$this->validate(['speciesName' => 'required|alpha']);
       $input['purpose'] = $this->purpose;
-      //$this->validate(['purpose' => 'required|alpha']);
       $input['dam1Id'] = $this->dam1Id;
-      //$this->validate(['purpose' => 'required|numeric']);
       $input['dam1Key'] = $this->dam1Key;
-
       $input['dam2Id'] = $this->dam2Id;
-      //$this->validate(['purpose' => 'required|numeric']);
       $input['dam2Key'] = $this->dam2Key;
-
       $input['sireId'] = $this->sireId;
-      //$this->validate(['purpose' => 'required|numeric']);
       $input['sireKey'] = $this->sireKey;
-
       $input['diet_key'] = $this->diet_key;
-      //$this->validate(['_diet_key' => 'required|numeric']);
-      $input['strain_key'] = $this->strain_key;
-      //$this->validate(['_strain_key' => 'required|numeric']);
+      $input['_strain_key'] = $this->strain_key;
       $input['matgType'] = $this->matgType;
-      //$this->validate(['_strain_all' => 'required|numeric']);
       $input['generation_key'] = $this->generation_key;
-      //$this->validate(['_generation_key' => 'required|numeric']);
       $input['genotypeneed'] = $this->genotypeneed;
-      //$this->validate(['dob' => 'required|date_format:Y-m-d']);
       $input['ownerwg'] = $this->ownerwg;
-      //$this->validate(['_sex_key' => 'required|numeric']);
       $input['matingDate'] = $this->matingDate;
-      //$this->validate(['_breedingStatus_key' => 'required|numeric']);
       $input['weantime'] = $this->weantime;
-      //$this->validate(['weantime' => 'required|numeric']);
-      $input['cage_id'] = $this->cage_id;
-      //$this->validate(['cage_id' => 'required|numeric']);
+      $input['cage_id'] = $this->cage_id; //this is not cage but slot_id
       $input['weannote'] = $this->weannote;
-      //$this->validate(['weannote' => 'required|numeric']);
       $input['comments'] = $this->comments;
-      //$this->validate(['comments' => 'required|numeric']);
 
       //dd($input);
       $result = $this->addMating($input);
-
-      $this->iaMessage = "Mating Creation Success";
+			
+			//now update cage information
+			if($result)
+			{
+				$ac = 0; $acid = [];
+				if($this->dam1Id != null)
+				{
+					$ac = $ac + 1;
+					$acid[] = $this->dam1Id;
+				}
+				if($this->dam2Id != null)
+				{
+					$ac = $ac + 1;
+					$acid[] = $this->dam2Id;
+				}				
+				if($this->sireId != null)
+				{
+					$ac = $ac + 1;
+					$acid[] = $this->sireId;
+				}				
+				
+				$input['_species_key'] = $this->getSpeciesKeyBySpeciesName($this->speciesName);
+				$input['animal_count'] = $ac;
+				$input['mice_ids'] = $acid;
+				$input['rack_id'] = $this->rack_id;
+				$input['slot_id'] = $this->slot_id;
+				//dd($input);
+				$final_res = $this->updateRackSlotCageInfo($input);
+				$this->allFlagsClear = false;
+				$this->clearMatingForm();
+				$this->iaMessage = "Mating Entry Creation Success";
+			}      
     }
 
+		public function clearMatingForm()
+		{
+			$this->speciesName = Mice;
+      $this->purpose = New;
+      $this->dam1Id = null;
+      //$this->dam1Key = null;
+      $this->dam2Id = null;
+      //$this->dam2Key = null;
+      $this->sireId = null;
+      //$this->sireKey = null;
+      $this->diet_key = null;
+      $this->strain_key = null;
+      $this->matgType = null;
+      $this->generation_key = null;
+      $this->genotypeneed = false;
+      $this->ownerwg = null;
+      $this->matingDate = null;
+      $this->weantime = null;
+      //$this->cage_id = null; 
+			$this->room_id = null;
+			$this->rack_id = null;
+      $this->weannote = null;
+      $this->comments = null;
+			
+			$this->fslot_num = "";
+			$this->cageInfos = null;
+			$this->free_slots = null;
+			$this->slot_id = null;
+			$this->iaMessage = "Mating Entry Creation Success: Refresh page for new Mating Entry";
+			
+			$this->dam1flag = false;
+			$this->dam2flag = false;
+			$this->sireflag = false;
+			
+			$this->sireStrain = null;
+      $this->sireCageId = null;
+      $this->sireDiet = null;
+      $this->sireMsg = null;
+			
+			$this->dam2Strain = null;
+      $this->dam2CageId = null;
+      $this->dam2Diet = null;
+      $this->dam2Msg = null; 
+			
+			$this->dam1Strain = null;
+      $this->dam1CageId = null;
+      $this->dam1Diet = null;
+      $this->dam1Msg = null;
+			
+		}
+		
     public function pick($id)
     {
       $ix = explode('_', $id);
@@ -286,6 +373,17 @@ class AddMating extends Component
       $this->entrySearchResult = false;
       $this->showEntrySearchForm = false;
     }
+
+
+	/*
+		protected $validationAttributes = [
+        'slot_id' => 'Slot ID'
+    ];
+		
+		protected $message = [
+				'slot_id.required' => 'The Email Address cannot be empty.',
+        'slot_id.numeric' => 'The Slot ID is number only.',
+		];
 
     public function cageSearch()
     {
@@ -303,7 +401,6 @@ class AddMating extends Component
 
       dd($input);
     }
-
 
     // make an entry in container table and a
     // corresponding entry in containerhistory
@@ -349,10 +446,11 @@ class AddMating extends Component
       $this->formCageNew = false;
     }
 
-    public function resetform(){
+    public function resetform()
+		{
 
     }
-
+	*/
 
 		public function roomSelected()
 		{
@@ -381,7 +479,7 @@ class AddMating extends Component
 				$this->fslot_num = json_encode(array_slice($this->rarray, 0, 5, true));
 				//dd($rarray, $sarray);
 				$this->cageInfos = $this->rarray[0];
-				$this->cage_id = $this->rarray[0];
+				$this->slot_id = $this->rarray[0];
 				//dd($this->cageInfos);
 				//$this->validateOnly($this->cageInfos);
 				//$this->slotSelectFlag = true;

@@ -32,6 +32,7 @@
 							<input wire:model.lazy="newmatingId" style="background-color:#EAEDED; font-weight: bold; font-size: 12px;" readonly="readonly" type="text" placeholder="Read only" value="" >
             </td>
           </tr>
+					
           <tr bgcolor="#EADDED">
             <td class="p-2">
               <font color="red">Dam 1 ID* </font>
@@ -96,18 +97,32 @@
                     <option value="{{ $item->diet }}">{{ $item->diet }}</option>
                   @endforeach
               </select>
+							</br>
+							@error('diet_key') 
+								<span class="text-danger error">
+									{{ $message }}
+								</span> 
+							@enderror
 						</td>
+						
 						<td class="p-2">
               <font color="red">Litter Strain*</font>
             </td>
             <td colspan="1">
-							<select wire:model.lazy="strain_key" name="_strain_key" id="_strain_key">
+							<select wire:model.lazy="strain_key" wire:change="changeStrainInfos" name="_strain_key" id="_strain_key">
                 <option value=""></option>
                   @foreach($strains as $item)
-                    <option value="{{ $item->_strain_key }}">{{ $item->strainName." : ".$item->jrNum }}</option>
+                    <option value="{{ $item->strain_id }}">{{ substr($item->strain_name." : ".$item->jrNum, 0, 35) }}</option>
                   @endforeach
               </select>
+							</br>
+							@error('strain_key') 
+								<span class="text-danger error">
+									{{ $message }}
+								</span> 
+							@enderror
             </td>
+						
 						<td >
 							Mating Type
 						</td>
@@ -118,11 +133,18 @@
                     <option value="{{ $item->_matingType_key }}">{{ $item->matingType }}</option>
                   @endforeach
               </select>
-
+							</br>
+							@error('matgType') 
+								<span class="text-danger error">
+									{{ $message }}
+								</span> 
+							@enderror
 						</td>
           </tr>
+					
      			<tr bgcolor="#EADDED">
        		</tr>
+					
        		<tr bgcolor="#EAEDED">
 						<td class="p-2">
          			<font color="red">Litter Generation*</font>
@@ -134,10 +156,16 @@
            					<option value="{{ $item->generation }}">{{ $item->generation }}</option>
           				@endforeach
            			</select>
+							</br>
+							@error('generation_key') 
+								<span class="text-danger error">
+									{{ $message }}
+								</span> 
+							@enderror
          		</td>
 						<td colspan="2">
 							Needs Genotyping
-							<input wire:model.lazy="genotypeneed" value="true" type="checkbox">
+							<input wire:model.lazy="genotypeneed" type="checkbox">
 						</td>
 						<td>
 							<font color="red">Owner/ Workgroup*</font>
@@ -149,6 +177,12 @@
                     <option value="{{ $item->owner }}">{{ $item->owner }}</option>
                   @endforeach
                 </select>
+							</br>
+							@error('ownerwg') 
+								<span class="text-danger error">
+									{{ $message }}
+								</span> 
+							@enderror
 						</td>
 					</tr>
 
@@ -157,7 +191,13 @@
 							Mating Date
             </td>
 						<td colspan="1">
-							<input wire:model.lazy="matingDate" value="{{ date('Y-m-d') }}"type="text">
+							<input wire:model.lazy="matingDate" type="date">
+							</br>
+							@error('matingDate') 
+								<span class="text-danger error">
+									{{ $message }}
+								</span> 
+							@enderror
 						</td>
             <td>
 							<font color="red">Wean time</font>
@@ -166,18 +206,31 @@
 							<input class="mx-5" wire:model.lazy="weantime" checked value="21" type="radio">Standard (21 days)
 							</br>
 							<input class="mx-5" wire:model.lazy="weantime" value="28" type="radio">Extended (28 days)
-            </td>
+							</br>
+							@error('weantime') 
+								<span class="text-danger error">
+									{{ $message }}
+								</span> 
+							@enderror
+						</td>
 						<td>
 
 						</td>
           </tr>
+					
        		<tr bgcolor="#EADDED">
          		<td class="p-2">
-							<font color="red">Cage ID</font>
+							<font color="red">Slot ID</font>
             </td>
             <td>
-              <input wire:model.lazy="cage_id" value="standard" type="text">
+              <input wire:model.lazy="slot_id" value="" type="text">
 							(Auto Select)
+							</br>
+							@error('slot_id') 
+								<span class="text-danger error">
+									{{ $message }}
+								</span> 
+							@enderror
             </td>
 						<td>
 							Room*
@@ -189,6 +242,12 @@
                 <option value="{{ $val->room_id }}">{{ $val->room_name }}</option>
 								@endforeach
               </select>
+							</br>
+							@error('room_id') 
+								<span class="text-danger error">
+									{{ $message }}
+								</span> 
+							@enderror
 						</td>
 						<td>
 							<font color="red">Rack*</font>
@@ -200,6 +259,12 @@
                  		<option value="{{ $item->rack_id }}">{{ $item->rack_name }}</option>
                		@endforeach
              	</select>
+							</br>
+							@error('rack_id') 
+								<span class="text-danger error">
+									{{ $message }}
+								</span> 
+							@enderror
 						</td>
           </tr>
 					
@@ -208,21 +273,23 @@
 
             </td >
            	<td class="p-2">
-							<font color="red">Total Free Slots</font>
+							
            	</td >
+           	<td>
+							<font color="red">Total Free Slots</font>: 
+           	</td>
            	<td>
 							{{ $free_slots }}
            	</td>
-           	<td>
-							<font color="red">First 5 Free Slot ID</font>
-           	</td>
            	<td> 
-							{{ $fslot_num }}
+							<font color="red">First 5 Free Slot ID</font>
 					 	</td>
 
             <td>
+							{{ $fslot_num }}
             </td>
 					</tr>
+					
 					<tr bgcolor="#EAEDED">
             <td class="p-2" >
               <font color="red">Wean Note</font>
@@ -243,11 +310,14 @@
 						<td class="p-2">
             </td>
             <td>
-							<button wire:click="post()" class="btn btn-primary rounded">Enter</button>
+							<button wire:click="clearAllFlagsForEntry()" class="btn btn-primary rounded">Validate</button>
             </td>
             <td>
             </td>
 						<td>
+							@if($allFlagsClear)
+							<button wire:click="post()" class="btn btn-primary rounded">Enter</button>
+							@endif
 						</td>
 						<td>
 							<button wire:target.prevent="resetform()" class="btn btn-primary rounded">Cancel</button>
