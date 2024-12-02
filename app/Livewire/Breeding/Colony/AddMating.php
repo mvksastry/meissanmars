@@ -309,8 +309,8 @@ class AddMating extends Component
 
 		public function clearMatingForm()
 		{
-			$this->speciesName = Mice;
-      $this->purpose = New;
+			$this->speciesName = "Mice";
+      $this->purpose = "New";
       $this->dam1Id = null;
       //$this->dam1Key = null;
       $this->dam2Id = null;
