@@ -98,6 +98,7 @@ class Occupancy extends Component
 		$caInfos = Cage::with('user')->with('iaecprojects')
 						->with('strain')
 						->where('cage_id', $id)->get();
+		//dd($caInfos);
 		$this->caInfos = $caInfos;
 		$this->cageInfos = true;
 	}

@@ -15,19 +15,43 @@
 						</tr>
 						<tr>
 							<td>Issue Id</td>
-							<td>{{ $x->usage_id }}</td>
+							<td>
+								@if($x->usage_id != null)
+								{{ $x->usage_id }}
+								@else
+									NA 
+								@endif
+							</td>
 						</tr>
 						<tr>
 							<td>Project Id</td>
-							<td>{{ $x->iaecproject_id }}</td>
+							<td>
+								@if($x->iaecproject_id != null)
+									{{ $x->iaecproject_id }}
+								@else
+									Facility 
+								@endif	
+							</td>							
 						</tr>
 						<tr>
 							<td>EAF ID</td>
-							<td>B-{{ $x->iaecprojects->inst_id }}</td>
+							<td>
+								@if($x->iaecprojects != null)
+									B-{{ $x->iaecprojects->inst_id }}
+								@else
+									Facility
+								@endif
+							</td>
 						</tr>
 						<tr>
 							<td>Owner Id</td>
-							<td>{{ $x->user->name }}</td>
+							<td>
+								@if($x->user != null)
+									{{ $x->user->name }}
+								@else
+									EAF-NCCS
+								@endif
+							</td>
 						</tr>
 						<tr>
 							<td>Strain</td>
@@ -49,6 +73,10 @@
 						<tr>
 							<td>No of Days</td>
 							<td>{{ $days_between }} days</td>
+						</tr>
+						<tr>
+							<td>IDs</td>
+							<td>{{ $x->mouse_ids }}</td>
 						</tr>
 						<tr>
 							<td>Notes</td>

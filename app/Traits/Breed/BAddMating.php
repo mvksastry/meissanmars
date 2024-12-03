@@ -73,7 +73,8 @@ public function addMating($input)
     $newMatingEntry->_sire_key       = $input['sireKey'];
     $newMatingEntry->_strain_key     = $input['_strain_key'];
     $newMatingEntry->matingID        = $this->newMatingId;
-    $newMatingEntry->suggestedPenID  = $input['cage_id'];
+    $newMatingEntry->suggestedPenID  = $input['cage_id']; //this is slot_id but not accurate without
+																													//rack info
     $newMatingEntry->weanTime        = $input['weantime'];
     $newMatingEntry->matingDate      = $input['matingDate'];
     $newMatingEntry->generation      = $input['generation_key'];

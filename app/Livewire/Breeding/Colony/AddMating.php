@@ -40,6 +40,7 @@ use App\Traits\Breed\BEditMice;
 use App\Traits\Breed\BContainer;
 use App\Traits\Breed\BAddMating;
 use App\Traits\Breed\BAddCageInfo;
+use App\Traits\CageInfoUpdate;
 
 use Validator;
 use Livewire\Attributes\Validate;
@@ -48,7 +49,8 @@ class AddMating extends Component
 {
     // display panels/divisions default state
     use BEditMice, BContainer, BAddMating, BAddCageInfo;
-
+		use CageInfoUpdate;
+		
     //message here
     public $iaMessage;
 
@@ -282,18 +284,34 @@ class AddMating extends Component
 				{
 					$ac = $ac + 1;
 					$acid[] = $this->dam1Id;
+					$dam1Info = Mouse::where('ID', $this->dam1Id)->first();
+					$dam1Cage_id = $dam1Info->cage_id;
+					$dam1slot_id = $dam1Info->slot_id;
+					$dam1rack_id = $dam1Info->rack_id;
+					$rex = $this->updateAnimalNumber($dam1Cage_id, $dam1slot_id, $dam1rack_id);
 				}
 				if($this->dam2Id != null)
 				{
 					$ac = $ac + 1;
 					$acid[] = $this->dam2Id;
+					$dam2Info = Mouse::where('ID', $this->dam2Id)->first();
+					$dam2Cage_id = $dam2Info->cage_id;
+					$dam2slot_id = $dam2Info->slot_id;
+					$dam2rack_id = $dam2Info->rack_id;
+					$rex = $this->updateAnimalNumber($dam2Cage_id, $dam2slot_id, $dam2rack_id);
 				}				
 				if($this->sireId != null)
 				{
 					$ac = $ac + 1;
 					$acid[] = $this->sireId;
+					$sireInfo = Mouse::where('ID', $this->sireId)->first();
+					$sireCage_id = $sireInfo->cage_id;
+					$sireslot_id = $sireInfo->slot_id;
+					$sirerack_id = $sireInfo->rack_id;
+					$rex = $this->updateAnimalNumber($sireCage_id, $sireslot_id, $sirerack_id);
 				}				
 				
+				//for creating the mating cage, anew id is created.
 				$input['_species_key'] = $this->getSpeciesKeyBySpeciesName($this->speciesName);
 				$input['animal_count'] = $ac;
 				$input['mice_ids'] = $acid;
@@ -301,11 +319,20 @@ class AddMating extends Component
 				$input['slot_id'] = $this->slot_id;
 				//dd($input);
 				$final_res = $this->updateRackSlotCageInfo($input);
+				
+				//now reduce the mice number by the 
+				//number transferred to mating cage.
+				
+				
 				$this->allFlagsClear = false;
 				$this->clearMatingForm();
 				$this->iaMessage = "Mating Entry Creation Success";
 			}      
     }
+
+
+
+
 
 		public function clearMatingForm()
 		{
