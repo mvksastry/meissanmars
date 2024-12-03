@@ -18,13 +18,13 @@
 							Mating ID <font color="red"></font>
 						</td>
 						<td align="center">
-							<font color="red">Dam 1</font>
+							<font color="red">Dam 1</br>Key</font>
 						</td>
 						<td align="center">
-							<font color="red">Dam 2</font>
+							<font color="red">Dam 2</br>Key</font>
 						</td>
 						<td align="center">
-							<font color="red">Sire</font>
+							<font color="red">Sire</br>Key</font>
 						</td>
 						<td align="center">
 							<font color="red">Mating Date</font>
@@ -48,7 +48,7 @@
 				<?php //$id = $row->_mouse_key ?>
 					<tr>
 						<td align="center" width="4%">
-							<button wire:click="pick('{{ $row['mating_key'] }}')" class="bg-blue-500 w-15 hover:bg-blue-800 text-white font-normal py-1 px-1  mx-1 rounded">Pick</button>
+							<button wire:click="pick('{{ $row['mating_key'] }}')" class="btn btn-info rounded">Pick</button>
 						</td>
 						<td align="center">
 							{{ $row['matingID'] }}
@@ -71,10 +71,10 @@
 						<td align="center">
 							{{ $row['owner'] }}
 						</td>
-						<td align="center">
+						<td align="left">
 							{{ $row['weanNote'] }}
 						</td>
-						<td align="center">
+						<td align="left">
 							{{ $row['comment'] }}
 						</td>
 					</tr>

@@ -57,12 +57,12 @@ trait BMatingSearch
 
             if ($fromDate != "")
             {
-                $baseSqlStatement = $baseSqlStatement." AND mating.DATE(matingDate) > '".$fromDate."'";
+                $baseSqlStatement = $baseSqlStatement." AND mating.matingDate > '".$fromDate."'";
             }
 
             if ($toDate != "")
             {
-                $baseSqlStatement = $baseSqlStatement." AND mating.DATE(matingDate) < '".$toDate."'";
+                $baseSqlStatement = $baseSqlStatement." AND mating.matingDate < '".$toDate."'";
             }
 
             if ($ownerWg != "")
@@ -87,10 +87,10 @@ trait BMatingSearch
 
         */
 
-        dd($baseSqlStatement);
+        //dd($baseSqlStatement);
         //echo "Query to be executed = ".$baseSqlStatement;echo "</br>";
         $result = DB::select($baseSqlStatement);
-        dd($result);
+        //dd($result);
         $res = array();
         foreach($result as $row)
         {

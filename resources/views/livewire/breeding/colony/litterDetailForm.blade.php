@@ -34,7 +34,7 @@
 					</tr>
 					
 					<tr>
-            <td class="border px-2  text-xs text-red-600 p-1" colspan="2">
+            <td class="border px-2  text-sm text-red p-1" colspan="2">
               @if(!empty($mqryResult))
                 Dam1: {{ $mqryResult->_dam1_key }}; Dam2: {{ $mqryResult->_dam1_key }}; Sire: {{ $mqryResult->_dam1_key }};
                 </br>
