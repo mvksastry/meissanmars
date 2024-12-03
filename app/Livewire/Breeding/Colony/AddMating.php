@@ -30,6 +30,7 @@ use App\Models\Breeding\Cvterms\CVMatingtype;
 use App\Models\Breeding\Colony\Mouse;
 use App\Models\Breeding\Colony\Mating;
 
+use App\Models\Cage;
 use App\Models\Rack;
 use App\Models\Room;
 use App\Models\Slot;
@@ -64,6 +65,9 @@ class AddMating extends Component
 
     public $strains, $generations, $diets, $strain_id;
 
+		//selected objects meaning before form Entry
+		public $selectedDam1, $selectedDam2, $selectedSire;
+		
     //variable declarations
     public $speciesName, $purpose, $newmatingId;
     public $dam1Key, $dam1Msg, $dam2Key, $dam2Msg, $sireKey, $sireMsg;
@@ -151,6 +155,7 @@ class AddMating extends Component
           $qry2 = Mating::where('_dam1_key', $qry->_mouse_key)
                           ->orWhere('_dam2_key', $qry->_mouse_key)->get();
           if(count($qry2) == 0 ){
+							//$this->selectedDam1 = $qry;
               $this->dam1Strain = $qry->strainSelected->strain_name;
               $this->dam1CageId = $qry->_pen_key;
               $this->dam1Diet = $qry->diet;
@@ -174,6 +179,7 @@ class AddMating extends Component
           $qry2 = Mating::where('_dam1_key', $qry->_mouse_key)
                           ->orWhere('_dam2_key', $qry->_mouse_key)->get();
           if(count($qry2) == 0 ){
+							//$this->selectedDam2 = $qry;
               $this->dam2Strain = $qry->strainSelected->strainName;
               $this->dam2CageId = $qry->_pen_key;
               $this->dam2Diet = $qry->diet;
@@ -196,6 +202,7 @@ class AddMating extends Component
           $this->sireKey = $qry->_mouse_key;
           $qry2 = Mating::where('_sire_key', $qry->_mouse_key)->get();
           if(count($qry2) == 0 ){
+							//$this->selectedSire = $qry;
               $this->sireStrain = $qry->strainSelected->strainName;
               $this->sireCageId = $qry->_pen_key;
               $this->sireDiet = $qry->diet;
@@ -272,10 +279,9 @@ class AddMating extends Component
       $input['cage_id'] = $this->cage_id; //this is not cage but slot_id
       $input['weannote'] = $this->weannote;
       $input['comments'] = $this->comments;
-
       //dd($input);
       $result = $this->addMating($input);
-			
+			$result = true;
 			//now update cage information
 			if($result)
 			{
@@ -288,7 +294,20 @@ class AddMating extends Component
 					$dam1Cage_id = $dam1Info->cage_id;
 					$dam1slot_id = $dam1Info->slot_id;
 					$dam1rack_id = $dam1Info->rack_id;
-					$rex = $this->updateAnimalNumber($dam1Cage_id, $dam1slot_id, $dam1rack_id);
+					$rex = $this->updateAnimalNumber($this->dam1Id, $dam1Cage_id, $dam1slot_id, $dam1rack_id);
+					/*
+					//$rexy = $this->removeIDFromCage($this->dam1Id, $dam1Cage_id);
+					$cageRes = Cage::where('cage_id', $dam1Cage_id)->first();
+					$cageMiceIDs = json_decode($cageRes->mouse_ids);
+					if (($key = array_search($this->dam1Id, $cageMiceIDs)) !== false) 
+					{
+						unset($cageMiceIDs[$key]);
+					}
+					$cageMiceIDsMice = json_encode($cageMiceIDs);
+					$cageRes->mice_ids = $cageMiceIDsMice;
+					$cageRes->save();
+					dd($cageMiceIDs, $cageRes);
+					*/
 				}
 				if($this->dam2Id != null)
 				{
@@ -298,7 +317,7 @@ class AddMating extends Component
 					$dam2Cage_id = $dam2Info->cage_id;
 					$dam2slot_id = $dam2Info->slot_id;
 					$dam2rack_id = $dam2Info->rack_id;
-					$rex = $this->updateAnimalNumber($dam2Cage_id, $dam2slot_id, $dam2rack_id);
+					$rex = $this->updateAnimalNumber($this->dam2Id, $dam2Cage_id, $dam2slot_id, $dam2rack_id);
 				}				
 				if($this->sireId != null)
 				{
@@ -308,7 +327,7 @@ class AddMating extends Component
 					$sireCage_id = $sireInfo->cage_id;
 					$sireslot_id = $sireInfo->slot_id;
 					$sirerack_id = $sireInfo->rack_id;
-					$rex = $this->updateAnimalNumber($sireCage_id, $sireslot_id, $sirerack_id);
+					$rex = $this->updateAnimalNumber($this->sireId, $sireCage_id, $sireslot_id, $sirerack_id);
 				}				
 				
 				//for creating the mating cage, anew id is created.
@@ -329,10 +348,6 @@ class AddMating extends Component
 				$this->iaMessage = "Mating Entry Creation Success";
 			}      
     }
-
-
-
-
 
 		public function clearMatingForm()
 		{
