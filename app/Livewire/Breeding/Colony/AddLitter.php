@@ -60,7 +60,7 @@ class AddLitter extends Component
   public $litType, $dateBorn, $weanDate, $tagDate, $birthEventStatusKey, $coment;
 
   public $matingId_contains, $matingId, $strainKey, $spKey, $lifeStatus, $ownerWg, $fromDate, $toDate;
-  public $matSearchResults, $searchResultsMating, $mqryResult;
+  public $matSearchResults, $searchResultsMating, $mqryResult, $wean_time=0;
   
   public $roomId, $rackId;
     
@@ -83,15 +83,18 @@ class AddLitter extends Component
   public function doDates()
   {
     $dob = $this->dateBorn;
+		
+		$wean_days = " + ".$this->wean_time." days";
+		
     if(strtotime($dob) == null || empty(strtotime($dob)))
     {
         $dob = date('Y-m-d');
         $this->dateBorn = $dob;
-        $this->weanDate = date('Y-m-d', strtotime($dob.' + 21 days '));
+        $this->weanDate = date('Y-m-d', strtotime($dob.$wean_days));
         $this->tagDate = date('Y-m-d');
     }
     else{
-        $this->weanDate = date('Y-m-d', strtotime($dob.' + 21 days '));
+        $this->weanDate = date('Y-m-d', strtotime($dob.$wean_days));
     }
   }
 
@@ -163,6 +166,7 @@ class AddLitter extends Component
     $qry = Mating::where('_mating_key', $id)->first();
 
     $this->mqryResult = $qry;
+		$this->wean_time = $qry->weanTime;
     $this->matKey = $id;
 
     $this->showSearchMatingEntryForm = false;

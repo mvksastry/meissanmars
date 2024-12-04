@@ -30,6 +30,9 @@
 							<font color="red">Mating Date</font>
 						</td>
 						<td align="center">
+							<font color="red">Wean Time</br>Days</font>
+						</td>
+						<td align="center">
 							<font color="red">Generation</font>
 						</td>
 						<td align="center">
@@ -64,6 +67,9 @@
 						</td>
 						<td align="center">
 							{{ date('d-m-Y',strtotime($row['matingDate'])) }}
+						</td>
+						<td align="center">
+							{{ $row['weanTime'] }}
 						</td>
 						<td align="center">
 							{{ $row['generation'] }}

@@ -100,6 +100,7 @@ trait BMatingSearch
             $qr['_dam2_key'] = $row->_dam2_key;
             $qr['_sire_key'] = $row->_sire_key;
             $qr['matingDate'] = $row->matingDate;
+						$qr['weanTime'] = $row->weanTime;
             $qr['generation'] = $row->generation;
             $qr['owner'] = $row->owner;
             $qr['weanNote'] = $row->weanNote;

@@ -36,9 +36,9 @@
 					<tr>
             <td class="border px-2  text-sm text-red p-1" colspan="2">
               @if(!empty($mqryResult))
-                Dam1: {{ $mqryResult->_dam1_key }}; Dam2: {{ $mqryResult->_dam1_key }}; Sire: {{ $mqryResult->_dam1_key }};
+                Dam1: {{ $mqryResult->_dam1_key }}; Dam2: {{ $mqryResult->_dam1_key }}; Sire: {{ $mqryResult->_dam1_key }}; Mating Date: {{ date('d-m-Y', strtotime($mqryResult->matingDate)) }}; 
                 </br>
-                Mating Date: {{ date('d-m-Y', strtotime($mqryResult->matingDate)) }}; Generation: {{ $mqryResult->generation }}; Strain: {{ $mqryResult->_strain_key }};
+                Wean Time: {{ $mqryResult->weanTime }} days; Generation: {{ $mqryResult->generation }}; Strain: {{ $mqryResult->_strain_key }};
               @else
                 Select Mating Entry
               @endif
@@ -174,7 +174,7 @@
             </td>
             <td class="border px-2  p-1">
               <input wire:model.lazy="weanDate" type="text" placeholder="YYYY-MM-DD">
-							(Def: 21 days)
+							(Def: {{ $wean_time }} days)
             </td>
           </tr>
 
