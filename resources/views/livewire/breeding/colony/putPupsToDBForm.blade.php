@@ -82,7 +82,88 @@
               <input wire:model.lazy="lpimc" type="checkbox">
             </td>
 					</tr>
+					<tr bgcolor="#AHDADE">
+            <td class="p-2">
 
+            </td >
+           	<td class="p-2">
+							
+           	</td >
+					</tr>
+
+					<tr>
+						<td>
+							Room*
+						</td>
+						<td>
+							<select wire:model.lazy="room_id" wire:change="roomSelected" name="room_id" id="room_id">
+                <option value="-1"></option>
+								@foreach($rooms as $val)
+                <option value="{{ $val->room_id }}">{{ $val->room_name }}</option>
+								@endforeach
+              </select>
+							</br>
+							@error('room_id') 
+								<span class="text-danger error">
+									{{ $message }}
+								</span> 
+							@enderror
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<font color="red">Rack*</font>
+						</td>
+						<td>
+						<select wire:model.lazy="rack_id" wire:change="rackSelected" name="rack_id" id="rack_id">
+								<option value="0"></option>
+               		@foreach($racksInRoom as $item)
+                 		<option value="{{ $item->rack_id }}">{{ $item->rack_name }}</option>
+               		@endforeach
+             	</select>
+							</br>
+							@error('rack_id') 
+								<span class="text-danger error">
+									{{ $message }}
+								</span> 
+							@enderror
+						</td>
+          </tr>
+					
+
+					<tr>
+           	<td>
+							<font color="red">Total Free Slots</font>: 
+           	</td>
+           	<td>
+							{{ $free_slots }}
+           	</td>
+					</tr>
+					<tr>
+           	<td> 
+							<font color="red">First 5 Free Slot ID</font>
+					 	</td>
+
+            <td>
+							{{ $fslot_num }}
+            </td>
+					</tr>
+					<tr bgcolor="#EADDED">
+         		<td class="p-2">
+							<font color="red">Slot ID</font>
+            </td>
+            <td>
+              <input wire:model.lazy="slot_id" value="" type="text">
+							(Auto Selected)
+							</br>
+							@error('slot_id') 
+								<span class="text-danger error">
+									{{ $message }}
+								</span> 
+							@enderror
+            </td>
+					</tr>
+					<!--
 					<tr>
 						<td class="border px-2 p-1">
               Room ID
@@ -100,7 +181,7 @@
               <input wire:model.lazy="rackId" class="border" type="text">
 						</td>
 					</tr>          
-          
+          -->
 					<tr>
 						<td class="border px-2 p-1">
               Cage ID

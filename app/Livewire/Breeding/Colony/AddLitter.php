@@ -11,6 +11,12 @@ use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Traits\HasRoles;
 
+use App\Models\Strain;
+use App\Models\Cage;
+use App\Models\Rack;
+use App\Models\Room;
+use App\Models\Slot;
+
 use App\Models\Breeding\Cvterms\CVBirtheventstatus;
 use App\Models\Breeding\Cvterms\CVDiet;
 use App\Models\Breeding\Cvterms\CVLittertype;
@@ -21,14 +27,12 @@ use App\Models\Breeding\Cvterms\CVSpecies;
 use App\Models\Breeding\Cvterms\Container;
 use App\Models\Breeding\Cvterms\Lifestatus;
 use App\Models\Breeding\Cvterms\Owner;
-use App\Models\Strain;
+
 use App\Models\Breeding\Cvterms\Usescheduleterm;
 
 use App\Models\Breeding\Colony\Litter;
 use App\Models\Breeding\Colony\Mating;
 use App\Models\Breeding\Colony\Mouse;
-
-use App\Models\Room;
 
 // all traits here
 use App\Traits\Breed\BContainer;
@@ -63,6 +67,9 @@ class AddLitter extends Component
   public $matSearchResults, $searchResultsMating, $mqryResult, $wean_time=0;
   
   public $roomId, $rackId;
+	
+	public $rooms, $racks;
+	public $fslot_num,$free_slots,$racksInRoom=[], $rack_id, $room_id, $slot_id;
     
   public function render()
   {
@@ -190,6 +197,8 @@ class AddLitter extends Component
     $this->litterTypes = CVLittertype::all();
     $this->birthStatuses = CVBirtheventstatus::all();
 		//$this->containerId = Container::max('containerID');
+		$this->rooms = Room::all();
+		$this->racks = Rack::all();
 		$this->cageInfos = $this->suggestedCage();
 		$this->showLitterEntryForm = true;
 	}
@@ -224,5 +233,44 @@ class AddLitter extends Component
     $msg = $this->addLitterData($input);
     $this->iaMessage = $msg;
   }
+	
+	
+	public function roomSelected()
+	{
+		$this->fslot_num = "";
+		$this->cageInfos = null;
+		$this->free_slots = null;
+		$room_id = $this->room_id;
+		$this->racksInRoom = Rack::where('room_id', $room_id)->get();
+		//dd($room_id, $this->racksInRoom);
+	}		
+
+	public function rackSelected()
+	{
+		$rack_id = $this->rack_id;
+		$slots = Slot::where('rack_id', $rack_id)->where('status','A')->get();
+		$this->free_slots = $slots->count();
+		//if no free slots available throw Message
+		if($this->free_slots > 0)
+		{
+			$this->sarray = $slots->toArray();
+			$this->rarray = [];
+			foreach($this->sarray as $row)
+			{
+				$this->rarray[] = $row['slot_id'];
+			}
+			$this->fslot_num = json_encode(array_slice($this->rarray, 0, 5, true));
+			//dd($rarray, $sarray);
+			$this->cageInfos = $this->rarray[0];
+			$this->slot_id = $this->rarray[0];
+			//dd($this->cageInfos);
+			//$this->validateOnly($this->cageInfos);
+			//$this->slotSelectFlag = true;
+			//$this->cageCreateFlag = true;
+		}
+		else {
+			$this->fslot_num = "No Free slots in rack";
+		}
+	}
 
 }
