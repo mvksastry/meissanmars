@@ -60,8 +60,8 @@ class AddLitter extends Component
 
   // form variables
   public $totalBorn, $baseMouseId, $bornDead, $protoKey, $numFemales, $numMales, $useScheduleKeys;
-  public $origin, $culledAtWean, $missAtWean, $cageId, $litterNum, $femalePerCage, $malePerCage;
-  public $litType, $dateBorn, $weanDate, $tagDate, $birthEventStatusKey, $coment;
+  public $origin="EAF-NCCS", $culledAtWean, $missAtWean, $cageId, $litterNum, $femalePerCage, $malePerCage;
+  public $litType=1, $dateBorn, $weanDate, $tagDate, $birthEventStatusKey="A", $coment;
 
   public $matingId_contains, $matingId, $strainKey, $spKey, $lifeStatus, $ownerWg, $fromDate, $toDate;
   public $matSearchResults, $searchResultsMating, $mqryResult, $wean_time=0;

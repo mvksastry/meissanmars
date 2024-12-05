@@ -56,10 +56,10 @@
               Date Born
 						</td>
 						<td class="border px-2  p-1">
-              <input wire:model.lazy="dateBorn" type="text" placeholder="YYYY-MM-DD">
+              <input wire:model.lazy="dateBorn" class="border" type="text" placeholder="YYYY-MM-DD">
 							(Def: Today)
 						</br>
-							<input wire:model="autoDates" type="checkbox" value="true">Calculate Dates
+							<input wire:model="autoDates" class="border" type="checkbox" value="true">Calculate Dates
 						</td>
 					</tr>
 
@@ -68,7 +68,7 @@
                 A: # Total Born
             </td>
             <td class="border px-2  p-1">
-                <input wire:model.lazy="totalBorn" type="text">
+                <input wire:model.lazy="totalBorn" class="border" type="text">
             </td>
           </tr>
 
@@ -77,7 +77,7 @@
               B: # Born Dead
 						</td>
 						<td class="border px-2  p-1">
-              <input wire:model.lazy="bornDead" type="text" placeholder="">
+              <input wire:model.lazy="bornDead" class="border" type="text" placeholder="">
 						</td>
 					</tr>
 
@@ -99,7 +99,7 @@
                 Status
             </td>
             <td class="border px-2  p-1">
-							<select wire:model.lazy="birthEventStatusKey" >
+							<select wire:model.lazy="birthEventStatusKey" class="border">
 								<option value="null">Select</option>
                   @foreach($birthStatuses as $item)
                     <option value="{{ $item->abbreviation }}">{{ $item->birthEventStatus }}</option>
@@ -114,7 +114,7 @@
               Origin
 						</td>
             <td class="border px-2  p-1">
-							<select wire:model.lazy="origin" >
+							<select wire:model.lazy="origin" class="border">
 								<option value="null">Select</option>
                   @foreach($origins as $item)
                     <option value="{{ $item->Origin }}">{{ $item->Origin }}</option>
@@ -159,7 +159,7 @@
               Litter Type
             </td>
             <td class="border px-2  p-1">
-							<select wire:model.lazy="litType" >
+							<select wire:model.lazy="litType" class="border">
 								<option value="null">Select</option>
                     @foreach($litterTypes as $item)
                       <option value="{{ $item->_litterType_key }}">{{ $item->litterType }}</option>
@@ -173,7 +173,7 @@
                 Wean Date
             </td>
             <td class="border px-2  p-1">
-              <input wire:model.lazy="weanDate" type="text" placeholder="YYYY-MM-DD">
+              <input wire:model.lazy="weanDate" class="border" type="text" placeholder="YYYY-MM-DD">
 							(Def: {{ $wean_time }} days)
             </td>
           </tr>
@@ -183,7 +183,7 @@
               Tag Date
 						</td>
 						<td class="border px-2  p-1">
-              <input wire:model.lazy="tagDate" type="text" placeholder="YYYY-MM-DD">
+              <input wire:model.lazy="tagDate" class="border" type="text" placeholder="YYYY-MM-DD">
 						</td>
 					</tr>
 
@@ -192,7 +192,7 @@
               Comments
 						</td>
             <td class="border px-2  p-1">
-              <input wire:model.lazy="coment" type="text" class="w-full" placeholder="Comments">
+              <input wire:model.lazy="coment" class="border" type="text" class="w-full" placeholder="Comments">
 						</td>
 					</tr>
 
