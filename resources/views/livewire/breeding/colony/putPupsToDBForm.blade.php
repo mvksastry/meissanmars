@@ -23,7 +23,7 @@
 					</tr>
 					<tr>
 						<td class="border px-2 p-1">
-              Auto Generate mouse Records
+              Auto Generate Mouse Records
 						</td>
             <td class="border px-2 p-1">
 							<input wire:model.lazy="agmr" class="border" type="checkbox" value="true">
@@ -220,7 +220,6 @@
               </td>
             </tr>
 					@endif
-
 				</tbody>
 			</table>
 			<div>

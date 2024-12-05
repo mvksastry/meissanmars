@@ -191,7 +191,6 @@ class AddLitter extends Component
 		$this->useScheduleTerms = Usescheduleterm::all();
 		$this->protocols = CVProtocol::where('_species_key', $id)->get();
 		$this->lifestatus = Lifestatus::all();
-		//$this->rooms = Room::all();
 		//$this->diets = CVDiet::where('_species_key', $id)->get();
 		$this->origins = CVOrigin::all();
     $this->litterTypes = CVLittertype::all();
@@ -199,10 +198,11 @@ class AddLitter extends Component
 		//$this->containerId = Container::max('containerID');
 		$this->rooms = Room::all();
 		$this->racks = Rack::all();
-		$this->cageInfos = $this->suggestedCage();
+		//$this->cageInfos = $this->suggestedCage();
 		$this->showLitterEntryForm = true;
 	}
 
+	/*
   public function suggestedCage()
 	{
 		$maxContainerID = Container::max('containerID');
@@ -210,7 +210,8 @@ class AddLitter extends Component
 		$this->cageCreateFlag = true;
 		return $cage_id;
 	}
-
+	*/
+	
   public function enterLitter()
   {
     $input['purpose'] = "New";
