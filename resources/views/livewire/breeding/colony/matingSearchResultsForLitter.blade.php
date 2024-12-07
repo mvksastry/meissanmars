@@ -1,16 +1,15 @@
 <div class="w-full md:w-full">
 	<div class="bg-purple-100 border border-gray-800 rounded shadow">
 		<div class="border-b border-gray-800">
+
 			<h5 class="font-bold uppercase text-gray-600">Select Entry</h5>
 		</div>
 
 		<div class="p-1">
-			<table class="text-xs">
-				<div>
-					{{ $iaMessage }}
-				</div>
+			<table class="text-sm table-striped table-dark border p-3">
+				
 				<?php if(!empty($matSearchResults)) { ?>
-					<tr>
+					<tr class="p-3">
 						<td align="center">
 							<font color="red"> Select </font>
 						</td>

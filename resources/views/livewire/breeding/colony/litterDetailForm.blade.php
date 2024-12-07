@@ -4,7 +4,7 @@
 			<h5 class="font-bold uppercase mx-3 text-gray-600">Species: {{ $speciesName }}</h5>
 		</div>
 		<div class="p-1">
-			<table class="w-full p-5 text-sm text-gray-900">
+			<table class="table table-hover p-1 text-sm">
 				<thead>
 					<div id="iaMessage">
 						</br>
@@ -26,7 +26,7 @@
               Mating ID*
 						</td>
 						<td class="border px-2  p-1">
-              <input wire:model.lazy="matKey" class="border bg-secondary-subtle" type="text" >
+              <input wire:model.lazy="matKey" class="form-control-sm border bg-secondary-subtle" type="text" >
 							@if($purpose == "New")
 							<button wire:click="searchMates('{{ $speciesName }}')" class="btn btn-primary rounded mt-2">Select Mating</button>
 							@endif
@@ -56,50 +56,19 @@
               Date Born
 						</td>
 						<td class="border px-2  p-1">
-              <input wire:model.lazy="dateBorn" class="border bg-secondary-subtle" type="text" placeholder="YYYY-MM-DD">
+              <input wire:model.lazy="dateBorn" class="form-control-sm border bg-secondary-subtle" type="date" placeholder="YYYY-MM-DD">
 							(Def: Today)
 						</br>
 							<input wire:model="autoDates" class="border bg-secondary-subtle" type="checkbox" value="true">Calculate Dates
 						</td>
 					</tr>
 
-					<tr>
-            <td class="border px-2  p-1">
-                A: # Total Born
-            </td>
-            <td class="border px-2  p-1">
-                <input wire:model.lazy="totalBorn" class="border" type="text">
-            </td>
-          </tr>
-
-					<tr>
-            <td class="border px-2  p-1">
-              B: # Born Dead
-						</td>
-						<td class="border px-2  p-1">
-              <input wire:model.lazy="bornDead" class="border bg-secondary-subtle" type="text" placeholder="">
-						</td>
-					</tr>
-
-					<tr>
-            <td class="border px-2  p-1">
-              C: # Females /
-							</br>
-							D: # Males
-            </td>
-            <td class="border px-2  p-1">
-              <input wire:model.lazy="numFemales" class="border bg-secondary-subtle" type="text"> /
-              </br>
-							<input wire:model.lazy="numMales" class="border bg-secondary-subtle mt-2 " type="text">
-            </td>
-          </tr>
-
 					<tr class="">
-            <td class="border px-2  p-1 bg-secondary">
+            <td class="border px-2  p-1 bg-warning-subtle">
                 Status
             </td>
-            <td class="border px-2  p-1">
-							<select wire:model.lazy="birthEventStatusKey" class="border bg-secondary-subtle">
+            <td class="border bg-warning-subtle px-2  p-1">
+							<select wire:model.lazy="birthEventStatusKey" class="form-control-sm border bg-secondary-subtle">
 								<option value="null">Select</option>
                   @foreach($birthStatuses as $item)
                     <option value="{{ $item->abbreviation }}">{{ $item->birthEventStatus }}</option>
@@ -110,11 +79,11 @@
 
 
 					<tr class="">
-						<td class="border px-2  p-1 bg-secondary">
+						<td class="border px-2  p-1 bg-warning-subtle">
               Origin
 						</td>
-            <td class="border px-2  p-1">
-							<select wire:model.lazy="origin" class="border bg-secondary-subtle">
+            <td class="border bg-warning-subtle px-2  p-1">
+							<select wire:model.lazy="origin" class="form-control-sm border bg-secondary-subtle">
 								<option value="null">Select</option>
                   @foreach($origins as $item)
                     <option value="{{ $item->Origin }}">{{ $item->Origin }}</option>
@@ -123,43 +92,14 @@
 						</td>
           </tr>
 
-					<tr>
-            <td class="border px-2  p-1">
-              Litter #
-						</td>
-						<td class="border px-2  p-1">
-              <input wire:model.lazy="litterNum" class="border bg-secondary-subtle" type="text" placeholder="">
-							@if($purpose == "New")
-                <button class="btn btn-primary btn-sm rounded">Next Litter #</button>
-							@endif
-						</td>
-					</tr>
 
-
-					<tr>
-            <td class="border px-2  p-1">
-              E: # Culled at Wean
-						</td>
-						<td class="border px-2  p-1">
-              <input wire:model.lazy="culledAtWean" class="border bg-secondary-subtle" type="text" placeholder="">
-						</td>
-					</tr>
-
-					<tr>
-            <td class="border px-2  p-1">
-                F: # Missing at Wean
-            </td>
-            <td class="border px-2  p-1">
-                <input wire:model.lazy="missAtWean" class="border bg-secondary-subtle" type="text">
-            </td>
-          </tr>
 
 					<tr class="">
-            <td class="border px-2  p-1 bg-secondary">
+            <td class="border px-2  p-1 bg-warning-subtle">
               Litter Type
             </td>
-            <td class="border px-2  p-1">
-							<select wire:model.lazy="litType" class="border bg-secondary-subtle">
+            <td class="border bg-warning-subtle px-2  p-1">
+							<select wire:model.lazy="litType" class="form-control-sm border bg-secondary-subtle">
 								<option value="null">Select</option>
                     @foreach($litterTypes as $item)
                       <option value="{{ $item->_litterType_key }}">{{ $item->litterType }}</option>
@@ -170,10 +110,71 @@
 
 					<tr>
             <td class="border px-2  p-1">
+              Litter #
+						</td>
+						<td class="border px-2  p-1">
+              <input wire:model.lazy="litterNum" class="form-control-sm form-control-sm border bg-secondary-subtle" type="text" placeholder="">
+							@if($purpose == "New")
+                <button class="btn btn-primary btn-sm rounded">Next Litter #</button>
+							@endif
+						</td>
+					</tr>
+					
+					<tr>
+            <td class="border px-2  p-1">
+                A: # Total Born
+            </td>
+            <td class="border px-2  p-1">
+                <input wire:model.lazy="totalBorn" class="form-control-sm border bg-primary-subtle" type="text">
+            </td>
+          </tr>
+
+					<tr>
+            <td class="border px-2  p-1">
+              B: # Born Dead
+						</td>
+						<td class="border px-2  p-1">
+              <input wire:model.lazy="bornDead" class="form-control-sm border bg-secondary-subtle" type="text" placeholder="">
+						</td>
+					</tr>
+
+					<tr>
+            <td class="border px-2  p-1">
+              C: # Females /
+							</br>
+							D: # Males
+            </td>
+            <td class="border px-2  p-1">
+              <input wire:model.lazy="numFemales" class="form-control-sm border bg-secondary-subtle" type="text"> /
+              </br>
+							<input wire:model.lazy="numMales" class="form-control-sm border bg-secondary-subtle mt-2 " type="text">
+            </td>
+          </tr>
+
+					<tr>
+            <td class="border px-2  p-1">
+              E: # Culled at Wean
+						</td>
+						<td class="border px-2  p-1">
+              <input wire:model.lazy="culledAtWean" class="form-control-sm border bg-secondary-subtle" type="text" placeholder="">
+						</td>
+					</tr>
+
+					<tr>
+            <td class="border px-2  p-1">
+                F: # Missing at Wean
+            </td>
+            <td class="border px-2  p-1">
+                <input wire:model.lazy="missAtWean" class="form-control-sm border bg-secondary-subtle" type="text">
+            </td>
+          </tr>
+
+					<tr>
+            <td class="border px-2  p-1">
                 Wean Date
             </td>
             <td class="border px-2  p-1">
-              <input wire:model.lazy="weanDate" class="border bg-secondary-subtle" type="text" placeholder="YYYY-MM-DD">
+              <input wire:model.lazy="weanDate" class="form-control-sm border bg-secondary-subtle" type="date" placeholder="YYYY-MM-DD">
 							(Def: {{ $wean_time }} days)
             </td>
           </tr>
@@ -183,7 +184,7 @@
               Tag Date
 						</td>
 						<td class="border px-2  p-1">
-              <input wire:model.lazy="tagDate" class="border bg-secondary-subtle" type="text" placeholder="YYYY-MM-DD">
+              <input wire:model.lazy="tagDate" class="form-control-sm border bg-secondary-subtle" type="date" placeholder="YYYY-MM-DD">
 						</td>
 					</tr>
 
@@ -192,7 +193,7 @@
               Comments
 						</td>
             <td class="border px-2  p-1">
-              <input wire:model.lazy="coment" class="border bg-secondary-subtle" type="text" class="w-full" placeholder="Comments">
+              <input wire:model.lazy="coment" class="form-control-sm border bg-secondary-subtle" type="text" class="w-full" placeholder="Comments">
 						</td>
 					</tr>
 

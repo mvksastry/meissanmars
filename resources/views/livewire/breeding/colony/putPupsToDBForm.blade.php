@@ -18,7 +18,7 @@
 							Put pups in Database
 						</td>
 						<td class="mx-4">
-							<input wire:model.lazy="ppidb" class="border" type="checkbox" value="true">
+							<input wire:model.lazy="ppidb" class="form-control-sm border" type="checkbox" value="true">
 						</td>
 					</tr>
 					<tr>
@@ -26,7 +26,7 @@
               Auto Generate Mouse Records
 						</td>
             <td class="border px-2 p-1">
-							<input wire:model.lazy="agmr" class="border" type="checkbox" value="true">
+							<input wire:model.lazy="agmr" class="form-control-sm border" type="checkbox" value="true">
 						</td>
 					</tr>
 					<tr>
@@ -34,7 +34,7 @@
               Females First
 						</td>
             <td class="border px-2 p-1">
-              <input wire:model.lazy="femaleFirst" value="true" class="border" type="checkbox">
+              <input wire:model.lazy="femaleFirst" value="true" class="form-control-sm border" type="checkbox">
 						</td>
 					</tr>
 					<tr>
@@ -42,7 +42,7 @@
               Base Mouse Id
             </td>
             <td class="border px-2 p-1">
-              <input wire:model.lazy="baseMouseId" class="border" type="text">
+              <input wire:model.lazy="baseMouseId" class="form-control-sm border" type="text">
 						</br>
 						<button class="btn btn-primary btn-sm rounded mt-2">Populate ID</button>
 						<button class="btn btn-primary btn-sm rounded mt-2">Search ID</button>
@@ -53,7 +53,7 @@
               Protocol ID
 						</td>
             <td class="border bg-gray-300 px-2 p-1">
-							<select wire:model.lazy="protoKey" class="border">
+							<select wire:model.lazy="protoKey" class="form-control-sm border">
                 <option value="null">Select</option>
                   @foreach($protocols as $item)
                     <option value="{{ $item->_mouseProtocol_key }}">{{ $item->id }}</option>
@@ -66,7 +66,7 @@
               Use Schedules
             </td>
             <td class="border px-2 p-1 bg-gray-300">
-							<select wire:model.lazy="useScheduleKeys" class="border" multiple>
+							<select wire:model.lazy="useScheduleKeys" class="form-control-sm border" multiple>
 							<option value=""></option>
 								@foreach($useScheduleTerms as $item)
 									<option value="{{ $item->_useScheduleTerm_key }}">{{ $item->useScheduleTermName }}</option>
@@ -79,7 +79,7 @@
               Leave Pups in Mating Cage
             </td>
             <td class="border px-2 p-1">
-              <input wire:model.lazy="lpimc" class="border" type="checkbox">
+              <input wire:model.lazy="lpimc" class="form-control-sm border" type="checkbox">
             </td>
 					</tr>
 					<tr bgcolor="#AHDADE">
@@ -96,7 +96,7 @@
 							Room*
 						</td>
 						<td>
-							<select wire:model.lazy="room_id" wire:change="roomSelected" class="border" name="room_id" id="room_id">
+							<select wire:model.lazy="room_id" wire:change="roomSelected" class="form-control-sm border" name="room_id" id="room_id">
                 <option value="-1"></option>
 								@foreach($rooms as $val)
                 <option value="{{ $val->room_id }}">{{ $val->room_name }}</option>
@@ -115,7 +115,7 @@
 							<font color="red">Rack*</font>
 						</td>
 						<td>
-						<select wire:model.lazy="rack_id" wire:change="rackSelected" class="border" name="rack_id" id="rack_id">
+						<select wire:model.lazy="rack_id" wire:change="rackSelected" class="form-control-sm border" name="rack_id" id="rack_id">
 								<option value="0"></option>
                		@foreach($racksInRoom as $item)
                  		<option value="{{ $item->rack_id }}">{{ $item->rack_name }}</option>
@@ -153,7 +153,7 @@
 							<font color="red">Slot ID</font>
             </td>
             <td>
-              <input wire:model.lazy="slot_id" class="border" value="" type="text">
+              <input wire:model.lazy="slot_id" class="form-control-sm border" placeholder="Auto Selected" value="" type="text">
 							(Auto Selected)
 							</br>
 							@error('slot_id') 
@@ -187,7 +187,7 @@
               Cage ID
 						</td>
             <td class="border px-2 p-1">
-              <input wire:model.lazy="cageId" class="border" type="text">
+              <input wire:model.lazy="cageId" class="form-control-smborder" type="text">
 							<button class="btn btn-primary btn-sm rounded mt-2">Cage Info</button>
 						</td>
 					</tr>
@@ -198,7 +198,7 @@
               # Females / Cage
             </td>
             <td class="border px-2 p-1">
-                <input wire:model.lazy="femalePerCage" class="border" type="text">
+                <input wire:model.lazy="femalePerCage" class="form-control-sm border" type="text">
             </td>
 					</tr>
 					<tr>
@@ -206,7 +206,7 @@
               # Males / Cage
             </td>
             <td class="border px-2 p-1">
-              <input wire:model.lazy="malePerCage" class="border" type="text">
+              <input wire:model.lazy="malePerCage" class="form-control-sm border" type="text">
             </td>
 					</tr>
 
