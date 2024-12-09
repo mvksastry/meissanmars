@@ -14,6 +14,10 @@
 			<!-- /.navbar -->
 
 			<!-- Main Sidebar Container -->
+
+			@hasexactroles('manager')
+        @include('layouts.menus.pwchange')
+      @endhasexactroles
 		
 			@hasexactroles('colony_asst')
         @include('layouts.menus.pwchange')
