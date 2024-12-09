@@ -26,9 +26,9 @@
               Mating ID*
 						</td>
 						<td class="border px-2  p-1">
-              <input wire:model.lazy="matKey" class="form-control-sm border bg-secondary-subtle" type="text" >
+              <input wire:model.lazy="matKey" placeholder="Select Mating Entry" class="form-control-sm border bg-secondary-subtle" type="text" >
 							@if($purpose == "New")
-							<button wire:click="searchMates('{{ $speciesName }}')" class="btn btn-primary rounded mt-2">Select Mating</button>
+							<button wire:click="searchMates('{{ $speciesName }}')" class="btn btn-primary rounded">Select Mating</button>
 							@endif
 						</td>
 					</tr>
