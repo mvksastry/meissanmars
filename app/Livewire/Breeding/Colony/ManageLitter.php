@@ -65,7 +65,7 @@ class ManageLitter extends Component
 
   public $matingId_contains, $matingId, $strainKey, $spKey, $lifeStatus, $ownerWg, $fromDate, $toDate;
   public $matSearchResults, $searchResultsMating, $mqryResult, $wean_time=0;
-  public $fullLitterDetails=null;
+  public $fullLitterDetails=[], $matingReferenceID=null;
 	
   public $roomId, $rackId;
 	
@@ -177,13 +177,21 @@ class ManageLitter extends Component
   public function pick($id)
   {
     $qry = Mating::where('_mating_key', $id)->first();
-
+		$this->matingReferenceID = $qry->matingRefID;
     $this->mqryResult = $qry;
 		$this->wean_time = $qry->weanTime;
     $this->matKey = $id;
 
 		$this->fullLitterDetails = Litter::where('_mating_key', $id)->get();
-
+		
+		if(count($this->fullLitterDetails) > 0)
+		{
+			
+		}
+		else {
+			
+		}
+		
 		//dd($this->fullLitterDetails);
     $this->showSearchMatingEntryForm = false;
     $this->searchResultsMating = false;

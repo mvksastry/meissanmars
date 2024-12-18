@@ -22,7 +22,7 @@
 					@else
 						<tr class="bg-warning">
 							<td colspan="2" class="border px-2 p-1">
-								Litter Details Not Found
+								Litter Details Not Found/Selected
 							</td>
 						</tr>
 					@endif

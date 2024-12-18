@@ -36,7 +36,9 @@
 					<tr>
             <td class="border px-2  text-sm text-red p-1" colspan="2">
               @if(!empty($mqryResult))
-                Dam1: {{ $mqryResult->_dam1_key }}; Dam2: {{ $mqryResult->_dam1_key }}; Sire: {{ $mqryResult->_dam1_key }}; Mating Date: {{ date('d-m-Y', strtotime($mqryResult->matingDate)) }}; 
+                Mating Ref ID: {{ $mqryResult->matingRefID }}; 
+								</br>
+								Dam1: {{ $mqryResult->_dam1_key }}; Dam2: {{ $mqryResult->_dam2_key }}; Sire: {{ $mqryResult->_sire_key }}; Mating Date: {{ date('d-m-Y', strtotime($mqryResult->matingDate)) }}; 
                 </br>
                 Wean Time: {{ $mqryResult->weanTime }} days; Generation: {{ $mqryResult->generation }}; Strain: {{ $mqryResult->_strain_key }};
               @else
