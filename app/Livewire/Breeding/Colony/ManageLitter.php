@@ -65,7 +65,7 @@ class ManageLitter extends Component
 
   public $matingId_contains, $matingId, $strainKey, $spKey, $lifeStatus, $ownerWg, $fromDate, $toDate;
   public $matSearchResults, $searchResultsMating, $mqryResult, $wean_time=0;
-  public $fullLitterDetails=[], $matingReferenceID=null;
+  public $fullLitterDetails=[], $matingReferenceID=null, $curLitterKey=null;
 	
   public $roomId, $rackId;
 	
@@ -182,19 +182,42 @@ class ManageLitter extends Component
 		$this->wean_time = $qry->weanTime;
     $this->matKey = $id;
 
+		//latest litter details
+		$latLitEntry = Litter::where('_mating_key', $id)->latest()->first();
+		//dd($latLitEntry);
+		// all litter details
 		$this->fullLitterDetails = Litter::where('_mating_key', $id)->get();
 		
 		if(count($this->fullLitterDetails) > 0)
 		{
-			
+			//litter entries exist
+			$this->curLitterKey = $latLitEntry->_litter_key;
+			$this->purpose = "Update";
+			$this->dateBorn = $latLitEntry->birthDate;
+			$this->totalBorn = $latLitEntry->totalBorn;
+			$this->bornDead = $latLitEntry->numberBornDead;
+			$this->numFemales = $latLitEntry->numFemale;
+			$this->numMales = $latLitEntry->numMale;
+			//$this->birthEventStatusKey = $latLitEntry->;
+			//$this->origin = $latLitEntry->;
+			//$this->litterNum = $latLitEntry->;
+			$this->culledAtWean = $latLitEntry->numberCulledAtWean;
+			$this->missAtWean = $latLitEntry->numberMissingAtWean;
+			$this->litType = $latLitEntry->_litterType_key;
+			$this->weanDate = $latLitEntry->weanDate;
+			$this->tagDate = $latLitEntry->tagDate;
+			$this->coment = $latLitEntry->comment;
+		
+			// in this case I should populate the form with latest data??
 		}
 		else {
-			
+			// no litter entries found and we need to populate the field?
+			$this->purpose = "New";
 		}
 		
 		//dd($this->fullLitterDetails);
-    $this->showSearchMatingEntryForm = false;
-    $this->searchResultsMating = false;
+    //$this->showSearchMatingEntryForm = false;
+    //$this->searchResultsMating = false;
   }
 	
   public function show($id)
@@ -239,9 +262,24 @@ class ManageLitter extends Component
     $input['coment'] = $this->coment;
 
     $msg = $this->addLitterData($input);
+		
+		if($msg)
+		{
+			$this->resetLitterDetails();
+		}
+		
     $this->iaMessage = $msg;
   }
 
+	public function resetLitterDetails()
+	{
+		$this->purpose = "";
+		$this->matingReferenceID = null;
+		$this->mqryResult = null;
+		$this->wean_time = null;
+    $this->matKey = null;
+		
+	}
 	public function roomSelected()
 	{
 		$this->fslot_num = "";

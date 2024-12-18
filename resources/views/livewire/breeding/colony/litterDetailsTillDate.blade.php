@@ -1,21 +1,35 @@
 <div class="w-1/2 md-1/2">
 	<div class="bg-purple-100 border border-gray-800 rounded shadow">
 		<div class="border-b border-gray-800">
-			<h5 class="font-bold uppercase mx-3 text-gray-600"><font color="blue">{{ $speciesName }}</font> to DB: </h5>
+			<h5 class="font-bold uppercase mx-1 text-gray-600"><font color="blue">Litter Details Recorded Till: {{ date('d-m-Y') }} </font></h5>
 		</div>
 		<div class="p-1">
 			<table class="w-full p-5 text-sm text-gray-900">
 				<thead>
+					<th>Mating Key</th>
+					<th>Birth Date</th>
+					<th>Total Born</th>
+					<th>M / F</th>
+					<th>Status</th>
 				</thead>
 				<tbody>
 					@if(count($fullLitterDetails) > 0)
 						@foreach($fullLitterDetails as $row)
 						<tr>
 							<td class="mx-4">
-								Put pups in Database
+							{{ $row->_mating_key }}
 							</td>
 							<td class="mx-4">
-								<input wire:model.lazy="ppidb" class="form-control-sm border" type="checkbox" value="true">
+							{{ date('d-m-Y', strtotime($row->birthDate)) }}
+							</td>
+							<td class="mx-4">
+							{{ $row->totalBorn }}
+							</td>
+							<td class="mx-4">
+							{{ $row->numFemale }} / {{ $row->numMale }}
+							</td>
+							<td class="mx-4">
+							{{ $row->entry_status }} 
 							</td>
 						</tr>
 						@endforeach

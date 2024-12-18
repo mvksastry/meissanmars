@@ -45,71 +45,106 @@ trait BManageLitter
     ///////////////////////////////////////////////////////////////////////
     public function addLitterData($input)
     {
-        // 1. setting the db
+			  // 1. setting the db
         // 2. preparing the data.
+				
+				if($input['numFemales'] == "")
+				{
+					$input['numFemales'] = null;
+				}
+				if($input['numMales'] == "")
+				{
+					$input['numMales'] = null;
+				}
+				if($input['bornDead'] == "")
+				{
+					$input['bornDead'] = null;
+				}
+				if($input['culledAtWean'] == "")
+				{
+					$input['culledAtWean'] = null;
+				}
+				if($input['missAtWean'] == "")
+				{
+					$input['missAtWean'] = null;
+				}
+	
         $version = 1;
 
-                switch ($input['purpose']) {
-                    case "Edit" :
-                    break;
-                    case "New":
-                    break;
-                    default:
-                    echo "Whoops! Something wrong in selection.";
-                }
+				switch ($input['purpose']) {
+					
+						case "Update" :
+							$litterKey = $this->curLitterKey;
+							$litterEntry = Litter::where('_litter_key', $litterKey)->first();
+						break;
+						
+						case "New":
+							$litterKey = Litter::max('_litter_key') + 1;
+							$litterEntry = new Litter();									
+						break;
+						
+						default:
+						echo "Whoops! Something wrong in selection.";
+				}
 
-                    //4. inset sql array prepartion.
+				//4. inset sql array prepartion.
 
-                    $litterKey = Litter::max('_litter_key') + 1;
-                    //dd($addMiceEntry);
-                    $newLitterEntry = new Litter();
-
-                    $newLitterEntry->_litter_key         = $litterKey;
-                    $newLitterEntry->_mating_key         = $input['matKey'];
-                    $newLitterEntry->_theilerStage_key   = null;
-                    $newLitterEntry->litterID            = $litterKey * 10;
-                    $newLitterEntry->totalBorn           = $input['totalBorn'];
-                    $newLitterEntry->birthDate           = $input['dateBorn'];
-                    $newLitterEntry->numFemale           = $input['numFemales'];
-                    $newLitterEntry->numMale             = $input['numMales'];
-                    $newLitterEntry->numberBornDead      = $input['bornDead'];
-                    $newLitterEntry->numberCulledAtWean  = $input['culledAtWean'];
-                    $newLitterEntry->numberMissingAtWean = $input['missAtWean'];
-                    $newLitterEntry->weanDate            = $input['weanDate'];
-                    $newLitterEntry->tagDate             = $input['tagDate'];
-                    $newLitterEntry->status              = $input['birthEventStatusKey'];
-										$newLitterEntry->entry_status        = 'open';
-										$newLitterEntry->entry_status_date   = date('Y-m-d');
-                    $newLitterEntry->comment             = $input['coment'];
-                    $newLitterEntry->version             = $version;
-                    $newLitterEntry->_litterType_key     = $input['litType'];
-                    $newLitterEntry->harvestDate         = date('Y-m-d');
-                    $newLitterEntry->numberHarvested     = $input['totalBorn'];
+				$litterEntry->_litter_key         = $litterKey;
+				$litterEntry->_mating_key         = $input['matKey'];
+				$litterEntry->_theilerStage_key   = null;
+				$litterEntry->litterID            = $litterKey * 10;
+				$litterEntry->totalBorn           = $input['totalBorn'];
+				$litterEntry->birthDate           = $input['dateBorn'];
+				$litterEntry->numFemale           = $input['numFemales'];
+				$litterEntry->numMale             = $input['numMales'];
+				$litterEntry->numberBornDead      = $input['bornDead'];
+				$litterEntry->numberCulledAtWean  = $input['culledAtWean'];
+				$litterEntry->numberMissingAtWean = $input['missAtWean'];
+				$litterEntry->weanDate            = $input['weanDate'];
+				$litterEntry->tagDate             = $input['tagDate'];
+				$litterEntry->status              = $input['birthEventStatusKey'];
+				$litterEntry->entry_status        = 'open';
+				$litterEntry->entry_status_date   = date('Y-m-d');
+				$litterEntry->comment             = $input['coment'];
+				$litterEntry->version             = $version;
+				$litterEntry->_litterType_key     = $input['litType'];
+				$litterEntry->harvestDate         = date('Y-m-d');
+				$litterEntry->numberHarvested     = $input['totalBorn'] - $input['bornDead'];
 
 
-	       Log::channel('coding')->info('array ready for insert, before try');
+	      Log::channel('coding')->info('array ready for insert, before try');
            //Stage 5. insert
-           dd($newLitterEntry);
+           dd($litterEntry);
+					 
            try {
                // ehck for duplicate entry and prevent it
+							 $litterEntry->save();
+               $msg = "Litter Entry Success";
+							return true;
+							/*									 
                $qry = Litter::where('_mating_key', $input['matKey'])->first();
 
-               if(empty($qry) || $qry == null){
-                   $newLitterEntry->save();
+
+               if(empty($qry) || $qry == null)
+							 {
+                   $litterEntry->save();
                    $msg = "Litter Entry Success";
                }
                else {
                    $msg = "Rejected: Duplicate Litter Entry";
                }
+							*/
             }
             catch (\Illuminate\Database\QueryException $e ) {
-                $result2Fail = Litter::rollback();
-                $msg = $e->getMessage();
-
-                $qResultMsg = $qResultMsg."</br>".$eMsg."</br>";
+								$result2Fail = DB::rollback();
+                $eMsg = $e->getMessage();
+                Log::channel('coding')->info($eMsg);
+                //$qResultMsg = $qResultMsg."</br>".$eMsg."</br>";
                 $result1 = false;
+								$msg = "Litter Entry Failed";
+								return false;
             }
-        return $msg;
+        //return $msg;
     }
 		
 		public function putPupsToDB($input)
