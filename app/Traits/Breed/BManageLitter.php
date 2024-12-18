@@ -78,11 +78,13 @@ trait BManageLitter
                     $newLitterEntry->weanDate            = $input['weanDate'];
                     $newLitterEntry->tagDate             = $input['tagDate'];
                     $newLitterEntry->status              = $input['birthEventStatusKey'];
+										$newLitterEntry->entry_status        = 'open';
+										$newLitterEntry->entry_status_date   = date('Y-m-d');
                     $newLitterEntry->comment             = $input['coment'];
                     $newLitterEntry->version             = $version;
                     $newLitterEntry->_litterType_key     = $input['litType'];
-                    $newLitterEntry->harvestDate         = null;
-                    $newLitterEntry->numberHarvested     = null;
+                    $newLitterEntry->harvestDate         = date('Y-m-d');
+                    $newLitterEntry->numberHarvested     = $input['totalBorn'];
 
 
 	       Log::channel('coding')->info('array ready for insert, before try');
@@ -109,5 +111,11 @@ trait BManageLitter
             }
         return $msg;
     }
+		
+		public function putPupsToDB($input)
+		{
+			
+			
+		}
 
 }

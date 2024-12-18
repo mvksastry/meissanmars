@@ -41,9 +41,9 @@ use App\Traits\Breed\BManageLitter;
 
 use Illuminate\Support\Facades\Route;
 
-class AddLitter extends Component
+class ManageLitter extends Component
 {
-  use BMatingSearch, BManageLitter;
+	  use BMatingSearch, BManageLitter;
 
   public $iaMessage;
 
@@ -65,28 +65,32 @@ class AddLitter extends Component
 
   public $matingId_contains, $matingId, $strainKey, $spKey, $lifeStatus, $ownerWg, $fromDate, $toDate;
   public $matSearchResults, $searchResultsMating, $mqryResult, $wean_time=0;
-  
+  public $fullLitterDetails=null;
+	
   public $roomId, $rackId;
 	
 	public $rooms, $racks;
 	public $fslot_num,$free_slots,$racksInRoom=[], $rack_id, $room_id, $slot_id;
-    
-  public function render()
-  {
-    if($this->ppidb)
-    { 
-      $this->doLitterCalc(); 
-    }
+	
+	//panels
+	public $showLitterEntriesTillDate = false;
+	
+	public function render()
+	{
+		if($this->ppidb)
+		{ 
+			$this->doLitterCalc(); 
+		}
 
-    if($this->autoDates)
-    { 
-      $this->doDates(); 
-    } else { 
-      $this->weanDate="";
-    }
-    return view('livewire.breeding.colony.add-litter');
-  }
-    
+		if($this->autoDates)
+		{ 
+			$this->doDates(); 
+		} else { 
+			$this->weanDate="";
+		}
+		return view('livewire.breeding.colony.manage-litter');
+	}
+		
   public function doDates()
   {
     $dob = $this->dateBorn;
@@ -105,7 +109,8 @@ class AddLitter extends Component
     }
   }
 
-  public function doLitterCalc(){
+  public function doLitterCalc()
+	{
     $qry = Litter::where('_mating_key', $this->matKey)->first();
     if(!empty($qry))
     {
@@ -138,7 +143,7 @@ class AddLitter extends Component
       }
       $this->litterCalculation = false;
     }
-  }
+  }		
 
   public function searchMates($speciesName)
   {
@@ -152,7 +157,8 @@ class AddLitter extends Component
     $this->showSearchMatingEntryForm = true;
   }
 
-  public function pullMatingEntries(){
+  public function pullMatingEntries()
+	{
 
     $input['speciesName']       = $this->speciesName;
     $input['speciesKey']        = $this->spKey;
@@ -164,7 +170,7 @@ class AddLitter extends Component
     $input['ownerWg']           = $this->ownerWg;
 
     $this->matSearchResults = $this->searchMatings($input);
-//dd($this->matSearchResults);
+
     $this->searchResultsMating=true;
   }
 
@@ -176,10 +182,13 @@ class AddLitter extends Component
 		$this->wean_time = $qry->weanTime;
     $this->matKey = $id;
 
+		$this->fullLitterDetails = Litter::where('_mating_key', $id)->get();
+
+		//dd($this->fullLitterDetails);
     $this->showSearchMatingEntryForm = false;
     $this->searchResultsMating = false;
   }
-
+	
   public function show($id)
 	{
 		if($id == 1) { $this->speciesName = "Mice"; $this->iaMessage = "Selected Mice"; }
@@ -200,18 +209,8 @@ class AddLitter extends Component
 		$this->racks = Rack::all();
 		//$this->cageInfos = $this->suggestedCage();
 		$this->showLitterEntryForm = true;
-	}
+	}	
 
-	/*
-  public function suggestedCage()
-	{
-		$maxContainerID = Container::max('containerID');
-		$cage_id = $maxContainerID + 1;
-		$this->cageCreateFlag = true;
-		return $cage_id;
-	}
-	*/
-	
   public function enterLitter()
   {
     $input['purpose'] = "New";
@@ -234,8 +233,7 @@ class AddLitter extends Component
     $msg = $this->addLitterData($input);
     $this->iaMessage = $msg;
   }
-	
-	
+
 	public function roomSelected()
 	{
 		$this->fslot_num = "";
@@ -244,7 +242,7 @@ class AddLitter extends Component
 		$room_id = $this->room_id;
 		$this->racksInRoom = Rack::where('room_id', $room_id)->get();
 		//dd($room_id, $this->racksInRoom);
-	}		
+	}	
 
 	public function rackSelected()
 	{
@@ -273,5 +271,5 @@ class AddLitter extends Component
 			$this->fslot_num = "No Free slots in rack";
 		}
 	}
-
+	
 }

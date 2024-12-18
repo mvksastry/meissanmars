@@ -17,6 +17,9 @@
 							Mating ID <font color="red"></font>
 						</td>
 						<td align="center">
+							Mating Ref ID <font color="red"></font>
+						</td>
+						<td align="center">
 							<font color="red">Dam 1</br>Key</font>
 						</td>
 						<td align="center">
@@ -54,6 +57,9 @@
 						</td>
 						<td align="center">
 							{{ $row['matingID'] }}
+						</td>
+						<td align="center">
+							{{ $row['matingRefID'] }}
 						</td>
 						<td align="center">
 							{{ $row['_dam1_key'] }}

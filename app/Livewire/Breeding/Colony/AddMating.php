@@ -69,7 +69,7 @@ class AddMating extends Component
 		public $selectedDam1, $selectedDam2, $selectedSire;
 		
     //variable declarations
-    public $speciesName, $purpose, $newmatingId;
+    public $speciesName, $purpose, $newmatingId, $newMatingRefID;
     public $dam1Key, $dam1Msg, $dam2Key, $dam2Msg, $sireKey, $sireMsg;
     public $dam1Id, $dam2Id, $sireId, $diet_key, $strain_key, $matgType=1, $generation_key;
     public $genotypeneed, $ownerwg="EAF-NCCS", $matingDate,  $weantime, $slot_id, $weannote, $comments;
@@ -148,6 +148,7 @@ class AddMating extends Component
 
     public function dam1IdCheck($dam1Id)
     {
+			//dd($dam1Id);
       $qry = Mouse::with('strainSelected')->where('ID', $this->dam1Id)->where('sex', 'F')->first();
 			if(!empty($qry))
       {
@@ -262,6 +263,7 @@ class AddMating extends Component
 
       $input['speciesName'] = $this->speciesName;
       $input['purpose'] = $this->purpose;
+			$input['matingRefID'] = $this->newMatingRefID;
       $input['dam1Id'] = $this->dam1Id;
       $input['dam1Key'] = $this->dam1Key;
       $input['dam2Id'] = $this->dam2Id;
@@ -281,7 +283,7 @@ class AddMating extends Component
       $input['comments'] = $this->comments;
       //dd($input);
       $result = $this->addMating($input);
-			$result = true;
+			//$result = true;
 			//now update cage information
 			if($result)
 			{
@@ -354,7 +356,7 @@ class AddMating extends Component
 			$this->speciesName = "Mice";
       $this->purpose = "New";
       $this->dam1Id = null;
-      //$this->dam1Key = null;
+      $this->newMatingRefID = null;
       $this->dam2Id = null;
       //$this->dam2Key = null;
       $this->sireId = null;

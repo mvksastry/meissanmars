@@ -31,6 +31,7 @@ class Mating extends Model
 				'_sire_key',
 				'_strain_key',
 				'matingID',
+				'matingRefID',
 				'suggestedPenID',
 				'weanTime',
 				'matingDate',

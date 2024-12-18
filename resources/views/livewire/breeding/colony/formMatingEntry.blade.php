@@ -26,10 +26,10 @@
 						</td>
 
 						<td class="space-x-5">
-							<font color="red">New Mating ID</font>
+							<font color="red">Mating Ref ID</font>
 						</td>
 						<td>
-							<input wire:model.lazy="newmatingId" style="background-color:#EAEDED; font-weight: bold; font-size: 12px;" readonly="readonly" type="text" placeholder="Read only" value="" >
+							<input wire:model.lazy="newMatingRefID" style="background-color:#EAEDED; font-weight: bold; font-size: 12px;" type="text" placeholder="Ref ID" value="" >
             </td>
           </tr>
 					

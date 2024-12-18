@@ -96,12 +96,12 @@ trait BEntrySearch
 
         if ($fromDate != "")
         {
-            $baseSqlStatement = $baseSqlStatement." AND mouse.DATE(birthDate) > '".$fromDate."'";
+            $baseSqlStatement = $baseSqlStatement." AND mouse.birthDate > '".$fromDate."'";
         }
 
         if ($toDate != "")
         {
-            $baseSqlStatement = $baseSqlStatement." AND mouse.DATE(birthDate) < '".$toDate."'";
+            $baseSqlStatement = $baseSqlStatement." AND mouse.birthDate < '".$toDate."'";
         }
 
         if ($owner_key != "")

@@ -38,6 +38,8 @@ class Litter extends Model
 				'weanDate',
 				'tagDate',
 				'status',
+				'entry_status',
+				'entry_status_date',
 				'comment',
 				'version',
 				'_litterType_key',

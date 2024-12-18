@@ -1,7 +1,7 @@
 
 	<div class="bg-purple-100 border border-gray-800 rounded shadow">
 		<div class="border-b border-gray-800 p-3">
-			<h5 class="font-bold uppercase text-gray-600">Select Entry</h5>
+			<h5 class="font-bold uppercase text-gray-600">Select Entry x</h5>
 		</div>
 
 		<div class="p-5">
@@ -16,6 +16,9 @@
 						</td>
 						<td align="center">
 							Mating ID <font color="red"></font>
+						</td>
+						<td align="center">
+							Mating Ref ID <font color="red"></font>
 						</td>
 						<td align="center">
 							<font color="red">Dam 1</font>
@@ -52,6 +55,9 @@
 						</td>
 						<td align="center">
 							{{ $row['matingID'] }}
+						</td>
+						<td align="center">
+							{{ $row['matingRefID'] }}
 						</td>
 						<td align="center">
 							{{ $row['_dam1_key'] }}

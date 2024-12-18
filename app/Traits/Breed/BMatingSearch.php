@@ -96,6 +96,7 @@ trait BMatingSearch
         {
             $qr['mating_key'] = $row->_mating_key;
             $qr['matingID'] = $row->matingID;
+						$qr['matingRefID'] = $row->matingRefID;
             $qr['_dam1_key'] = $row->_dam1_key;
             $qr['_dam2_key'] = $row->_dam2_key;
             $qr['_sire_key'] = $row->_sire_key;

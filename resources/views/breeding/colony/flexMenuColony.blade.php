@@ -43,10 +43,10 @@
     <div class="col-lg-3 col-6">
       <!-- small box -->
       <div class="small-box">
-        <a href="/wean-home" class="small-box-footer"> 
+        <a href="/manage-litter" class="small-box-footer"> 
         <button type="button" class="btn btn-outline-primary btn-block">
         <i class="fas fa-arrow-circle-right"></i>
-          WEANING
+          MANAGE LITTER
         </button>
         </a>
       </div>
