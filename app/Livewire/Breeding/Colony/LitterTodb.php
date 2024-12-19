@@ -213,7 +213,7 @@ class LitterTodb extends Component
 		$this->maleGroup = $males;
 		$this->femaleGroup = $fmales;
 		
-		dd($this->maleGroup, $this->femaleGroup);
+		//dd($this->maleGroup, $this->femaleGroup);
 		$this->panel3 = true;
 		
 	}

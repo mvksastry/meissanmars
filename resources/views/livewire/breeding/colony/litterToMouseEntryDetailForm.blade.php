@@ -40,10 +40,10 @@
 						{{ $row['RefID'] }}
 						</td>
             <td class="border px-2  p-1">
-						{{ $row['mouse_id'] }}
+						{{ $row['ID'] }}
 						</td>
 						<td class="border px-2  p-1">
-						{{ date('d-m-Y', strtotime($row['dob'])) }}
+						{{ date('d-m-Y', strtotime($row['birthDate'])) }}
 						</td>
 						<td class="border px-2  p-1">
 						{{ $row['_litter_key'] }}
@@ -91,10 +91,10 @@
 						{{ $row['RefID'] }}
 						</td>
             <td class="border px-2  p-1">
-						{{ $row['mouse_id'] }}
+						{{ $row['ID'] }}
 						</td>
 						<td class="border px-2  p-1">
-						{{ date('d-m-Y', strtotime($row['dob'])) }}
+						{{ date('d-m-Y', strtotime($row['birthDate'])) }}
 						</td>
 						<td class="border px-2  p-1">
 						{{ $row['_litter_key'] }}
