@@ -43,14 +43,14 @@ use Illuminate\Support\Facades\Route;
 
 class ManageLitter extends Component
 {
-	  use BMatingSearch, BManageLitter;
+	use BMatingSearch, BManageLitter;
 
   public $iaMessage;
 
   public $showLitterEntryForm=false, $showSearchMatingEntryForm, $litterCalculation;
 
   //compulsory information
-  public $speciesName, $speciesKey, $purpose, $matKey;
+  public $speciesName, $speciesKey, $purpose, $matKey, $xspecies_id, $xstrain_id;
 
   //Model objects
   public $useScheduleTerms, $protocols, $lifestatus, $litterTypes, $strains, $origins, $owners, $birthStatuses;
@@ -182,7 +182,9 @@ class ManageLitter extends Component
     $this->mqryResult = $qry;
 		$this->wean_time = $qry->weanTime;
     $this->matKey = $id;
-
+		$this->xstrain_id = $qry->_strain_key;
+		$this->xspecies_id = $qry->_species_key;
+		
 		//latest litter details
 		$matchThese = ['_mating_key' => $id, 'entry_status' => 'open'];
 		$latLitEntry = Litter::where($matchThese)->latest()->first();
@@ -248,6 +250,8 @@ class ManageLitter extends Component
   {
 		if($this->purpose == "New" || $this->purpose == "Update")
 		{
+			$input['xspecies_id'] = $this->xspecies_id;
+			$input['xstrain_id'] = $this->xstrain_id;
 			$input['matKey'] = $this->matKey;
 			$input['dateBorn'] = $this->dateBorn;
 			$input['totalBorn'] = $this->totalBorn;

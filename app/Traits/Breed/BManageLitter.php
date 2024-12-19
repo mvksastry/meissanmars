@@ -92,6 +92,8 @@ trait BManageLitter
 				$litterEntry->_litter_key         = $litterKey;
 				$litterEntry->_mating_key         = $input['matKey'];
 				$litterEntry->_theilerStage_key   = null;
+				$litterEntry->_species_key        = $input['xspecies_id'];
+				$litterEntry->_strain_key         = $input['xstrain_id'];
 				$litterEntry->litterID            = $litterKey * 10;
 				$litterEntry->totalBorn           = $input['totalBorn'];
 				$litterEntry->birthDate           = $input['dateBorn'];

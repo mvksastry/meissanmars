@@ -72,6 +72,11 @@ class Litter extends Model
       'numberHarvested',
     ];
 
+		public function mating()
+    {
+      return $this->hasOne(Mating::class, '_mating_key', '_mating_key');
+    }
+		
     // Customize log description
     public function getDescriptionForEvent(string $eventName): string
     {
