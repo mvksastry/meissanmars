@@ -193,7 +193,7 @@ class ManageLitter extends Component
 			//litter entries exist
 			$this->curLitterKey = $latLitEntry->_litter_key;
 			$this->purpose = "Update";
-			$this->dateBorn = $latLitEntry->birthDate;
+			$this->dateBorn = date('Y-m-d', strtotime($latLitEntry->birthDate));
 			$this->totalBorn = $latLitEntry->totalBorn;
 			$this->bornDead = $latLitEntry->numberBornDead;
 			$this->numFemales = $latLitEntry->numFemale;
@@ -244,7 +244,7 @@ class ManageLitter extends Component
 
   public function enterLitter()
   {
-    $input['purpose'] = "New";
+    //$input['purpose'] = "New";
     $input['matKey'] = $this->matKey;
     $input['dateBorn'] = $this->dateBorn;
     $input['totalBorn'] = $this->totalBorn;
@@ -261,7 +261,7 @@ class ManageLitter extends Component
     $input['tagDate'] = $this->tagDate;
     $input['coment'] = $this->coment;
 
-    $msg = $this->addLitterData($input);
+    $msg = $this->addLitterData($this->purpose, $input);
 		
 		if($msg)
 		{
@@ -275,9 +275,23 @@ class ManageLitter extends Component
 	{
 		$this->purpose = "";
 		$this->matingReferenceID = null;
+		$this->dateBorn = date('Y-m-d');
 		$this->mqryResult = null;
 		$this->wean_time = null;
     $this->matKey = null;
+    $this->totalBorn= null;
+    $this->bornDead = null;
+    $this->numFemales = null;
+    $this->numMales = null;
+    $this->birthEventStatusKey = null;
+    $this->origin = null;
+    $this->litterNum = null;
+    $this->culledAtWean = null;
+    $this->missAtWean = null;
+    $this->litType = null;
+    $this->weanDate = null;
+    $this->tagDate = null;
+    $this->coment = null;
 		
 	}
 	public function roomSelected()

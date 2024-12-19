@@ -6,11 +6,13 @@
 		<div class="p-1">
 			<table class="w-full p-5 text-sm text-gray-900">
 				<thead>
-					<th>Mating Key</th>
-					<th>Birth Date</th>
-					<th>Total Born</th>
+					<th>Mating</br>Key</th>
+					<th>Birth</br>Date</th>
+					<th>Total</br>Born</th>
+					<th>Dead</th>
 					<th>M / F</th>
 					<th>Status</th>
+					<th>Status</br>Date</th>
 				</thead>
 				<tbody>
 					@if(count($fullLitterDetails) > 0)
@@ -26,10 +28,16 @@
 							{{ $row->totalBorn }}
 							</td>
 							<td class="mx-4">
+							{{ $row->numberBornDead }}
+							</td>
+							<td class="mx-4">
 							{{ $row->numFemale }} / {{ $row->numMale }}
 							</td>
 							<td class="mx-4">
 							{{ $row->entry_status }} 
+							</td>
+							<td class="mx-4">
+							{{ date('d-m-Y', strtotime($row->entry_status_date)) }} 
 							</td>
 						</tr>
 						@endforeach

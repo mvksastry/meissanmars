@@ -43,7 +43,7 @@ trait BManageLitter
 
     */
     ///////////////////////////////////////////////////////////////////////
-    public function addLitterData($input)
+    public function addLitterData($purpose, $input)
     {
 			  // 1. setting the db
         // 2. preparing the data.
@@ -71,7 +71,7 @@ trait BManageLitter
 	
         $version = 1;
 
-				switch ($input['purpose']) {
+				switch ($purpose) {
 					
 						case "Update" :
 							$litterKey = $this->curLitterKey;
@@ -114,34 +114,20 @@ trait BManageLitter
 
 	      Log::channel('coding')->info('array ready for insert, before try');
            //Stage 5. insert
-           dd($litterEntry);
+           //dd($purpose, $litterKey, $input, $litterEntry);
 					 
            try {
-               // ehck for duplicate entry and prevent it
-							 $litterEntry->save();
-               $msg = "Litter Entry Success";
-							return true;
-							/*									 
-               $qry = Litter::where('_mating_key', $input['matKey'])->first();
-
-
-               if(empty($qry) || $qry == null)
-							 {
-                   $litterEntry->save();
-                   $msg = "Litter Entry Success";
-               }
-               else {
-                   $msg = "Rejected: Duplicate Litter Entry";
-               }
-							*/
+								$litterEntry->save();								
+								$msg = $purpose." Litter Entry Success";
+								Log::channel('coding')->info($msg);
+								return true;
             }
             catch (\Illuminate\Database\QueryException $e ) {
 								$result2Fail = DB::rollback();
                 $eMsg = $e->getMessage();
                 Log::channel('coding')->info($eMsg);
-                //$qResultMsg = $qResultMsg."</br>".$eMsg."</br>";
-                $result1 = false;
-								$msg = "Litter Entry Failed";
+								$msg = $purpose." Litter Entry Failed";
+								Log::channel('coding')->info($msg);
 								return false;
             }
         //return $msg;

@@ -133,7 +133,7 @@
 
 					<tr>
             <td class="border px-2  p-1">
-              B: # Born Dead
+              B: # Dead
 						</td>
 						<td class="border px-2  p-1">
               <input wire:model.lazy="bornDead" class="form-control-sm border bg-secondary-subtle" type="text" placeholder="">
