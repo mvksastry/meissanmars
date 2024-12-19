@@ -31,14 +31,13 @@ use App\Models\Projectstrains;
 
 use App\Models\Breeding\Colony\Mouse;
 
-use App\Traits\Base;
-use App\Traits\IssueRequest;
-
 use Livewire\WithPagination;
 use Illuminate\Pagination\Paginator;
 
 use Validator;
 
+use App\Traits\Base;
+use App\Traits\IssueRequest;
 use App\Traits\Notes;
 use App\Traits\FormDEntryAdmin;
 

@@ -38,7 +38,7 @@ use App\Models\Breeding\Cvterms\CVGeneration;
 // all traits here
 use App\Traits\Breed\BContainer;
 use App\Traits\Breed\BCVTerms;
-//use App\Traits\Breed\BMatingSearch;
+use App\Traits\SplitNumberIntoParts;
 //use App\Traits\Breed\BManageLitter;
 use App\Traits\Breed\BOpenLitterSearch;
 
@@ -48,6 +48,7 @@ class LitterTodb extends Component
 {
 		use BOpenLitterSearch;
 		use BCVTerms;
+		use SplitNumberIntoParts;
 		//form messages
 		public $iaMessage;
 
@@ -68,7 +69,9 @@ class LitterTodb extends Component
 		
 		public $protocols, $useScheduleTerms, $per_cage=10, $comment;
 		public $baseMouseId, $protoKey, $useScheduleKeys;
-		public $maleGroup=[], $femaleGroup=[];
+		public $maleGroup=[], $femaleGroup=[], $numMaleCagesReqd, $numFemaleCagesReqd;
+		
+		public $cagesM, $cagesF, $jsonCagesM, $jsonCagesF;
 		
 		//public $origin="EAF-NCCS", $culledAtWean, $missAtWean, $cageId, $litterNum, $femalePerCage, $malePerCage;
 		//public $litType=1, $dateBorn, $weanDate, $tagDate, $birthEventStatusKey="A", $coment;
@@ -130,6 +133,7 @@ class LitterTodb extends Component
 	public function	prepareDBEntryData()
 	{
 	
+		//standard common info for mouse entries
 		$input['exitDate'] = null;
 		$input['cod'] = null;  
 		$input['codNotes'] = null;
@@ -198,6 +202,7 @@ class LitterTodb extends Component
 				$res = array();
 			}
 		}
+		
 		// separate the male group and female groups
 		foreach($f2a as $row)
 		{
@@ -209,9 +214,23 @@ class LitterTodb extends Component
 				array_push($fmales, $row);
 			}
 		}
-		//
+
+		//set the Male and Female arrays
 		$this->maleGroup = $males;
-		$this->femaleGroup = $fmales;
+		$this->femaleGroup = $fmales;	
+		
+		//calculate cages required 10 per cage
+		$maleCount = count($males);
+		$femaleCount = count($fmales);
+		
+		$this->cagesM = ceil($maleCount/10);
+		$this->cagesF = ceil($femaleCount/10);
+		
+		$this->numMaleCagesReqd   = $this->splitNumber($maleCount, $this->cagesM);
+		$this->numFemaleCagesReqd = $this->splitNumber($femaleCount, $this->cagesF);
+		
+		$this->jsonCagesM = implode(" , ", $this->numMaleCagesReqd);
+		$this->jsonCagesF = implode(" , ", $this->numFemaleCagesReqd);
 		
 		//dd($this->maleGroup, $this->femaleGroup);
 		$this->panel3 = true;

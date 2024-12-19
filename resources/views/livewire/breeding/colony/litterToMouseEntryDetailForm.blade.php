@@ -114,6 +114,15 @@
 				<tbody>
 					<tr>
 						<td class="border px-2 p-1">
+							Total Male Cages Needed: {{ $cagesM }} </br>  Per Cage: {{  $jsonCagesM }}
+						</td>
+						<td class="border px-2 p-1">
+							Total Female Cages Needed: {{ $cagesF }} </br> Per Cage: {{ $jsonCagesF }}
+						</td>
+          </tr>
+					
+					<tr>
+						<td class="border px-2 p-1">
 							<button wire:click="enterLitter()" class="btn btn-primary rounded">Enter</button>
 						</td>
 						<td class="border px-2 p-1">
