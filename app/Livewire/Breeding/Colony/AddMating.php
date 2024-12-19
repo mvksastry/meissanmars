@@ -283,7 +283,7 @@ class AddMating extends Component
       $input['comments'] = $this->comments;
       //dd($input);
       $result = $this->addMating($input);
-			//$result = true;
+			//$result = true; //for testing uncomment this, comment above
 			//now update cage information
 			if($result)
 			{
@@ -311,6 +311,7 @@ class AddMating extends Component
 					dd($cageMiceIDs, $cageRes);
 					*/
 				}
+				
 				if($this->dam2Id != null)
 				{
 					$ac = $ac + 1;
@@ -321,6 +322,7 @@ class AddMating extends Component
 					$dam2rack_id = $dam2Info->rack_id;
 					$rex = $this->updateAnimalNumber($this->dam2Id, $dam2Cage_id, $dam2slot_id, $dam2rack_id);
 				}				
+				
 				if($this->sireId != null)
 				{
 					$ac = $ac + 1;

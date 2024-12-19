@@ -54,7 +54,7 @@ trait CageInfoUpdate
 	public function removeIDFromCage($mice_id, $cage_id)
 	{
 		$cageRes = Cage::where('cage_id', $cage_id)->first();
-		$cageMiceIDs = json_decode($cageRes->mouse_ids);
+		$cageMiceIDs = json_decode($cageRes->mouse_ids, true);
 		if (($key = array_search($mice_id, $cageMiceIDs)) !== false) 
 		{
 			unset($cageMiceIDs[$key]);

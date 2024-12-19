@@ -176,6 +176,7 @@ class ManageLitter extends Component
 
   public function pick($id)
   {
+		$this->resetLitterDetails();
     $qry = Mating::where('_mating_key', $id)->first();
 		$this->matingReferenceID = $qry->matingRefID;
     $this->mqryResult = $qry;
@@ -183,7 +184,8 @@ class ManageLitter extends Component
     $this->matKey = $id;
 
 		//latest litter details
-		$latLitEntry = Litter::where('_mating_key', $id)->latest()->first();
+		$matchThese = ['_mating_key' => $id, 'entry_status' => 'open'];
+		$latLitEntry = Litter::where($matchThese)->latest()->first();
 		//dd($latLitEntry);
 		// all litter details
 		$this->fullLitterDetails = Litter::where('_mating_key', $id)->get();
@@ -244,31 +246,34 @@ class ManageLitter extends Component
 
   public function enterLitter()
   {
-    //$input['purpose'] = "New";
-    $input['matKey'] = $this->matKey;
-    $input['dateBorn'] = $this->dateBorn;
-    $input['totalBorn'] = $this->totalBorn;
-    $input['bornDead'] = $this->bornDead;
-    $input['numFemales'] = $this->numFemales;
-    $input['numMales'] = $this->numMales;
-    $input['birthEventStatusKey'] = $this->birthEventStatusKey;
-    $input['origin'] = $this->origin;
-    $input['litterNum'] = $this->litterNum;
-    $input['culledAtWean'] = $this->culledAtWean;
-    $input['missAtWean'] = $this->missAtWean;
-    $input['litType'] = $this->litType;
-    $input['weanDate'] = $this->weanDate;
-    $input['tagDate'] = $this->tagDate;
-    $input['coment'] = $this->coment;
-
-    $msg = $this->addLitterData($this->purpose, $input);
-		
-		if($msg)
+		if($this->purpose == "New" || $this->purpose == "Update")
 		{
-			$this->resetLitterDetails();
+			$input['matKey'] = $this->matKey;
+			$input['dateBorn'] = $this->dateBorn;
+			$input['totalBorn'] = $this->totalBorn;
+			$input['bornDead'] = $this->bornDead;
+			$input['numFemales'] = $this->numFemales;
+			$input['numMales'] = $this->numMales;
+			$input['birthEventStatusKey'] = $this->birthEventStatusKey;
+			$input['origin'] = $this->origin;
+			$input['litterNum'] = $this->litterNum;
+			$input['culledAtWean'] = $this->culledAtWean;
+			$input['missAtWean'] = $this->missAtWean;
+			$input['litType'] = $this->litType;
+			$input['weanDate'] = $this->weanDate;
+			$input['tagDate'] = $this->tagDate;
+			$input['coment'] = $this->coment;
+
+			$msg = $this->addLitterData($this->purpose, $input);
+			
+			if($msg)
+			{
+				$this->resetLitterDetails();
+			}
 		}
-		
-    $this->iaMessage = $msg;
+		else {
+			$this->iaMessage = "Refresh Form, Pick Mating ID";
+		}
   }
 
 	public function resetLitterDetails()

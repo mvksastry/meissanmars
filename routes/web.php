@@ -107,6 +107,7 @@ use App\Livewire\Breeding\Colony\EditMating;
 use App\Livewire\Breeding\Colony\AddLitter;
 use App\Livewire\Breeding\Colony\EditLitter;
 use App\Livewire\Breeding\Colony\ManageLitter;
+use App\Livewire\Breeding\Colony\LitterTodb;
 use App\Livewire\Breeding\Colony\WeanHome;
 use App\Livewire\Breeding\Colony\ColonyPermissions;
 use App\Livewire\Breeding\Colony\DailyColonyReports;
@@ -311,6 +312,7 @@ Route::middleware(['auth','verified'])->group(function() {
     Route::get('/add-litter', AddLitter::class);
     Route::get('/edit-litter', EditLitter::class);
 		Route::get('/manage-litter', ManageLitter::class);
+		Route::get('/litter-todb', LitterTodb::class);
 		Route::get('/wean-home', WeanHome::class);
 		Route::get('/colony-permissions', ColonyPermissions::class);
     // -------------- //
