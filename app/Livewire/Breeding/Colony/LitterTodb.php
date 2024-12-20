@@ -41,14 +41,22 @@ use App\Traits\Breed\BCVTerms;
 use App\Traits\SplitNumberIntoParts;
 //use App\Traits\Breed\BManageLitter;
 use App\Traits\Breed\BOpenLitterSearch;
+use App\Traits\Breed\BAddCageInfo;
 
 use Illuminate\Support\Facades\Route;
+
+use Carbon\Carbon;
+use Illuminate\Log\Logger;
+use Log;
 
 class LitterTodb extends Component
 {
 		use BOpenLitterSearch;
 		use BCVTerms;
 		use SplitNumberIntoParts;
+		use BAddCageInfo;
+		
+		
 		//form messages
 		public $iaMessage;
 
@@ -69,7 +77,7 @@ class LitterTodb extends Component
 		
 		public $protocols, $useScheduleTerms, $per_cage=10, $comment;
 		public $baseMouseId, $protoKey, $useScheduleKeys;
-		public $maleGroup=[], $femaleGroup=[], $numMaleCagesReqd, $numFemaleCagesReqd;
+		public $maleGroup=[], $femaleGroup=[], $numMalesPerCage, $numFemalesPerCage;
 		
 		public $cagesM, $cagesF, $jsonCagesM, $jsonCagesF;
 		
@@ -86,7 +94,7 @@ class LitterTodb extends Component
 		public $fslot_num,$free_slots,$racksInRoom=[], $rack_id, $room_id, $slot_id;
 		
 		//panels
-
+		public $slot_error_msg=null;
 	
 	
 	public function render()
@@ -149,11 +157,12 @@ class LitterTodb extends Component
 		$input['cage_id'] = null;
 		$input['rack_id'] = null;
 		$input['slot_id'] = null;
-		$input['_pen_key'] = $input['cage_id'];
+		$input['_pen_key'] = 0;
 		$input['protocol'] = $this->protoKey;
-		$f1a['_mouse_key'] = $this->getMaxMouseKey(); // new mouse_key going to be created
+		//
 		$input['newTag'] = null;
 		$input['comment'] = $this->comment;
+		$input['generation'] = $this->_generation_key;
 		
 		//dd("reached");		
 		$f1a = array();
@@ -161,7 +170,7 @@ class LitterTodb extends Component
 		$fmales = array();
 		$males = array();
 		$i = 1;
-		
+		//$input['_mouse_key'] = $this->getMaxMouseKey(); // 
 		foreach($this->openLitterEntries as $row)
 		{
 			$nFmales = $row->numFemale;
@@ -226,14 +235,102 @@ class LitterTodb extends Component
 		$this->cagesM = ceil($maleCount/10);
 		$this->cagesF = ceil($femaleCount/10);
 		
-		$this->numMaleCagesReqd   = $this->splitNumber($maleCount, $this->cagesM);
-		$this->numFemaleCagesReqd = $this->splitNumber($femaleCount, $this->cagesF);
+		$this->numMalesPerCage   = $this->splitNumber($maleCount, $this->cagesM); //array
+		$this->numFemalesPerCage = $this->splitNumber($femaleCount, $this->cagesF); //array
 		
-		$this->jsonCagesM = implode(" , ", $this->numMaleCagesReqd);
-		$this->jsonCagesF = implode(" , ", $this->numFemaleCagesReqd);
+		$this->jsonCagesM = implode(" , ", $this->numMalesPerCage);
+		$this->jsonCagesF = implode(" , ", $this->numFemalesPerCage);
 		
 		//dd($this->maleGroup, $this->femaleGroup);
 		$this->panel3 = true;
+		
+	}
+	
+	public function putPupsToDB()
+	{
+		
+		/*
+		1. This is an irreversible operation once done, done
+		2. We have made arrays of mouse info for all males and females
+		3. This is stored in $this->maleGroup and $this-femaleGroup.
+		4. Ensure Room, Rack, cage and slot infos are already selected
+		5. How to split the new mice into number of cages and per cage done above
+		6. This info is available in total cages required in $this->cagesM and $this->cagesF
+		7. How many to be put into each is available in $this->numMalesPerCage, $this->numFemalesPerCage
+		8. Once every array is put into mouse db, that corresponding litter key status to be closed.
+		9. $this->openLitterEntries contains the open litter entries in the litter table.
+		10. The sequence of operations is very similar to compelte allotment done earlier.
+		
+			A. Take each array  begin with Females.
+				
+			B. Take each row (complete mouse info)
+				a. create a mice id array for the cage 
+				b. Add the rack, cage, slot info to each mouse row.
+				c. Create a new Cage
+				d. Once the number of mice reached as per cage info array,
+						save the cage.
+		*/
+
+		$lk = 0;
+		for($k=0; $k < $this->cagesF; $k++)
+		{
+			$mice_idx = array();
+			$numberF = $this->numFemalesPerCage[$k];
+
+			for($i=0; $i < $numberF; $i++)
+			{
+				$miceArrayInfo = $this->femaleGroup[$lk]; //first mice entry in the array
+				
+				unset($miceArrayInfo['RefID']);
+				
+				array_push($mice_idx, $miceArrayInfo['ID']);
+				
+				$miceArrayInfo['_mouse_key'] = $this->getMaxMouseKey();
+				//perfect untill here.
+				//dd($mice_idx, $miceArrayInfo);
+				Log::channel('coding')->info('Data collection for [ '.$miceArrayInfo['ID'].'] insert array complete');
+
+				//now insert into db here using try catch to revert if any error
+				
+				try {
+							//$result = Mouse::UpdateOrCreate($miceArrayInfo);
+							Log::channel('coding')->info('Mating Id [ '.$miceArrayInfo['ID'].' ] creation success');
+				}
+
+				catch (\Illuminate\Database\QueryException $e ) {
+                $result = DB::rollback();
+                $eMsg = $e->getMessage();
+								Log::channel('coding')->info('Entry ID [ '.$eMsg.' ] creation fail');
+                //dd($eMsg);
+                $result = false;
+				}
+				
+				//before loop restarts, no need to unset the key you are done with
+				//as we are using for loop, loop will pick running index value
+				$lk = $lk + 1;
+			}
+			
+			//dd($mice_idx);
+			$miceArrayInfo['animal_count'] = $numberF;
+			$miceArrayInfo['mice_ids'] = $mice_idx;
+			$miceArrayInfo['rack_id'] = $this->rack_id;
+			$miceArrayInfo['slot_id'] = $this->slot_id;
+			
+			$result = $this->updateRackSlotCageInfo($miceArrayInfo);
+			//before the loop goes back
+			//prepare for cage insertion
+			unset($this->rarray[0]);
+			$this->mice_idx = [];
+			if(count($this->rarray) != 0)
+			{
+				$this->rarray = array_values($this->rarray);
+				$this->slot_id = $this->rarray[0];
+			}
+			else {
+				$this->slot_error_msg = "Select New Rack";
+			}
+		}
+		
 		
 	}
 		

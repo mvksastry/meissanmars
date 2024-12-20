@@ -235,7 +235,7 @@ class AddEntry extends Component
 		//check cage selected is correct and ok for strian and gender
 		$input['_room_key'] = $this->room_id; // changed by ks
 		$input['rack_id'] = $this->rack_id;
-		$input['slot_id'] = $this->cageInfos;
+		$input['slot_id'] = $this->cageInfos; //This is slot id
 		$input['_strain_key'] = $input['_strain_key'];
 		$input['_species_key'] = $this->speciesKey;
 		// the line below should set the flag for going ahead
@@ -256,7 +256,6 @@ class AddEntry extends Component
 
 			
 			//input data preparation for cage rack slot info tables;
-
 			array_push($this->mice_idx, $input['speciesId']);
 			//now add to db here
 			$result = $this->addMice($input);

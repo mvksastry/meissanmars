@@ -46,8 +46,8 @@ trait BAddCageInfo
 				$cageInfo->end_date = date('Y-m-d');
 				$cageInfo->ack_date = date('Y-m-d');
 				$cageInfo->cage_status = 'Active';
-				$cageInfo->notes = 'Mating Cage created ';
-				//dd($bcageInfo);
+				$cageInfo->notes = 'Cage created ';
+				//dd($cageInfo);
 				$cageInfo->save();
 				$cage_id = $cageInfo->cage_id;
 				

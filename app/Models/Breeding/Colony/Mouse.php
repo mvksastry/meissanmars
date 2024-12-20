@@ -38,6 +38,7 @@ class Mouse extends Model
 		protected $primaryKey = '_mouse_key';
 
 		protected $fillable = [
+				'_mouse_key',
 				'_litter_key',
 				'_strain_key',
 				'_pen_key',
