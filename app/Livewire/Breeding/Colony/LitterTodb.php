@@ -274,7 +274,7 @@ class LitterTodb extends Component
 			All this lifting is done by the trait BPutPupsToDB.
 		*/
 
-		/*
+		//process males first or females just swap the code.
 		$mRes = $this->processPupsToDBEntries(
 							$this->cagesM, 
 							$this->numMalesPerCage, 
@@ -282,7 +282,8 @@ class LitterTodb extends Component
 							$this->rack_id, 
 							$this->rarray
 						);
-												
+						
+		//process females first or males just swap the code.
 		$fRes = $this->processPupsToDBEntries(
 							$this->cagesF, 
 							$this->numFemalesPerCage, 
@@ -290,7 +291,7 @@ class LitterTodb extends Component
 							$this->rack_id, 
 							$this->rarray
 						);
-		*/
+		
 		//now close the open litter entries status to 
 		//closed and status_entry_date to current date
 
@@ -299,7 +300,7 @@ class LitterTodb extends Component
 			//dd($row);
 			$matchThese = ['_litter_key' => $row->_litter_key, '_mating_key' => $row->_mating_key];
 			$putThese = ['entry_status' => 'closed', 'entry_status_date' => date('Y-m-d') ];
-			//$result = Litter::where($matchThese)->update($putThese);
+			$result = Litter::where($matchThese)->update($putThese);
 			$msgx5 = 'Litter entry staus closed for litter key [ '.$row->_litter_key.' ] ';
 			array_push($this->success_box, $msgx5);
 			$matchThese = []; $putThese = [];
