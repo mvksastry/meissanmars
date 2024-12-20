@@ -270,9 +270,11 @@ class LitterTodb extends Component
 				c. Create a new Cage
 				d. Once the number of mice reached as per cage info array,
 						save the cage.
+						
+			All this lifting is done by the trait BPutPupsToDB.
 		*/
 
-
+		/*
 		$mRes = $this->processPupsToDBEntries(
 							$this->cagesM, 
 							$this->numMalesPerCage, 
@@ -288,83 +290,20 @@ class LitterTodb extends Component
 							$this->rack_id, 
 							$this->rarray
 						);
-
-
-		/*
-		$lk = 0;
-		for($k=0; $k < $this->cagesF; $k++)
-		{
-			$mice_idx = array();
-			$numberF = $this->numFemalesPerCage[$k];
-
-			for($i=0; $i < $numberF; $i++)
-			{
-				$miceArrayInfo = $this->femaleGroup[$lk]; //first mice entry in the array
-				
-				unset($miceArrayInfo['RefID']);
-				
-				array_push($mice_idx, $miceArrayInfo['ID']);
-				
-				$miceArrayInfo['_mouse_key'] = $this->getMaxMouseKey();
-				//perfect untill here.
-				//dd($mice_idx, $miceArrayInfo);
-				$msgx2 = 'Data collection for [ '.$miceArrayInfo['ID'].'] insert array complete';
-				Log::channel('coding')->info($msgx2);
-				array_push($this->success_box, $msgx2);
-
-				//now insert into db here using try catch to revert if any error
-				
-				try {
-							//$result = Mouse::UpdateOrCreate($miceArrayInfo);
-							$msgx1 = 'Mating Id [ '.$miceArrayInfo['ID'].' ] creation success';
-							array_push($this->success_box, $msgx1);
-							Log::channel('coding')->info($msgx1);
-				}
-
-				catch (\Illuminate\Database\QueryException $e ) {
-                $result = DB::rollback();
-                $eMsg = $e->getMessage();
-								array_push($this->error_box, $eMsg);
-								Log::channel('coding')->info('Entry ID [ '.$eMsg.' ] creation fail');
-                //dd($eMsg);
-                $result = false;
-				}
-				//before loop restarts, no need to unset the key you are done with
-				//as we are using for loop, loop will pick running index value
-				$lk = $lk + 1;
-			}
-			
-			//dd($mice_idx);
-			$miceArrayInfo['animal_count'] = $numberF;
-			$miceArrayInfo['mice_ids'] = $mice_idx;
-			$miceArrayInfo['rack_id'] = $this->rack_id;
-			$miceArrayInfo['slot_id'] = $this->slot_id;
-			
-			//$result = $this->updateRackSlotCageInfo($miceArrayInfo);
-			$result = true;
-			if($result)
-			{
-				array_push($this->success_box, "Cage Insertion, Rack Update and Mouse location updates success");
-			}
-			else {
-				array_push($this->error_box, "Cage Insertion, Rack Update and Mouse location updates failed");
-			}
-			//before the loop goes back
-			//prepare for cage insertion
-			unset($this->rarray[0]);
-			$this->mice_idx = [];
-			if(count($this->rarray) != 0)
-			{
-				$this->rarray = array_values($this->rarray);
-				$this->slot_id = $this->rarray[0];
-			}
-			else {
-				$this->slot_error_msg = "Select New Rack";
-				array_push($this->error_box, $this->slot_error_msg);
-			}
-		}
 		*/
-		
+		//now close the open litter entries status to 
+		//closed and status_entry_date to current date
+
+		foreach($this->openLitterEntries as $row)
+		{
+			//dd($row);
+			$matchThese = ['_litter_key' => $row->_litter_key, '_mating_key' => $row->_mating_key];
+			$putThese = ['entry_status' => 'closed', 'entry_status_date' => date('Y-m-d') ];
+			//$result = Litter::where($matchThese)->update($putThese);
+			$msgx5 = 'Litter entry staus closed for litter key [ '.$row->_litter_key.' ] ';
+			array_push($this->success_box, $msgx5);
+			$matchThese = []; $putThese = [];
+		}
 		
 		
 		

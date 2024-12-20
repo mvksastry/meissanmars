@@ -185,7 +185,7 @@
 						  <div class="card-header">
 							<h3 class="card-title">
 							  <i class="fas fa-chart-pie mr-1"></i>
-							  Feedback Messages Ref ID: 
+							  Feedback Messages 
 							</h3>
 							<div class="card-tools">
 							  <ul class="nav nav-pills ml-auto">
@@ -200,12 +200,35 @@
 								<div class="chart tab-pane active" id="revenue-chart" style="position: relative;">
                   <!-- Show the selection form-->
                   <!-- Show the selection form-->
-										@foreach($success_box as $val)
-										{{ $val }} </br>
-										@endforeach
-										@foreach($error_box as $val)
-										{{ $val }} </br>
-										@endforeach
+									<table class="w-full p-5 text-sm text-gray-900">
+										<thead>
+											<th>Errors and Failures</th>
+										</thead>
+										<tbody>
+											@foreach($success_box as $val)
+												<tr class="bg-success-subtle">
+													<td class="border px-2 p-1">
+													{{ $val }}
+													</td>
+												</tr>
+											@endforeach
+												<tr bgcolor="#AHDADE">
+													<td class="border px-2 p-1">
+													</td >
+													<td class="border px-2 p-1">											
+													</td >
+												</tr>
+											@foreach($error_box as $val)										
+												<tr class="bg-warning-subtle">
+													<td class="p-2">
+														<font color="red">
+															{{ $val }}
+														</font>
+													</td>
+												</tr>
+											@endforeach	
+										</tbody>
+									</table>														
 								</div>
 							</div>
 						  </div><!-- /.card-body -->
