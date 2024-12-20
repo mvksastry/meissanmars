@@ -23,14 +23,12 @@ use Illuminate\Support\Facades\Log;
 
 trait BAddCageInfo
 {
-
     use BBase;
 
     use BCVTerms;
 		
 	public function updateRackSlotCageInfo($binput)
 	{
-		
 		//3. enter the cage details instead of container entries earlier. modified by ks
 		//   on 16-Nov-2024.
 				//$species_key         = $this->getSpeciesKeyBySpeciesName($binput['_species_key']);
@@ -50,6 +48,8 @@ trait BAddCageInfo
 				//dd($cageInfo);
 				$cageInfo->save();
 				$cage_id = $cageInfo->cage_id;
+				$msgx3 = 'New Cage [ '.$cage_id.'] creation success';
+				Log::channel('coding')->info($msgx3);
 				
 				$rack_id = $binput['rack_id'];
 				$slot_id = $binput['slot_id'];
@@ -60,6 +60,8 @@ trait BAddCageInfo
 															
 				$matchThese = ['slot_id' => $slot_id, 'rack_id' => $rack_id];
 				$res = Slot::where($matchThese)->update($sInput);
+				$msgx4 = 'Slot Table update success';
+				Log::channel('coding')->info($msgx4);
 				
 				//Now update the mice table for cage_slot_rack id here.
 				$mInput['_pen_key'] = $cage_id;
@@ -71,8 +73,9 @@ trait BAddCageInfo
 				{
 					$matchThis = ['ID' => $val];
 					$res = Mouse::where($matchThis)->update($mInput);
+					$msgx4 = 'Mice location info [ '.$val.' ] update success';
+					Log::channel('coding')->info($msgx4);
 				}
-				
 				
 				return true;
 	}	

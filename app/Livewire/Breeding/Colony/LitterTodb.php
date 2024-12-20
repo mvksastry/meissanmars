@@ -42,6 +42,7 @@ use App\Traits\SplitNumberIntoParts;
 //use App\Traits\Breed\BManageLitter;
 use App\Traits\Breed\BOpenLitterSearch;
 use App\Traits\Breed\BAddCageInfo;
+use App\Traits\Breed\BPutPupsToDB;
 
 use Illuminate\Support\Facades\Route;
 
@@ -55,7 +56,7 @@ class LitterTodb extends Component
 		use BCVTerms;
 		use SplitNumberIntoParts;
 		use BAddCageInfo;
-		
+		use BPutPupsToDB;
 		
 		//form messages
 		public $iaMessage;
@@ -88,13 +89,13 @@ class LitterTodb extends Component
 		public $matSearchResults, $searchResultsMating, $mqryResult, $wean_time=0;
 		public $fullLitterDetails=[], $matingReferenceID=null, $curLitterKey=null;
 		
-		public $roomId, $rackId;
+		public $roomId, $rackId, $rarray=[];
 		
 		public $rooms, $racks;
 		public $fslot_num,$free_slots,$racksInRoom=[], $rack_id, $room_id, $slot_id;
 		
 		//panels
-		public $slot_error_msg=null;
+		public $slot_error_msg=null, $error_box=[], $success_box=[];
 	
 	
 	public function render()
@@ -271,6 +272,25 @@ class LitterTodb extends Component
 						save the cage.
 		*/
 
+
+		$mRes = $this->processPupsToDBEntries(
+							$this->cagesM, 
+							$this->numMalesPerCage, 
+							$this->maleGroup, 
+							$this->rack_id, 
+							$this->rarray
+						);
+												
+		$fRes = $this->processPupsToDBEntries(
+							$this->cagesF, 
+							$this->numFemalesPerCage, 
+							$this->femaleGroup, 
+							$this->rack_id, 
+							$this->rarray
+						);
+
+
+		/*
 		$lk = 0;
 		for($k=0; $k < $this->cagesF; $k++)
 		{
@@ -288,23 +308,27 @@ class LitterTodb extends Component
 				$miceArrayInfo['_mouse_key'] = $this->getMaxMouseKey();
 				//perfect untill here.
 				//dd($mice_idx, $miceArrayInfo);
-				Log::channel('coding')->info('Data collection for [ '.$miceArrayInfo['ID'].'] insert array complete');
+				$msgx2 = 'Data collection for [ '.$miceArrayInfo['ID'].'] insert array complete';
+				Log::channel('coding')->info($msgx2);
+				array_push($this->success_box, $msgx2);
 
 				//now insert into db here using try catch to revert if any error
 				
 				try {
 							//$result = Mouse::UpdateOrCreate($miceArrayInfo);
-							Log::channel('coding')->info('Mating Id [ '.$miceArrayInfo['ID'].' ] creation success');
+							$msgx1 = 'Mating Id [ '.$miceArrayInfo['ID'].' ] creation success';
+							array_push($this->success_box, $msgx1);
+							Log::channel('coding')->info($msgx1);
 				}
 
 				catch (\Illuminate\Database\QueryException $e ) {
                 $result = DB::rollback();
                 $eMsg = $e->getMessage();
+								array_push($this->error_box, $eMsg);
 								Log::channel('coding')->info('Entry ID [ '.$eMsg.' ] creation fail');
                 //dd($eMsg);
                 $result = false;
 				}
-				
 				//before loop restarts, no need to unset the key you are done with
 				//as we are using for loop, loop will pick running index value
 				$lk = $lk + 1;
@@ -316,7 +340,15 @@ class LitterTodb extends Component
 			$miceArrayInfo['rack_id'] = $this->rack_id;
 			$miceArrayInfo['slot_id'] = $this->slot_id;
 			
-			$result = $this->updateRackSlotCageInfo($miceArrayInfo);
+			//$result = $this->updateRackSlotCageInfo($miceArrayInfo);
+			$result = true;
+			if($result)
+			{
+				array_push($this->success_box, "Cage Insertion, Rack Update and Mouse location updates success");
+			}
+			else {
+				array_push($this->error_box, "Cage Insertion, Rack Update and Mouse location updates failed");
+			}
 			//before the loop goes back
 			//prepare for cage insertion
 			unset($this->rarray[0]);
@@ -328,8 +360,12 @@ class LitterTodb extends Component
 			}
 			else {
 				$this->slot_error_msg = "Select New Rack";
+				array_push($this->error_box, $this->slot_error_msg);
 			}
 		}
+		*/
+		
+		
 		
 		
 	}

@@ -185,7 +185,7 @@
 						  <div class="card-header">
 							<h3 class="card-title">
 							  <i class="fas fa-chart-pie mr-1"></i>
-							  Litter Details for Mating Ref ID: 
+							  Feedback Messages Ref ID: 
 							</h3>
 							<div class="card-tools">
 							  <ul class="nav nav-pills ml-auto">
@@ -200,7 +200,12 @@
 								<div class="chart tab-pane active" id="revenue-chart" style="position: relative;">
                   <!-- Show the selection form-->
                   <!-- Show the selection form-->
-
+										@foreach($success_box as $val)
+										{{ $val }} </br>
+										@endforeach
+										@foreach($error_box as $val)
+										{{ $val }} </br>
+										@endforeach
 								</div>
 							</div>
 						  </div><!-- /.card-body -->
