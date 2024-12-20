@@ -52,7 +52,7 @@ trait BPutPupsToDB
 				
 				try {
 							$result = Mouse::UpdateOrCreate($miceArrayInfo);
-							$msgx1 = 'Mating Id [ '.$miceArrayInfo['ID'].' ] creation success';
+							$msgx1 = 'Mouse Id [ '.$miceArrayInfo['ID'].' ] creation success';
 							array_push($this->success_box, $msgx1);
 							Log::channel('coding')->info($msgx1);
 				}
