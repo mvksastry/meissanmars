@@ -9,9 +9,10 @@
 				<div class="border-b border-gray-800">
 					<h5 class="font-bold uppercase mx-1 text-gray-600"></h5>
 				</div>
-				<div class="p-1">
-					<table class="w-full p-5 text-sm text-gray-900">
-						<thead>
+				<div class="p-3">
+					<table class="table table-bordered table-striped">
+					<caption>List of Active Etnries</caption>
+						<thead class="thead-dark">
 							<th>Mating</br>Key</th>
 							<th>Ref ID</th>
 							<th>Birth</br>Date</th>
