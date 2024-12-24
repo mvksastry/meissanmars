@@ -283,11 +283,8 @@ class LitterTodb extends Component
 							$this->rarray
 						);
 
-					
-						
-						
-						
-						
+		//remove the slot number already used earlier request
+		$this->rarray = array_slice($this->rarray, $this->cagesM);
 						
 		//process females first or males just swap the code.
 		$fRes = $this->processPupsToDBEntries(
