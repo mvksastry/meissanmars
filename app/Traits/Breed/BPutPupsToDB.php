@@ -24,7 +24,7 @@ use Illuminate\Support\Facades\Log;
 trait BPutPupsToDB
 {
 
-	public function processPupsToDBEntries($cagesMF, $numMFPerCage, $MFGroup, $rack_id, $this->rarray)
+	public function processPupsToDBEntries($cagesMF, $numMFPerCage, $MFGroup, $rack_id, $rarray)
 	{
 
 		$lk = 0;
@@ -74,7 +74,7 @@ trait BPutPupsToDB
 			$miceArrayInfo['animal_count'] = $numberF;
 			$miceArrayInfo['mice_ids'] = $mice_idx;
 			$miceArrayInfo['rack_id'] = $rack_id;
-			$miceArrayInfo['slot_id'] = $this->rarray[0];
+			$miceArrayInfo['slot_id'] = $rarray[0];
 			
 			$result = $this->updateRackSlotCageInfo($miceArrayInfo);
 			//$result = true;
@@ -85,20 +85,21 @@ trait BPutPupsToDB
 			else {
 				array_push($this->error_box, "Cage Insertion, Rack Update and Mouse location updates failed");
 			}
+
 			//before the loop goes back
 			//prepare for cage insertion
 			//this must be $this->rarray because the array must be adjusted after every entry.
-			unset($this->rarray[0]);  
+			unset($rarray[0]);  
 			$this->mice_idx = [];
-			if(count($this->rarray) != 0)
+			if(count($rarray) != 0)
 			{
-				$rarray = array_values($this->rarray);
+				$rarray = array_values($rarray);
 				$this->slot_id = $rarray[0];
 			}
 			else {
 				$this->slot_error_msg = "Select New Rack";
 				array_push($this->error_box, $this->slot_error_msg);
-			}
+			}	
 		}
 
 	}

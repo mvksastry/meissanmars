@@ -282,6 +282,13 @@ class LitterTodb extends Component
 							$this->rack_id, 
 							$this->rarray
 						);
+
+					
+						
+						
+						
+						
+						
 		//process females first or males just swap the code.
 		$fRes = $this->processPupsToDBEntries(
 							$this->cagesF, 
