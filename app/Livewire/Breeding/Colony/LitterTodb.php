@@ -282,7 +282,6 @@ class LitterTodb extends Component
 							$this->rack_id, 
 							$this->rarray
 						);
-						
 		//process females first or males just swap the code.
 		$fRes = $this->processPupsToDBEntries(
 							$this->cagesF, 
@@ -291,10 +290,8 @@ class LitterTodb extends Component
 							$this->rack_id, 
 							$this->rarray
 						);
-		
 		//now close the open litter entries status to 
 		//closed and status_entry_date to current date
-
 		foreach($this->openLitterEntries as $row)
 		{
 			//dd($row);
@@ -306,11 +303,30 @@ class LitterTodb extends Component
 			$matchThese = []; $putThese = [];
 		}
 		
-		
+		$this->resetDbEntryForm();
 		
 	}
 		
+	public function resetDbEntryForm()
+	{
+		$this->cagesF = null;
+		$this->cagesM = null;
+		$this->maleGroup = null;
+		$this->femaleGroup = null;	
+		$this->numMalesPerCage   = null; //array
+		$this->numFemalesPerCage = null; //array
 		
+		$this->jsonCagesM = null;
+		$this->jsonCagesF = null;
+		$this->protoKey;
+		//
+		$this->comment = null;
+		$this->_generation_key = null;
+		$this->rack_id = null; 
+		$this->rarray = null;
+		$this->rooms = null;
+		$this->racks = null;
+	}
 		
 		
 		

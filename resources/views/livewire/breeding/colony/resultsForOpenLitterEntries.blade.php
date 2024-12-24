@@ -39,7 +39,13 @@
 									{{ date('d-m-Y', strtotime($row->birthDate)) }}
 									</td>
 									<td class="mx-2">
-									{{ $row->totalBorn }} <?php $total = $total + $row->totalBorn; ?>
+									<?php 
+									if($row->numFemale != null && $row->numMale != null)
+									{
+										$total = $total + $row->totalBorn; 
+									}
+									?>
+									{{ $row->totalBorn }} 
 									</td>
 									<td class="mx-2">
 									{{ $row->numFemale }} <?php $females = $females + $row->numFemale; ?>
@@ -69,8 +75,8 @@
 									<td class="mx-2"></td>
 									<td class="mx-2 text-bold">Total </td>
 									<td class="mx-2 text-bold">{{ $total }}</td>
-									<td class="mx-2 text-bold">{{ $males }}</td>
 									<td class="mx-2 text-bold">{{ $females }}</td>
+									<td class="mx-2 text-bold">{{ $males }}</td>
 									
 									<td class="mx-2 text-bold">{{ $dead }}</td>
 									<td class="mx-2"></td>
