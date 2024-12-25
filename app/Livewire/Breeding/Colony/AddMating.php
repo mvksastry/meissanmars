@@ -69,7 +69,7 @@ class AddMating extends Component
 		public $selectedDam1, $selectedDam2, $selectedSire;
 		
     //variable declarations
-    public $speciesName, $purpose, $newmatingId, $newMatingRefID;
+    public $speciesName, $purpose, $newMatingId, $newMatingRefID;
     public $dam1Key, $dam1Msg, $dam2Key, $dam2Msg, $sireKey, $sireMsg;
     public $dam1Id, $dam2Id, $sireId, $diet_key, $strain_key, $matgType=1, $generation_key;
     public $genotypeneed, $ownerwg="EAF-NCCS", $matingDate,  $weantime, $slot_id, $weannote, $comments;
@@ -278,7 +278,7 @@ class AddMating extends Component
       $input['ownerwg'] = $this->ownerwg;
       $input['matingDate'] = $this->matingDate;
       $input['weantime'] = $this->weantime;
-      $input['cage_id'] = $this->cage_id; //this is not cage but slot_id
+      $input['cage_id'] = $this->slot_id; //this is not cage but slot_index.
       $input['weannote'] = $this->weannote;
       $input['comments'] = $this->comments;
       //dd($input);
@@ -343,6 +343,13 @@ class AddMating extends Component
 				//dd($input);
 				$final_res = $this->updateRackSlotCageInfo($input);
 				
+				//now update the slot index in the mating table for column suggestedPenID
+				$matchThese = ['slot_id' => $this->slot_id, 'rack_id' => $this->rack_id];
+				$slot_index = Slot::where($matchThese)->value('slot_index');
+
+				$matchThis = ['_mating_key' => $this->newMatingId];
+				$putThis = ['suggestedPenID' => $slot_index];
+				$result = Mating::where($matchThis)->update($putThis);
 				//now reduce the mice number by the 
 				//number transferred to mating cage.
 				
