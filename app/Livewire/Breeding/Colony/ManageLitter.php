@@ -188,14 +188,14 @@ class ManageLitter extends Component
 		//latest litter details
 		$matchThese = ['_mating_key' => $id, 'entry_status' => 'open'];
 		$latLitEntry = Litter::where($matchThese)->latest()->first();
-		//dd($latLitEntry);
+		
 		// all litter details
 		$this->fullLitterDetails = Litter::where('_mating_key', $id)->get();
-		
-		if(count($this->fullLitterDetails) > 0)
+		//dd($latLitEntry, $this->fullLitterDetails);
+		if(!empty($latLitEntry) || $latLitEntry != null)
 		{
 			//litter entries exist
-			$this->curLitterKey = $latLitEntry->_litter_key;
+			$this->curLitterKey = $latLitEntrytry->_litter_key;
 			$this->purpose = "Update";
 			$this->dateBorn = date('Y-m-d', strtotime($latLitEntry->birthDate));
 			$this->totalBorn = $latLitEntry->totalBorn;
