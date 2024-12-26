@@ -1,7 +1,5 @@
 <div class="w-full md:w-2/3 p-1">
 	<div class="bg-warning-subtle bordered rounded shadow">
-
-
 		<div class="p-3">
 			<table class="table-sm table-bordered rounded-3 bg-success-subtle text-sm">
 				<tr>
