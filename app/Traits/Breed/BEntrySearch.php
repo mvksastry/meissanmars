@@ -36,6 +36,7 @@ trait BEntrySearch
         $mouseIdParam = $input['mouseId_contains'];
         $mouse_id     = $input['mouse_id'];
         $strain_key   = $input['_strain_key'];
+				$_litter_key  = $input['_litter_key'];
         $lifeStatus   = $input['lifeStatus'];
         $cageIdParam  = $input['cageIdParam'];
         $cage_id      = $input['cage_id'];
@@ -68,20 +69,25 @@ trait BEntrySearch
             $baseSqlStatement = $baseSqlStatement." AND mouse._strain_key = ".$strain_key;
         }
 
+        if( $_litter_key != "")
+        {
+            $baseSqlStatement = $baseSqlStatement." AND mouse._litter_key = ".$_litter_key;
+        }
+				
         if ($cageIdParam != "")
         {
-            if( $cageIdParam == "equals")
-            {
-                $baseSqlStatement = $baseSqlStatement." AND mouse._pen_key = ".$cage_id;
-            }
-            if( $cageIdParam == "greaterthan")
-            {
-                $baseSqlStatement = $baseSqlStatement." AND mouse._pen_key > ".$cage_id;
-            }
-            if( $cageIdParam == "lessthan")
-            {
-                $baseSqlStatement = $baseSqlStatement." AND mouse._pen_key < ".$cage_id;
-            }
+					if( $cageIdParam == "equals")
+					{
+							$baseSqlStatement = $baseSqlStatement." AND mouse._pen_key = ".$cage_id;
+					}
+					if( $cageIdParam == "greaterthan")
+					{
+							$baseSqlStatement = $baseSqlStatement." AND mouse._pen_key > ".$cage_id;
+					}
+					if( $cageIdParam == "lessthan")
+					{
+							$baseSqlStatement = $baseSqlStatement." AND mouse._pen_key < ".$cage_id;
+					}
         }
 
         if( $lifeStatus != "")

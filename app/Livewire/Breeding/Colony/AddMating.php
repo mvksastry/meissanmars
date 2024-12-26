@@ -68,7 +68,6 @@ class AddMating extends Component
 		//selected objects meaning before form Entry
 		public $selectedDam1, $selectedDam2, $selectedSire;
 		
-    //variable declarations
     public $speciesName, $purpose, $newMatingId, $newMatingRefID;
     public $dam1Key, $dam1Msg, $dam2Key, $dam2Msg, $sireKey, $sireMsg;
     public $dam1Id, $dam2Id, $sireId, $diet_key, $strain_key, $matgType=1, $generation_key;

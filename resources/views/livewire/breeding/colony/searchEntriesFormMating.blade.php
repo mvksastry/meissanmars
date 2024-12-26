@@ -1,11 +1,9 @@
 <div class="w-full md:w-2/3 p-1">
-	<div class="bg-purple-100 border border-gray-800 rounded shadow">
-		<div class="border-b border-gray-800 p-1">
-			<h6 class="font-bold uppercase text-gray-600">Select Search Parameters</h6>
-		</div>
+	<div class="bg-warning-subtle bordered rounded shadow">
 
-		<div class="p-2">
-			<table class="text-xs">
+
+		<div class="p-3">
+			<table class="table-sm table-bordered rounded-3 bg-success-subtle text-sm">
 				<tr>
 					<td>
 						Species Name:
@@ -24,6 +22,15 @@
 					</td>
 				</tr>
 
+				<tr>
+					<td>
+						Litter key:
+					</td>
+					<td>
+						<input wire:model.lazy="_litter_key" type="text" placeholder="Litter Key" value="" >
+					</td>
+				</tr>
+				
 				<tr>
 					<td>
 						{{ $species_name }} ID:

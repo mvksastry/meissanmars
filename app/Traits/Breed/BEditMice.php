@@ -15,14 +15,17 @@ trait BEditMice
   use BBase;
   use BEntrySearch;
 
-  public    $entrySearchResult = false;
+  public  $entrySearchResult = false;
 
-  public    $iaMessage, $id, $_mouse_key, $_owner_key, $dobto, $dobfrom, $_sex_key, $cage_id,
-            $cageIdParam, $lifeStatus, $_strain_key, $mouse_id,
-            $mouseId_contains="contains", $species_name, $queryResult, $searchFor;
+	//variable declarations
+	public  $_litter_key;
+		
+  public  $iaMessage, $id, $_mouse_key, $_owner_key, $dobto, $dobfrom, $_sex_key, $cage_id,
+          $cageIdParam, $lifeStatus, $_strain_key, $mouse_id,
+          $mouseId_contains="contains", $species_name, $queryResult, $searchFor;
 
 	public function pullDetails()
-    {
+  {
         $input['searchFor'] = $this->searchFor;
         $input['_owner_key'] = $this->_owner_key;
         $input['dobto'] = $this->dobto;
@@ -32,6 +35,7 @@ trait BEditMice
         $input['cageIdParam'] = $this->cageIdParam;
         $input['lifeStatus'] = $this->lifeStatus;
         $input['_strain_key'] = $this->_strain_key;
+				$input['_litter_key'] = $this->_litter_key;
         $input['mouse_id'] = $this->mouse_id;
         $input['mouseId_contains'] = $this->mouseId_contains;
         $input['species_name'] = $this->species_name;
@@ -41,7 +45,7 @@ trait BEditMice
         $this->queryResult = $queryResult;
 
         $this->entrySearchResult = true;
-    }
+  }
 
 
 
