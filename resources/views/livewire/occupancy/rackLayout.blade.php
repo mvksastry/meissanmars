@@ -6,7 +6,7 @@
 
         <div>
           <button class="btn btn-block btn-default" for="title">
-            Click on Red button to get Cage details of <?php echo $rackName; ?>
+            Click button to get Cage details of <?php echo $rackName; ?>
           </button>
         </div>
         <?php
