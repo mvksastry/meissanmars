@@ -94,12 +94,60 @@
         echo "</table>";
     ?>
     				<div class="mt-5">
-    					<button class="btn btn-block btn-danger btn-sm" for="title">
-    						Occupied
-    					</button>
-    					<button class="btn btn-block btn-success btn-sm" for="title">
-    						Available
-    					</button>
+						
+						<table class="table text-sm">
+							<thead>
+								<tr>
+									<th>Key</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>    					
+										<button class="btn btn-block btn-danger btn-sm" for="title">
+											Occupied
+										</button>
+									</td>
+									<td>
+										<button class="btn btn-block btn-success btn-sm" for="title">
+											Empty
+										</button>
+									</td>
+									<td>							
+										<button class="btn btn-block btn-primary btn-sm" for="title">
+											Project
+										</button>
+									</td>
+									<td>							
+										<button class="btn btn-block btn-warning btn-sm" for="title">
+											Mating
+										</button>
+									</td>
+									<td>							
+										<button class="btn btn-block btn-secondary btn-sm" for="title">
+											Stock
+										</button>
+									</td>
+									<td>							
+										<button class="btn btn-block btn-dark btn-sm" for="title">
+											Temp
+										</button>
+									</td>
+									<td>
+										<button class="btn btn-block btn-info btn-sm" for="title">
+											Weaning
+										</button>
+									</td>									
+								</tr>
+							</tbody>
+						</table>
+
+
+							
+
+							
+							
+							
     				</div>
 				</div>
 			</div>
