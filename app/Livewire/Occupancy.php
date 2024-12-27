@@ -82,11 +82,11 @@ class Occupancy extends Component
 			$info['slot_id'] = $val->slot_id;
     	$info['cage_id'] = $val->cage_id;
     	$info['status'] = $val->status;
-			$info['cage_type'] = $val->cage_type;
+			$info['cage_type'] = Cage::where('cage_id', $val->cage_id)->value('cage_type');
 			array_push($rack_info, $info);
 			$info = array();
 		}
-
+		//dd($rack_info);
 		$this->rack_info = $rack_info;
 		$this->layoutRack = true;
 	}
