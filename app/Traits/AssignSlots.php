@@ -64,6 +64,7 @@ trait AssignSlots
           $cageInfo->ack_date = date('Y-m-d');
           $cageInfo->cage_status = 'Active';
           $cageInfo->notes = 'Cage Issued';
+					$cageInfo->cage_type = 'P';
 
           $cageInfo->save();
 

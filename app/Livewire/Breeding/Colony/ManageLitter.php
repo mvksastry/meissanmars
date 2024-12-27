@@ -270,6 +270,14 @@ class ManageLitter extends Component
 
 			$msg = $this->addLitterData($this->purpose, $input);
 			
+			// now change cage_type from M to W meaning pups present in 
+			// the cage
+			$slot_index = Mating::where('_mating_key', $this->matKey)->value('suggestedPenID');
+			$cage_id = Slot::where('slot_index', $slot_index)->value('cage_id');
+			$cageInfo = Cage::where('cage_id', $cage_id)->first();
+			$cageInfo->cage_type = 'W';
+			$cageInfo->save();
+			
 			if($msg)
 			{
 				$this->resetLitterDetails();

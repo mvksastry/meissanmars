@@ -533,6 +533,7 @@ class IaecUsage extends Component
         $newCage->ack_date = date('Y-m-d');
         $newCage->cage_status = 'Active';
         $newCage->notes = "Mice inducted; ".$inNotes;
+				$newCage->cage_type = 'P';
         //ready for saving
         $newCage->save();
         //dd($newCage);
@@ -646,6 +647,7 @@ class IaecUsage extends Component
         $newCage->ack_date = date('Y-m-d');
         $newCage->cage_status = 'Active';
         $newCage->notes = "Transferred From Cage Id ".$cage_id.";".$notes;
+				$newCage->cage_type = 'P';
         //ready for saving
         $newCage->save();
         //dd($newCage);

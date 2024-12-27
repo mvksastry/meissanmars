@@ -278,6 +278,7 @@ class AddEntry extends Component
 					//dd($this->mice_ids, $this->mice_idx);
 					$input['animal_count'] = $this->count;
 					$input['mice_ids'] = $this->mice_idx;
+					$input['cage_type'] = 'S';
 					$result = $this->updateRackSlotCageInfo($input);
 
 					//remove the slot_id from the array as the next one

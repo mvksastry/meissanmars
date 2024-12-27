@@ -80,8 +80,9 @@ class Occupancy extends Component
 		foreach($cageIds as $val)
 		{
 			$info['slot_id'] = $val->slot_id;
-    		$info['cage_id'] = $val->cage_id;
-    		$info['status'] = $val->status;
+    	$info['cage_id'] = $val->cage_id;
+    	$info['status'] = $val->status;
+			$info['cage_type'] = "W";
 			array_push($rack_info, $info);
 			$info = array();
 		}

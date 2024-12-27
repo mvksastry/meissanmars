@@ -305,6 +305,14 @@ class LitterTodb extends Component
 			$msgx5 = 'Litter entry staus closed for litter key [ '.$row->_litter_key.' ] ';
 			array_push($this->success_box, $msgx5);
 			$matchThese = []; $putThese = [];
+			
+			// now change cage_type from M to W meaning pups present in 
+			// the cage
+			$slot_index = Mating::where('_mating_key', $row->_mating_key)->value('suggestedPenID');
+			$cage_id = Slot::where('slot_index', $slot_index)->value('cage_id');
+			$cageInfo = Cage::where('cage_id', $cage_id)->first();
+			$cageInfo->cage_type = 'M';
+			$cageInfo->save();
 		}
 		
 		$this->resetDbEntryForm();

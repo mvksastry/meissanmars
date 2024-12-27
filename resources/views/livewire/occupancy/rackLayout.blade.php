@@ -48,13 +48,20 @@
         			?>
                   <td class="text-yellow-200 text-xs font-normal mx-2 ">
                     <?php
+												$cage_type =[ 'P' => "btn btn-block btn-primary btn-sm",
+																			'M' => "btn btn-block btn-warning btn-sm",
+																			'S' => "btn btn-block btn-secondary btn-sm",
+																			'T' => "btn btn-block btn-dark btn-sm",
+																			'W' => "btn btn-block btn-info btn-sm"];
+																			
                         $row = $rack_info[$seatNo];
                         
                         if( $row['status'] == 'O' )
                         {
+													$btnClass = $cage_type[$row['cage_type']];
                     ?>
                             <span wire:click="cageinfo({{ $row['cage_id'] }})" id="<?php echo $row['cage_id']; ?>" >
-                              <button class="btn btn-block btn-danger btn-sm" 
+                              <button class="{{ $btnClass }}"
                                 id="test-button" data-toggle="popover" 
                                 title="Cage ID: <?php echo $row['cage_id']; ?>" 
                                 data-trigger="hover" 

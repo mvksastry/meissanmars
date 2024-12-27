@@ -391,6 +391,7 @@ class CompleteAllottment extends Component
 				$cageInfo->ack_date = date('Y-m-d');
 				$cageInfo->cage_status = 'Active';
 				$cageInfo->notes = 'Cage Issued '.json_encode($mids);
+				$cageInfo->cage_type = 'P';
 				$cageInfo->save();
 				$cage_id = $cageInfo->cage_id;
 
@@ -643,6 +644,7 @@ class CompleteAllottment extends Component
       $info['slot_id'] = $val->slot_id;
       $info['cage_id'] = $val->cage_id;
       $info['status'] = $val->status;
+			$info['cage_type'] = $val->cage_type;
       array_push($rack_info, $info);
       $info = array();
 		}

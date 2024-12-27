@@ -29,7 +29,8 @@ class Cage extends Model
     	'end_date',
     	'ack_date',
     	'cage_status',
-    	'notes'
+    	'notes',
+			'cage_type'
     ];
 
 		public function iaecprojects()

@@ -339,6 +339,7 @@ class AddMating extends Component
 				$input['mice_ids'] = $acid;
 				$input['rack_id'] = $this->rack_id;
 				$input['slot_id'] = $this->slot_id;
+				$input['cage_type'] = 'M';
 				//dd($input);
 				$final_res = $this->updateRackSlotCageInfo($input);
 				

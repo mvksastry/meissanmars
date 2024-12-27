@@ -96,7 +96,8 @@ trait SlotCreation
     }
     
   }
-  
+	
+  /*
   private function storeRackData($rack)
   {
       $nrack = new Rack();
@@ -109,7 +110,7 @@ trait SlotCreation
       $nrack->levels = $rack->levels;
       $nrack->notes = $rack->notes;
       $nrack->save();
-    
   }
- 
+  */
+	
 }
