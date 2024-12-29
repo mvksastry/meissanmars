@@ -105,7 +105,7 @@
 								<tr>
 									<td>    					
 										<button class="btn btn-block btn-danger btn-sm" for="title">
-											Occupied
+											Blocked
 										</button>
 									</td>
 									<td>
