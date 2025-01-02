@@ -195,7 +195,7 @@ class ManageLitter extends Component
 		if(!empty($latLitEntry) || $latLitEntry != null)
 		{
 			//litter entries exist
-			$this->curLitterKey = $latLitEntrytry->_litter_key;
+			$this->curLitterKey = $latLitEntry->_litter_key;
 			$this->purpose = "Update";
 			$this->dateBorn = date('Y-m-d', strtotime($latLitEntry->birthDate));
 			$this->totalBorn = $latLitEntry->totalBorn;
