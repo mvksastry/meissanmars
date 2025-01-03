@@ -11,7 +11,7 @@
 				</thead>
 				<tbody>
 					<tr>
-            <td colspan="5" class="border px-2  p-1">
+            <td colspan="6" class="border px-2  p-1">
               Males
  						</td>
 					</tr>
@@ -32,6 +32,9 @@
 						<td class="border px-2  p-1">
 							Sex
 						</td>
+						<td class="border px-2  p-1">
+							Mating
+						</td>
 					</tr>
 
 					@foreach($maleGroup as $row)
@@ -51,8 +54,16 @@
 						<td class="border px-2  p-1">
 						{{ $row['sex'] }}
 						</td>
+						<td class="border px-2 p-1">
+							<input wire:model.lazy="mpairs" class="form-control-sm border" type="checkbox" value="{{ $row['ID'] }}">
+						</td>
 					</tr>
 					@endforeach
+					<tr>
+						<td colspan="6" class="border px-2 p-1">
+							Total Male Cages Needed: {{ $cagesM }} </br>  Per Cage: {{  $jsonCagesM }}
+						</td>
+          </tr>
 				</tbody>
 			</table>				
 	
@@ -62,7 +73,7 @@
 				<tbody>
 
 					<tr>
-						<td colspan="5" class="border px-2  p-1">
+						<td colspan="6" class="border px-2  p-1">
 							Females
 						</td>
 					</tr>				
@@ -83,6 +94,9 @@
 						<td class="border px-2  p-1">
 							Sex
 						</td>
+						<td class="border px-2  p-1">
+							Mating
+						</td>
 					</tr>
 
 					@foreach($femaleGroup as $row)
@@ -102,8 +116,18 @@
 						<td class="border px-2  p-1">
 						{{ $row['sex'] }}
 						</td>
+												
+						<td class="border px-2 p-1">
+							<input wire:model.lazy="fpairs" class="form-control-sm border" type="checkbox" value="{{ $row['ID'] }}">
+						</td>
+						
 					</tr>
 					@endforeach
+					<tr>
+						<td colspan="6" class="border px-2 p-1">
+							Total Female Cages Needed: {{ $cagesF }} </br> Per Cage: {{ $jsonCagesF }}
+						</td>
+					</tr>
 				</tbody>
 			</table>
 
@@ -112,14 +136,7 @@
 					<div id="iaMessage">	</div>
 				</thead>
 				<tbody>
-					<tr>
-						<td class="border px-2 p-1">
-							Total Male Cages Needed: {{ $cagesM }} </br>  Per Cage: {{  $jsonCagesM }}
-						</td>
-						<td class="border px-2 p-1">
-							Total Female Cages Needed: {{ $cagesF }} </br> Per Cage: {{ $jsonCagesF }}
-						</td>
-          </tr>
+
 					
 					<tr>
 						<td class="border px-2 p-1">

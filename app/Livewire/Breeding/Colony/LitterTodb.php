@@ -80,8 +80,11 @@ class LitterTodb extends Component
 		public $protocols, $useScheduleTerms, $per_cage=10, $comment;
 		public $baseMouseId, $protoKey, $useScheduleKeys;
 		public $maleGroup=[], $femaleGroup=[], $numMalesPerCage, $numFemalesPerCage;
+		public $cage_label, $mpairs=[], $fpairs=[];
 		
 		public $cagesM, $cagesF, $jsonCagesM, $jsonCagesF;
+		
+		public $matingId, $strainKey, $ownerWg;
 		
 		//public $origin="EAF-NCCS", $culledAtWean, $missAtWean, $cageId, $litterNum, $femalePerCage, $malePerCage;
 		//public $litType=1, $dateBorn, $weanDate, $tagDate, $birthEventStatusKey="A", $coment;
@@ -183,11 +186,11 @@ class LitterTodb extends Component
 			$nFmales = $row->numFemale;
 			for($x=0; $x < $nFmales; $x++)
 			{
-				$f1a['ID'] = $this->baseMouseId."-".$i;
+				$f1a['ID'] = $this->baseMouseId."-".$row->mating->matingRefID."-".$i;
 				$f1a['RefID'] = $row->mating->matingRefID;
 				$f1a['birthDate'] = $row->birthDate;
 				$f1a['_litter_key'] = $row->_litter_key;	
-				$f1a['sex'] = "M";
+				$f1a['sex'] = "F";
 				$f1a['_species_key'] = $row->_species_key;
 				$f1a['_strain_key'] = $row->_strain_key;
 				
@@ -202,11 +205,11 @@ class LitterTodb extends Component
 			$nMales = $row->numMale;
 			for($x=0; $x < $nMales; $x++)
 			{
-				$f1a['ID'] = $this->baseMouseId."-".$i;
+				$f1a['ID'] = $this->baseMouseId."-".$row->mating->matingRefID."-".$i;
 				$f1a['RefID'] = $row->mating->matingRefID;
 				$f1a['birthDate'] = $row->birthDate;
 				$f1a['_litter_key'] = $row->_litter_key;
-				$f1a['sex'] = "F";
+				$f1a['sex'] = "M";
 				$f1a['_species_key'] = $row->_species_key;
 				$f1a['_strain_key'] = $row->_strain_key;
 				
@@ -235,6 +238,7 @@ class LitterTodb extends Component
 		$this->maleGroup = $males;
 		$this->femaleGroup = $fmales;	
 		
+		//dd($this->maleGroup, $this->femaleGroup);
 		//calculate cages required 10 per cage
 		$maleCount = count($males);
 		$femaleCount = count($fmales);
@@ -249,6 +253,8 @@ class LitterTodb extends Component
 		$this->jsonCagesF = implode(" , ", $this->numFemalesPerCage);
 		
 		//dd($this->maleGroup, $this->femaleGroup);
+		$this->mpairs = []; 
+		$this->fpairs = [];
 		$this->panel3 = true;
 		
 	}
@@ -279,7 +285,8 @@ class LitterTodb extends Component
 						
 			All this lifting is done by the trait BPutPupsToDB.
 		*/
-
+		dd($this->mpairs, $this->fpairs);
+		
 		//process males first or females just swap the code.
 		$mRes = $this->processPupsToDBEntries(
 							$this->cagesM, 

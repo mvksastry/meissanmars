@@ -316,6 +316,15 @@
 
 														<tr>
 															<td class="border px-2  p-1">
+																Cage Label
+															</td>
+															<td class="border px-2  p-1">
+																<input wire:model.lazy="cage_label" class="form-control-sm border bg-secondary-subtle" type="text" class="w-full" placeholder="Cage Label">
+															</td>
+														</tr>
+														
+														<tr>
+															<td class="border px-2  p-1">
 																Comments
 															</td>
 															<td class="border px-2  p-1">

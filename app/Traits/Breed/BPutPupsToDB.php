@@ -76,6 +76,7 @@ trait BPutPupsToDB
 			$miceArrayInfo['rack_id'] = $rack_id;
 			$miceArrayInfo['slot_id'] = $rarray[0];
 			$miceArrayInfo['cage_type'] = 'M';
+			$miceArrayInfo['cage_label'] = $this->cage_label;
 			
 			$result = $this->updateRackSlotCageInfo($miceArrayInfo);
 			//$result = true;
