@@ -131,7 +131,7 @@ class LitterTodb extends Component
 		//dd($this->openLitterEntries);
 		//dd($this->rooms);
 		$this->panel2 = true;
-		$this->panel5 = true;
+		
     if(count($this->openLitterEntries) > 0 )
 		{
 			$this->panel5 = true;
