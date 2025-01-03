@@ -30,7 +30,8 @@ class Cage extends Model
     	'ack_date',
     	'cage_status',
     	'notes',
-			'cage_type'
+			'cage_type',
+			'cage_label',
     ];
 
 		public function iaecprojects()
@@ -77,7 +78,9 @@ class Cage extends Model
     	'end_date',
     	'ack_date',
     	'cage_status',
-    	'notes'
+    	'notes',
+			'cage_type',
+			'cage_label',
     ];
     // Customize log description
     public function getDescriptionForEvent(string $eventName): string

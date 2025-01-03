@@ -275,6 +275,7 @@ class ManageLitter extends Component
 			$slot_index = Mating::where('_mating_key', $this->matKey)->value('suggestedPenID');
 			$cage_id = Slot::where('slot_index', $slot_index)->value('cage_id');
 			$cageInfo = Cage::where('cage_id', $cage_id)->first();
+			//dd($this->matKey, $slot_index, $cage_id, $cageInfo);
 			$cageInfo->cage_type = 'W';
 			$cageInfo->save();
 			

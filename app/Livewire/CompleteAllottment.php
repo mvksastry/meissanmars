@@ -357,6 +357,8 @@ class CompleteAllottment extends Component
 
 			$issueId = $this->usage_id;
 			$irq = Usage::findOrFail($issueId);
+			
+			$inst_id = Iaecproject::where('iaecproject_id', $irq->iaecproject_id)->value('inst_id');
 			//added manual cage number modification.
 			$reqCageNum = $this->cagesGiven;
 
@@ -392,6 +394,7 @@ class CompleteAllottment extends Component
 				$cageInfo->cage_status = 'Active';
 				$cageInfo->notes = 'Cage Issued '.json_encode($mids);
 				$cageInfo->cage_type = 'P';
+				$cageInfo->cage_label = "B-".$inst_id;
 				$cageInfo->save();
 				$cage_id = $cageInfo->cage_id;
 

@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Issue;
 use App\Models\Slot;
 use App\Models\Cage;
+use App\Models\Iaecproject;
 
 use App\Traits\Base;
 use App\Traits\Notes;
@@ -52,6 +53,7 @@ trait AssignSlots
       {
         for($i=1; $i<$reqCageNumbers+1; $i++)
         {
+					$inst_id = Iaecproject::where('iaecproject_id', $projectInfo->project_id)->value('inst_id');
           // gather data for cages table
           $cageInfo = new Cage();
           $cageInfo->issue_id = $issue_id;
@@ -65,6 +67,7 @@ trait AssignSlots
           $cageInfo->cage_status = 'Active';
           $cageInfo->notes = 'Cage Issued';
 					$cageInfo->cage_type = 'P';
+					$cageInfo->cage_label = "B-".$inst_id;
 
           $cageInfo->save();
 

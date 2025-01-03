@@ -46,6 +46,7 @@ trait BAddCageInfo
 				$cageInfo->cage_status = 'Active';
 				$cageInfo->notes = 'Cage created ';
 				$cageInfo->cage_type = $binput['cage_type'];
+				$cageInfo->cage_label = $binput['cage_label'];
 				//dd($cageInfo);
 				$cageInfo->save();
 				$cage_id = $cageInfo->cage_id;

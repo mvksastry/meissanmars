@@ -16,7 +16,7 @@ use App\Models\B2p;
 use App\Models\Cage;
 use App\Models\Usage;
 use App\Models\Occupancies;
-use App\Models\Project;
+use App\Models\Iaecproject;
 use App\Models\Projectstrains;
 use App\Models\Rack;
 use App\Models\Slot;
@@ -514,11 +514,15 @@ class IaecUsage extends Component
       $isInfx->issue_status = "issued";
       $isInfx->cagenumber = $cageNumberNeeded; //reflects actual number issued
       $isInfx->save();
-
+			
+			// get institutional project id reference and use it as label.
+			$inst_id = Iaecproject::where('iaecproject_id', $isInfx->project_id)->value('inst_id');
+			
       $totalInducted = 0;
 
   		for($i=0; $i < $cageNumberNeeded; $i++)
   		{
+				
         //table 2. Cages table
         $newCage = new Cage();
 
@@ -534,6 +538,7 @@ class IaecUsage extends Component
         $newCage->cage_status = 'Active';
         $newCage->notes = "Mice inducted; ".$inNotes;
 				$newCage->cage_type = 'P';
+				$newCage->cage_label = "B-".$inst_id;
         //ready for saving
         $newCage->save();
         //dd($newCage);
@@ -629,70 +634,74 @@ class IaecUsage extends Component
       {
         for($i=0; $i < $numCages; $i++)
         {
-        //first increase the cage count number in issue table also.
-        $caInfos->cagenumber = $caInfos->cagenumber + $numCages;
-        $caInfos->save();
-        $vacantFirst = Slot::where('rack_id', $rackId->rack_id)
-                        ->where('status', 'A')
-                        ->first();
-        $newCage = new Cage();
-        $newCage->usage_id = $caInfos->usage_id;
-        $newCage->project_id = $caInfos->project_id;
-        $newCage->requested_by = Auth::user()->id;
-        $newCage->species_id = $caInfos->species_id;
-        $newCage->strain_id = $caInfos->strain_id;
-        $newCage->animal_number = $this->animalnum;
-        $newCage->start_date = date('Y-m-d');
-        $newCage->end_date = date('Y-m-d');
-        $newCage->ack_date = date('Y-m-d');
-        $newCage->cage_status = 'Active';
-        $newCage->notes = "Transferred From Cage Id ".$cage_id.";".$notes;
-				$newCage->cage_type = 'P';
-        //ready for saving
-        $newCage->save();
-        //dd($newCage);
+					//first increase the cage count number in issue table also.
+					$caInfos->cagenumber = $caInfos->cagenumber + $numCages;
+					$caInfos->save();
+					
+					$inst_id = Iaecproject::where('iaecproject_id', $caInfos->project_id)->value('inst_id');
+					
+					$vacantFirst = Slot::where('rack_id', $rackId->rack_id)
+													->where('status', 'A')
+													->first();
+					$newCage = new Cage();
+					$newCage->usage_id = $caInfos->usage_id;
+					$newCage->project_id = $caInfos->project_id;
+					$newCage->requested_by = Auth::user()->id;
+					$newCage->species_id = $caInfos->species_id;
+					$newCage->strain_id = $caInfos->strain_id;
+					$newCage->animal_number = $this->animalnum;
+					$newCage->start_date = date('Y-m-d');
+					$newCage->end_date = date('Y-m-d');
+					$newCage->ack_date = date('Y-m-d');
+					$newCage->cage_status = 'Active';
+					$newCage->notes = "Transferred From Cage Id ".$cage_id.";".$notes;
+					$newCage->cage_type = 'P';
+					$newCage->cage_label = "B-".$inst_id;
+					//ready for saving
+					$newCage->save();
+					//dd($newCage);
 
-        //make slot change identified above
-        $vacantFirst->cage_id = $newCage->cage_id;
-        $vacantFirst->status = 'O';
-        $vacantFirst->save();
-        //alter the cages table for current number
-        $caInfos->animal_number = $caInfos->animal_number - $this->animalnum;
+					//make slot change identified above
+					$vacantFirst->cage_id = $newCage->cage_id;
+					$vacantFirst->status = 'O';
+					$vacantFirst->save();
+					//alter the cages table for current number
+					$caInfos->animal_number = $caInfos->animal_number - $this->animalnum;
 
-        $caInfos->save();
+					$caInfos->save();
 
-        //make notebook entry
-        $table = $caInfos->project_id.'notebook';
+					//make notebook entry
+					$table = $caInfos->project_id.'notebook';
 
-        $inOld['usage_id'] = $caInfos->usage_id;
-        $inOld['cage_id'] = $cage_id;
-        $inOld['staff_id'] = Auth::user()->id;;
-        $inOld['staff_name'] = Auth::user()->name;
-        $inOld['entry_date'] = date('Y-m-d');
-        $inOld['protocol_id'] = 0;
-        $inOld['number_animals'] = $caInfos->animal_number - $this->animalnum;
-        $inOld['expt_date'] = date('Y-m-d');
-        $inOld['expt_description'] = "[ ".$this->animalnum." ] Transferred to Cage Id ".$newCage->cage_id."; ".$notes;
-        $inOld['authorized_person'] = "PI";
-        $inOld['signature'] = "Auto entry";
-        $inOld['remarks'] = "None";
+					$inOld['usage_id'] = $caInfos->usage_id;
+					$inOld['cage_id'] = $cage_id;
+					$inOld['staff_id'] = Auth::user()->id;;
+					$inOld['staff_name'] = Auth::user()->name;
+					$inOld['entry_date'] = date('Y-m-d');
+					$inOld['protocol_id'] = 0;
+					$inOld['number_animals'] = $caInfos->animal_number - $this->animalnum;
+					$inOld['expt_date'] = date('Y-m-d');
+					$inOld['expt_description'] = "[ ".$this->animalnum." ] Transferred to Cage Id ".$newCage->cage_id."; ".$notes;
+					$inOld['authorized_person'] = "PI";
+					$inOld['signature'] = "Auto entry";
+					$inOld['remarks'] = "None";
 
-        $resOld = DB::table($table)->insert($inOld);
+					$resOld = DB::table($table)->insert($inOld);
 
-        $inNew['usage_id'] = $caInfos->usage_id;
-        $inNew['cage_id'] = $newCage->cage_id;
-        $inNew['staff_id'] = Auth::user()->id;;
-        $inNew['staff_name'] = Auth::user()->name;
-        $inNew['entry_date'] = date('Y-m-d');
-        $inNew['protocol_id'] = 0;
-        $inNew['number_animals'] = $this->animalnum;
-        $inNew['expt_date'] = date('Y-m-d');
-        $inNew['expt_description'] = "[ ".$this->animalnum." ] Transferred From Cage Id ".$cage_id."; ".$notes;
-        $inNew['authorized_person'] = "PI";
-        $inNew['signature'] = "Auto entry";
-        $inNew['remarks'] = "None";
+					$inNew['usage_id'] = $caInfos->usage_id;
+					$inNew['cage_id'] = $newCage->cage_id;
+					$inNew['staff_id'] = Auth::user()->id;;
+					$inNew['staff_name'] = Auth::user()->name;
+					$inNew['entry_date'] = date('Y-m-d');
+					$inNew['protocol_id'] = 0;
+					$inNew['number_animals'] = $this->animalnum;
+					$inNew['expt_date'] = date('Y-m-d');
+					$inNew['expt_description'] = "[ ".$this->animalnum." ] Transferred From Cage Id ".$cage_id."; ".$notes;
+					$inNew['authorized_person'] = "PI";
+					$inNew['signature'] = "Auto entry";
+					$inNew['remarks'] = "None";
 
-        $resNew = DB::table($table)->insert($inNew);
+					$resNew = DB::table($table)->insert($inNew);
         }
       }
       else {

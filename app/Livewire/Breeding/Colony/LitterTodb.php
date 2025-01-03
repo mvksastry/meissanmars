@@ -63,6 +63,7 @@ class LitterTodb extends Component
 
 		//panels
 		public $panel1 = false, $panel2 = false, $panel3 = false, $panel4 = false;
+		public $panel5 = false;
 		
 		//compulsory information
 		public $speciesName, $speciesKey, $purpose, $matKey, $generations;
@@ -128,8 +129,13 @@ class LitterTodb extends Component
 
 		$this->openLitterEntries = Litter::with('mating')->where('entry_status', 'open')->get();
 		//dd($this->openLitterEntries);
-    
-    $this->panel2 = true;
+		//dd($this->rooms);
+		$this->panel2 = true;
+		$this->panel5 = true;
+    if(count($this->openLitterEntries) > 0 )
+		{
+			$this->panel5 = true;
+		}
   }
 	
 	
