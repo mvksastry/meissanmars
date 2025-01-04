@@ -59,11 +59,11 @@ class LitterTodb extends Component
 		use BPutPupsToDB;
 		
 		//form messages
-		public $iaMessage;
+		public $iaMessage, $mpairErrorMessage = null;
 
 		//panels
 		public $panel1 = false, $panel2 = false, $panel3 = false, $panel4 = false;
-		public $panel5 = false;
+		public $panel5 = false, $panel6 = false;
 		
 		//compulsory information
 		public $speciesName, $speciesKey, $purpose, $matKey, $generations;
@@ -101,7 +101,12 @@ class LitterTodb extends Component
 		//panels
 		public $slot_error_msg=null, $error_box=[], $success_box=[];
 	
-	
+		//Mating setup panel related variables
+		public $mfslot_num = "", $mcageInfos = null, $mfree_slots = null, $mroom_id = null;
+		public $mrack_id = null, $mslot_id=null, $mracksInRoom=[], $mrarray=[], $msaaray=[];
+		
+		public $femalePartner = false, $malePartner = false, $dspair=[];
+		
 	public function render()
 	{
 		//$this->pullAllOpenLitterEntries();
@@ -285,7 +290,6 @@ class LitterTodb extends Component
 						
 			All this lifting is done by the trait BPutPupsToDB.
 		*/
-		dd($this->mpairs, $this->fpairs);
 		
 		//process males first or females just swap the code.
 		$mRes = $this->processPupsToDBEntries(
@@ -395,20 +399,107 @@ class LitterTodb extends Component
 			//dd($rarray, $sarray);
 			$this->cageInfos = $this->rarray[0];
 			$this->slot_id = $this->rarray[0];
-			//dd($this->cageInfos);
-			//$this->validateOnly($this->cageInfos);
-			//$this->slotSelectFlag = true;
-			//$this->cageCreateFlag = true;
 		}
 		else {
 			$this->fslot_num = "No Free slots in rack";
 		}
 	}		
 		
+	public function matingRoomSelected()	
+	{
+		
+		$this->mfslot_num = "";
+		$this->mcageInfos = null;
+		$this->mfree_slots = null;
+		$this->mracksInRoom = Rack::where('room_id', $this->mroom_id)->get();		
+		//dd($this->mracksInRoom);
+	}
+	
+	
+	public function matingRackSelected()
+	{
+		//dd($this->mrack_id);
+		$mrack_id = $this->mrack_id;
+		$slots = Slot::where('rack_id', $mrack_id)->where('status','A')->get();
+		$this->mfree_slots = $slots->count();
+		//if no free slots available throw Message
+		if($this->mfree_slots > 0)
+		{
+			$this->msarray = $slots->toArray();
+			$this->mrarray = [];
+			foreach($this->msarray as $row)
+			{
+				$this->mrarray[] = $row['slot_id'];
+			}
+			$this->mfslot_num = json_encode(array_slice($this->mrarray, 0, 5, true));
+			//dd($rarray, $sarray);
+			$this->mcageInfos = $this->mrarray[0];
+			$this->mslot_id = $this->mrarray[0];
+		}
+		else {
+			$this->mfslot_num = "No Free slots in rack";
+		}		
+	}
 		
 		
+	public function prepareMatingEntryData()
+	{
+		//dd($this->mpairs, $this->fpairs);
+		//prepare the pairs and select them
+		$t1=array(); 
+		if(count($this->mpairs) == count($this->fpairs))
+		{
+			foreach($this->mpairs as $key1 => $row)
+			{
+				$m = explode("&&", $row);
+				//dd($m);
+				foreach($this->fpairs as $key2 => $val)
+				{
+					$f = explode("&&", $val);
+					if($m[0] == $f[0])
+					{
+						$t1['dam'] = $f[1];
+						$t1['sire'] = $m[1];
+						array_push($this->dspair, $t1);
+						$t1 = array();
+					}
+					break;
+				}
+				unset($this->fpairs[$key2]);
+				unset($this->mpairs[$key1]);
+				$t1 = array();
+			}
+		}
+		else {
+			$this->mpairErrorMessage = "Mismatched Pairs, select equal numbers from Males and females";
+		}
+		dd($this->dspair);
+	}		
 		
-		
-		
-		
+	public function fPartnerSelected()
+	{
+		$this->femalePartner = true;
+		$this->openPanel6();
+	}
+	
+	public function mPartnerSelected()
+	{
+		$this->malePartner = true;
+		$this->openPanel6();
+	}	
+	
+	public function openPanel6()
+	{
+		if($this->femalePartner == true && $this->malePartner = true)
+		{
+			
+			
+			
+			
+			
+			
+			$this->panel6 = true;
+		}
+	}
+	
 }

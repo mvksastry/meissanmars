@@ -232,9 +232,9 @@
 															<td>
 																<select wire:model.lazy="_generation_key" class="form-control-sm border" name="_generation_key" id="_generation_key">
 																	<option value=""></option>
-								@foreach($generations as $item)
-									<option value="{{ $item->generation }}">{{ $item->generation }}</option>
-								@endforeach
+																		@foreach($generations as $item)
+																			<option value="{{ $item->generation }}">{{ $item->generation }}</option>
+																		@endforeach
 																</select>
 																</br>
 																@error('_generation_key') <span class="text-danger error">{{ $message }}</span> @enderror
@@ -248,9 +248,9 @@
 															<td class="border px-2 p-1">
 																<select wire:model.lazy="room_id" wire:change="roomSelected" class="form-control-sm border" name="room_id" id="room_id">
 																	<option value="-1"></option>
-								@foreach($rooms as $row)
-									<option value="{{ $row->room_id }}">{{ $row->room_name }}</option>
-								@endforeach																	
+																		@foreach($rooms as $row)
+																			<option value="{{ $row->room_id }}">{{ $row->room_name }}</option>
+																		@endforeach																	
 																</select>
 																</br>
 																@error('room_id') 
@@ -267,10 +267,9 @@
 															<td class="border px-2 p-1">
 																<select wire:model.lazy="rack_id" wire:change="rackSelected" class="form-control-sm border" name="rack_id" id="rack_id">
 																	<option value="0"></option>
-								@foreach($racksInRoom as $row)
-									<option value="{{ $row->rack_id }}">{{ $row->rack_name }}</option>
-								@endforeach	
-								
+																		@foreach($racksInRoom as $row)
+																			<option value="{{ $row->rack_id }}">{{ $row->rack_name }}</option>
+																		@endforeach	
 																</select>
 																</br>
 																@error('rack_id') 
@@ -348,9 +347,56 @@
 									</div>
 								</div><!-- /.card-body -->
 							</div>
-							<!-- /.card -->
-							<!-- /.card -->
 						</section>
+						
+						<section class="col-lg-6 connectedSortable">
+							<!-- Custom tabs (Charts with tabs)-->
+							<div class="card card-primary card-outline">
+								<div class="card-header">
+								<h3 class="card-title">
+									<i class="fas fa-chart-pie mr-1"></i>
+									Details of New DB  Entries 
+								</h3>
+								<div class="card-tools">
+									<ul class="nav nav-pills ml-auto">
+										<li class="nav-item"></li>
+										<li class="nav-item"></li>
+									</ul>
+								</div>
+								</div><!-- /.card-header -->
+								<div class="card-body">
+								<div class="tab-content p-0">
+									<!-- Morris chart - Sales -->
+									<div class="chart tab-pane active" id="revenue-chart" style="position: relative;">
+										<!-- Show the selection form-->
+										@if($panel3)				
+											@include('livewire.breeding.colony.litterToMouseEntryDetailForm')
+										@endif
+									</div>
+								</div>
+								</div><!-- /.card-body -->
+							</div>
+						</section>						
+						
+						
+						
+						
+						
+						
+
+						<!-- /.card -->
+						<!-- /.card -->
+					</div>
+				</div><!-- /.container-fluid -->
+			</section>
+			<!-- Main content -->  
+		@endif
+    
+		@if($panel6)
+			<section class="content">
+				<div class="container-fluid">
+					<div class="row">
+					
 						<section class="col-lg-6 connectedSortable">
 							<!-- Custom tabs (Charts with tabs)-->
 							<div class="card card-primary card-outline">
@@ -436,12 +482,7 @@
 																<font color="red">Generation*</font>
 															</td>
 															<td>
-																<select wire:model.lazy="_generation_key" class="form-control-sm border" name="_generation_key" id="_generation_key">
-																	<option value=""></option>
-								@foreach($generations as $item)
-									<option value="{{ $item->generation }}">{{ $item->generation }}</option>
-								@endforeach
-																</select>
+
 																</br>
 																@error('_generation_key') <span class="text-danger error">{{ $message }}</span> @enderror
 															</td>
@@ -452,14 +493,14 @@
 																Room*
 															</td>
 															<td class="border px-2 p-1">
-																<select wire:model.lazy="room_id" wire:change="roomSelected" class="form-control-sm border" name="room_id" id="room_id">
+																<select wire:model.lazy="mroom_id" wire:change="matingRoomSelected" class="form-control-sm border" name="room_id" id="room_id">
 																	<option value="-1"></option>
-								@foreach($rooms as $row)
-									<option value="">{{ $row->room_name }}
-								@endforeach
+																		@foreach($rooms as $row)
+																			<option value="{{ $row->room_id }}">{{ $row->room_name }}</option>
+																		@endforeach
 																</select>
 																</br>
-																@error('room_id') 
+																@error('mroom_id') 
 																	<span class="text-danger error">
 																		{{ $message }}
 																	</span> 
@@ -471,12 +512,14 @@
 																<font color="red">Rack*</font>
 															</td>
 															<td class="border px-2 p-1">
-																<select wire:model.lazy="rack_id" wire:change="rackSelected" class="form-control-sm border" name="rack_id" id="rack_id">
+																<select wire:model.lazy="mrack_id" wire:change="matingRackSelected" class="form-control-sm border" name="rack_id" id="rack_id">
 																	<option value="0"></option>
-																		
+																		@foreach($mracksInRoom as $row)
+																			<option value="{{ $row->rack_id }}">{{ $row->rack_name }}</option>
+																		@endforeach																		
 																</select>
 																</br>
-																@error('rack_id') 
+																@error('mrack_id') 
 																	<span class="text-danger error">
 																		{{ $message }}
 																	</span> 
@@ -489,7 +532,7 @@
 																<font color="red">Total Free Slots</font>: 
 															</td>
 															<td class="border px-2 p-1">
-																{{ $free_slots }}
+																{{ $mfree_slots }}
 															</td>
 														</tr>
 														<tr class="border">
@@ -498,7 +541,7 @@
 															</td>
 
 															<td class="border px-2 p-1">
-																{{ $fslot_num }}
+																{{ $mfslot_num }}
 															</td>
 														</tr>
 														<tr bgcolor="#EADDED">
@@ -506,10 +549,10 @@
 																<font color="red">Slot ID</font>
 															</td>
 															<td class="border px-2 p-1">
-																<input wire:model.lazy="slot_id" class="form-control-sm border" placeholder="Auto Selected" value="" type="text">
+																<input wire:model.lazy="mslot_id" class="form-control-sm border" placeholder="Auto Selected" value="" type="text">
 																(Auto Selected)
 																</br>
-																@error('slot_id') 
+																@error('mslot_id') 
 																	<span class="text-danger error">
 																		{{ $message }}
 																	</span> 
@@ -525,68 +568,80 @@
 																<input wire:model.lazy="comment" class="form-control-sm border bg-secondary-subtle" type="text" class="w-full" placeholder="Comments">
 															</td>
 														</tr>
+
 														<tr>
-															<td class="border px-2 p-1">
-																<button wire:click="prepareDBEntryData()" class="btn btn-info rounded">Prepare Entries</button>
-															</td>
-															<td class="border px-2 p-1">
-																
+															<td colspan="2" class="border px-2 p-1">
+																{{ $mpairErrorMessage }}
 															</td>
 														</tr>
+														
+														<tr>
+															<td class="border px-2 p-1">
+																<button wire:click="prepareMatingEntryData()" class="btn btn-warning rounded">Prepare Mating Entries</button>
+															</td>
+															<td class="border px-2 p-1">
+															</td>
+														</tr>
+														
 													</tbody>
 												</table>
-
-
-												
 											</div>         
 										</div>
 									</div>
 								</div><!-- /.card-body -->
 							</div>
-							<!-- /.card -->
-							<!-- /.card -->
 						</section>
-					</div>
+
+
+
+
+
+
+
+
+
+
+						<section class="col-lg-6 connectedSortable">
+							<!-- Custom tabs (Charts with tabs)-->
+							<div class="card card-primary card-outline">
+								<div class="card-header">
+								<h3 class="card-title">
+									<i class="fas fa-chart-pie mr-1"></i>
+									Details of Mating Entries
+								</h3>
+								<div class="card-tools">
+									<ul class="nav nav-pills ml-auto">
+										<li class="nav-item"></li>
+										<li class="nav-item"></li>
+									</ul>
+								</div>
+								</div><!-- /.card-header -->
+								<div class="card-body">
+								<div class="tab-content p-0">
+									<!-- Morris chart - Sales -->
+									<div class="chart tab-pane active" id="revenue-chart" style="position: relative;">
+										<table class="w-full p-5 text-sm text-gray-900">
+											<thead>
+												<th></th>
+											</thead>
+											<tbody>
+											</tbody>
+										</table>														
+									</div>
+								</div>
+								</div><!-- /.card-body -->
+							</div>
+						</section>
+						
+					</div><!-- /.row (main row) -->
 				</div><!-- /.container-fluid -->
 			</section>
-			<!-- Main content -->  
+			<!-- Main content -->   
 		@endif
-        
+
 		<section class="content">
-			<div class="container-fluid">
-				        
+			<div class="container-fluid"> 
         <div class="row">
-          <section class="col-lg-6 connectedSortable">
-						<!-- Custom tabs (Charts with tabs)-->
-						<div class="card card-primary card-outline">
-						  <div class="card-header">
-							<h3 class="card-title">
-							  <i class="fas fa-chart-pie mr-1"></i>
-							  Details of New Mouse  Entries 
-							</h3>
-							<div class="card-tools">
-							  <ul class="nav nav-pills ml-auto">
-                  <li class="nav-item"></li>
-                  <li class="nav-item"></li>
-							  </ul>
-							</div>
-						  </div><!-- /.card-header -->
-						  <div class="card-body">
-							<div class="tab-content p-0">
-								<!-- Morris chart - Sales -->
-								<div class="chart tab-pane active" id="revenue-chart" style="position: relative;">
-                  <!-- Show the selection form-->
-                  @if($panel3)				
-										@include('livewire.breeding.colony.litterToMouseEntryDetailForm')
-									@endif
-								</div>
-							</div>
-						  </div><!-- /.card-body -->
-						</div>
-						<!-- /.card -->
-						<!-- /.card -->
-					</section>
-
 
           <section class="col-lg-6 connectedSortable">
 						<!-- Custom tabs (Charts with tabs)-->
@@ -594,7 +649,7 @@
 						  <div class="card-header">
 							<h3 class="card-title">
 							  <i class="fas fa-chart-pie mr-1"></i>
-							  Feedback Messages 
+							  DB Entries: Feedback Messages 
 							</h3>
 							<div class="card-tools">
 							  <ul class="nav nav-pills ml-auto">
@@ -645,13 +700,72 @@
 						<!-- /.card -->
 						<!-- /.card -->
 					</section>
-          
-					<!-- /.Left col -->
-					<!-- right col -->
-				</div><!-- /.row (main row) -->
-			</div><!-- /.container-fluid -->
+					
+          <section class="col-lg-6 connectedSortable">
+						<!-- Custom tabs (Charts with tabs)-->
+						<div class="card card-primary card-outline">
+						  <div class="card-header">
+							<h3 class="card-title">
+							  <i class="fas fa-chart-pie mr-1"></i>
+							  Feedback Messages Mating set-up
+							</h3>
+							<div class="card-tools">
+							  <ul class="nav nav-pills ml-auto">
+                  <li class="nav-item"></li>
+                  <li class="nav-item"></li>
+							  </ul>
+							</div>
+						  </div><!-- /.card-header -->
+						  <div class="card-body">
+							<div class="tab-content p-0">
+								<!-- Morris chart - Sales -->
+								<div class="chart tab-pane active" id="revenue-chart" style="position: relative;">
+                  <!-- Show the selection form-->
+                  <!-- Show the selection form-->
+									<table class="w-full p-5 text-sm text-gray-900">
+										<thead>
+											<th>Errors and Failures</th>
+										</thead>
+										<tbody>
+											
+												<tr class="bg-success-subtle">
+													<td class="border px-2 p-1">
+													
+													</td>
+												</tr>
+											
+												<tr bgcolor="#AHDADE">
+													<td class="border px-2 p-1">
+													</td >
+													<td class="border px-2 p-1">											
+													</td >
+												</tr>
+																				
+												<tr class="bg-warning-subtle">
+													<td class="p-2">
+														<font color="red">
+															
+														</font>
+													</td>
+												</tr>
+											
+										</tbody>
+									</table>														
+								</div>
+							</div>
+						  </div><!-- /.card-body -->
+						</div>
+						<!-- /.card -->
+						<!-- /.card -->
+					</section>
+
+
+
+
+
+				</div>
+			</div>
 		</section>
-		<!-- Main content -->    
 
     <!-- / End of Left Panel Graph Card-->
 	</div>

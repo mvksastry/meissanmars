@@ -55,7 +55,7 @@
 						{{ $row['sex'] }}
 						</td>
 						<td class="border px-2 p-1">
-							<input wire:model.lazy="mpairs" class="form-control-sm border" type="checkbox" value="{{ $row['ID'] }}">
+							<input wire:model.lazy="mpairs" wire:change="mPartnerSelected()" class="form-control-sm border" type="checkbox" value="{{ $row['_litter_key'] }}&&{{ $row['ID'] }}">
 						</td>
 					</tr>
 					@endforeach
@@ -118,7 +118,7 @@
 						</td>
 												
 						<td class="border px-2 p-1">
-							<input wire:model.lazy="fpairs" class="form-control-sm border" type="checkbox" value="{{ $row['ID'] }}">
+							<input wire:model.lazy="fpairs" wire:change="fPartnerSelected()" class="form-control-sm border" type="checkbox" value="{{ $row['_litter_key'] }}&&{{ $row['ID'] }}">
 						</td>
 						
 					</tr>
