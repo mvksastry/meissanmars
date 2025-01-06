@@ -49,8 +49,6 @@ trait BLitterToMating
 				$qResultMsg = "";
 				//$purpose = $input['purpose'];
 				//$speciesName = $input['speciesName'];
-
-
 				$matingKey   = Mating::max('_mating_key') + 1;
 				$matingRefID = Mating::max('matingRefID') + 1;
 				//dd($this->newMatingId);
@@ -104,30 +102,39 @@ trait BLitterToMating
 				$newMatingEntry->proposedDiet    = $input['proposedDiet'];
 				$newMatingEntry->version         = $input['version'];
 				//data collection complete
-				dd($newMatingEntry);
-
-				Log::channel('coding')->info('Data collection for mating id [ '.$matingRefID.'] complete');
+				//dd($newMatingEntry);
+				$msg = 'Data collection for mating id [ '.$matingRefID.'] complete';
+				array_push($this->msgLTM, $msg);
+				Log::channel('coding')->info($msg);
 
 					 //Stage 5. insert
 					 //dd($newMouseEntry);
 				try {
 						$result = $newMatingEntry->save();
-						Log::channel('coding')->info('Mating Id [ '.$matingRefID.' ] creation success');
+						$msg= 'Mating Id [ '.$matingRefID.' ] creation success';
+						array_push($this->msgLTM, $msg);
+						Log::channel('coding')->info($msg);
 
 						if(!empty($input['_dam1_key'])){
 								$mUnitTypeKey  = 1;
 								//$result = $this->insertNewMULK($matingKey, $input['_dam1_key'], $sampleKey=null, $mUnitTypeKey);
-								Log::channel('coding')->info('Mating unit link Id for [ '.$input['_dam1_key'].' ] success');
+								$msg = 'Mating unit link Id for [ '.$input['_dam1_key'].' ] success';
+								array_push($this->msgLTM, $msg);
+								Log::channel('coding')->info($msg);
 						}
 						if(!empty($input['_dam2_key'])){
 								$mUnitTypeKey  = 1;
 								//$result = $this->insertNewMULK($matingKey, $input['_dam2_key'], $sampleKey=null, $mUnitTypeKey);
-								Log::channel('coding')->info('Mating unit link Id for [ '.$input['_dam2_key'].' ] success');
+								$msg = 'Mating unit link Id for [ '.$input['_dam2_key'].' ] success';
+								array_push($this->msgLTM, $msg);
+								Log::channel('coding')->info($msg);
 						}
 						if(!empty($input['_sire_key'])){
 								$mUnitTypeKey  = 2;
 								//$result = $this->insertNewMULK($matingKey, $input['_sire_key'], $sampleKey=null, $mUnitTypeKey);
-								Log::channel('coding')->info('Mating unit link Id for [ '.$input['_sire_key'].' ] success');
+								$msg = 'Mating unit link Id for [ '.$input['_sire_key'].' ] success';
+								array_push($this->msgLTM, $msg);
+								Log::channel('coding')->info($msg);
 						}
 				}
 
@@ -136,6 +143,8 @@ trait BLitterToMating
 										$eMsg = $e->getMessage();
 										//dd($eMsg);
 										$qResultMsg = $qResultMsg."</br>".$eMsg."</br>";
+										array_push($this->msgLTM, $qResultMsg);
+										Log::channel('coding')->info($qResultMsg);
 										$result1 = false;
 				}
 				// With, we must have completed all entries and return the message to the user.

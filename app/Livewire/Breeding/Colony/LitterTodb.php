@@ -101,7 +101,7 @@ class LitterTodb extends Component
 		public $fslot_num,$free_slots,$racksInRoom=[], $rack_id, $room_id, $slot_id;
 		
 		//panels
-		public $slot_error_msg=null, $error_box=[], $success_box=[];
+		public $slot_error_msg=null, $error_box=[], $success_box=[], $msgLTM=[];
 	
 		//Mating setup panel related variables
 		public $mfslot_num = "", $mcageInfos = null, $mfree_slots = null, $mroom_id = null;
@@ -476,7 +476,11 @@ class LitterTodb extends Component
 				$finalMatArray[] = array_merge($row, $base);
 			}
 			
-			dd($finalMatArray);	
+			$msg = 'Data collection for mating entries seems to be complete';
+			array_push($this->msgLTM, $msg);
+			Log::channel('coding')->info($msg);
+			
+			//dd($finalMatArray);	
 			
 			foreach($finalMatArray as $val)
 			{
@@ -544,14 +548,18 @@ class LitterTodb extends Component
 					//now reduce the mice number by the 
 					//number transferred to mating cage.
 					
+					$msg = 'Mating entry for '.json_encode($acid).' seems to be complete';
+					array_push($this->msgLTM, $msg);
+					Log::channel('coding')->info($msg);
+			
 					//now remove the slot id from the array for next insertion.
 					unset($this->mrarray[0]);
 					$this->mrarray = array_values($this->mrarray);
 					
 				}
 			}
-			
-			//$this->resetDbEntryForm();
+			$this->resetDbMatingEntryForm();
+			//$this->resetMatingEntryForm();
 			
 			
 			
