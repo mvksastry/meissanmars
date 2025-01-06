@@ -359,9 +359,9 @@ class LitterTodb extends Component
 		$this->comment = null;
 		$this->_generation_key = null;
 		$this->rack_id = null; 
-		$this->rarray = null;
-		$this->rooms = null;
-		$this->racks = null;
+		//$this->rarray = [];
+		//$this->rooms = [];
+		//$this->racks = [];
 		
 		$this->mating_comment = null;
 		$this->mslot_id = null;
@@ -500,7 +500,6 @@ class LitterTodb extends Component
 				$matingKey = $this->addMatingThroughLitter($val);
 				
 				//now change mice id cage, rack and slot details in mouse table
-
 				if($matingKey != null )
 				{
 					$ac = 0; $acid = [];
