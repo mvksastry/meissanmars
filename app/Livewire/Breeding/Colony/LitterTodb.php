@@ -561,7 +561,7 @@ class LitterTodb extends Component
 					//now reduce the mice number by the 
 					//number transferred to mating cage.
 					
-					$msg = 'Mating entry for '.json_encode($acid).' seems to be complete';
+					$msg = 'Mating entry for '.json_encode($acid).' completed';
 					array_push($this->msgLTM, $msg);
 					Log::channel('coding')->info($msg);
 			
