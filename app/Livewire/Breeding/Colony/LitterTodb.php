@@ -339,7 +339,6 @@ class LitterTodb extends Component
 		}
 	
 		$this->newMatingFlag = true;
-		//$this->resetDbEntryForm();
 		
 	}
 		
@@ -547,10 +546,12 @@ class LitterTodb extends Component
 					
 					//now remove the slot id from the array for next insertion.
 					unset($this->mrarray[0]);
-					$this->mrarray = array_values($mrarray);
+					$this->mrarray = array_values($this->mrarray);
 					
 				}
 			}
+			
+			//$this->resetDbEntryForm();
 			
 			
 			
