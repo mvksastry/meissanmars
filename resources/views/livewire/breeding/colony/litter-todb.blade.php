@@ -757,8 +757,14 @@
 											<th>Errors and Failures</th>
 										</thead>
 										<tbody>
-											
+											@foreach($msgLTM as $val)
 												<tr class="bg-success-subtle">
+													<td class="border px-2 p-1">
+													{{ $val }}
+													</td>
+												</tr>
+											@endforeach											
+												<tr class="bg-danger">
 													<td class="border px-2 p-1">
 													
 													</td>

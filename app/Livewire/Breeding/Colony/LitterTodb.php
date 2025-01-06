@@ -43,6 +43,7 @@ use App\Traits\Breed\BLitterToMating;
 use App\Traits\Breed\BOpenLitterSearch;
 use App\Traits\Breed\BAddCageInfo;
 use App\Traits\Breed\BPutPupsToDB;
+use App\Traits\CageInfoUpdate;
 
 use Illuminate\Support\Facades\Route;
 
@@ -58,7 +59,7 @@ class LitterTodb extends Component
 		use BAddCageInfo;
 		use BPutPupsToDB;
 		use BLitterToMating;
-		
+		use CageInfoUpdate;
 		
 		//form messages
 		public $iaMessage, $mpairErrorMessage = null;
@@ -338,11 +339,11 @@ class LitterTodb extends Component
 			$cageInfo->save();
 		}
 	
-		$this->newMatingFlag = true;
+		//$this->newMatingFlag = true;
 		
 	}
 		
-	public function resetDbEntryForm()
+	public function resetDbMatingEntryForm()
 	{
 		$this->cagesF = null;
 		$this->cagesM = null;
@@ -361,6 +362,18 @@ class LitterTodb extends Component
 		$this->rarray = null;
 		$this->rooms = null;
 		$this->racks = null;
+		
+		$this->mating_comment = null;
+		$this->mslot_id = null;
+		$this->mfslot_num = null;
+		$this->mfree_slots = null;
+		$this->mrack_id = null;
+		$this->mroom_id = null;
+		$this->nm_gen_key = null;
+		$this->wean_note = null;
+		$this->wean_days = null;
+		$this->mating_date = null;
+		$this->agmatingr = null;
 	}
 
 		
@@ -529,6 +542,7 @@ class LitterTodb extends Component
 					$matingRefID = $newMatingObj->matingRefID;
 					
 					$input['_species_key'] = $newMatingObj->_species_key;
+					$input['_strain_key'] = $newMatingObj->_strain_key;
 					$input['animal_count'] = $ac;
 					$input['mice_ids'] = $acid;
 					$input['rack_id'] = $this->mrack_id;
@@ -558,13 +572,9 @@ class LitterTodb extends Component
 					
 				}
 			}
-			$this->resetDbMatingEntryForm();
-			//$this->resetMatingEntryForm();
 			
-			
-			
-			
-			
+		$this->resetDbMatingEntryForm();
+		
 	}		
 		
 	public function fPartnerSelected()
@@ -625,7 +635,6 @@ class LitterTodb extends Component
 		else {
 			$this->mpairErrorMessage = "Mismatched Pairs, select equal numbers from Males and females";
 		}			
-		
 		//dd($this->dspair);
 	}
 
