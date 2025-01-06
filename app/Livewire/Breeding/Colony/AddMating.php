@@ -296,19 +296,6 @@ class AddMating extends Component
 					$dam1slot_id = $dam1Info->slot_id;
 					$dam1rack_id = $dam1Info->rack_id;
 					$rex = $this->updateAnimalNumber($this->dam1Id, $dam1Cage_id, $dam1slot_id, $dam1rack_id);
-					/*
-					//$rexy = $this->removeIDFromCage($this->dam1Id, $dam1Cage_id);
-					$cageRes = Cage::where('cage_id', $dam1Cage_id)->first();
-					$cageMiceIDs = json_decode($cageRes->mouse_ids);
-					if (($key = array_search($this->dam1Id, $cageMiceIDs)) !== false) 
-					{
-						unset($cageMiceIDs[$key]);
-					}
-					$cageMiceIDsMice = json_encode($cageMiceIDs);
-					$cageRes->mice_ids = $cageMiceIDsMice;
-					$cageRes->save();
-					dd($cageMiceIDs, $cageRes);
-					*/
 				}
 				
 				if($this->dam2Id != null)

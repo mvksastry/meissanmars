@@ -55,7 +55,9 @@ class Mating extends Model
 				'proposedRetirePenStatus',
 				'suggestedFirstLitterNum',
 				'_crossStatus_key',
-				'version'
+				'version',
+				'posted_by',
+				'date_posted'
     ];
 
     // Customize log name
@@ -92,7 +94,9 @@ class Mating extends Model
       'proposedRetirePenStatus',
       'suggestedFirstLitterNum',
       '_crossStatus_key',
-      'version'
+      'version',
+			'posted_by',
+			'date_posted'
     ];
 
     // Customize log description

@@ -420,170 +420,40 @@
 											<div class="p-2">
 
 												<table class="w-full p-5 text-sm text-gray-900">
-													<thead>
-													</thead>
-													<tbody>
-														<tr class="bg-warning">
-															<td colspan="2" class="border px-2 p-1">
-															</td>
-														</tr>
-
-														<tr>
-															<td class="border px-2 p-1">
-																Auto Generate Mouse Records
-															</td>
-															<td class="border px-2 p-1">
-																<input wire:model.lazy="agmr" class="form-control-sm border" type="checkbox" value="true">
-															</td>
-														</tr>
-
-														<tr>
-															<td class="border px-2 p-1">
-																Base Mouse Id
-															</td>
-															<td class="border px-2 p-1">
-																<input wire:model.lazy="baseMouseId" class="form-control-sm border" type="text">
-															</td>
-														</tr>
-														
-														<tr>
-															<td class="border px-2 p-1 bg-gray-300">
-																Protocol ID
-															</td>
-															<td class="border bg-gray-300 px-2 p-1">
-																<select wire:model.lazy="protoKey" class="form-control-sm border">
-																	<option value="null">Select</option>
-																		
-																</select>
-															</td>
-														</tr>
-														
-														<tr>
-															<td class="border px-2 p-1 bg-gray-300">
-																Use Schedules
-															</td>
-															<td class="border px-2 p-1 bg-gray-300">
-																<select wire:model.lazy="useScheduleKeys" class="form-control-sm border" multiple>
-																<option value=""></option>
-																	
-																</select>
-															</td>
-														</tr>
-
-														<tr bgcolor="#AHDADE">
-															<td class="border px-2 p-1">
-															</td >
-															<td class="border px-2 p-1">											
-															</td >
-														</tr>
-														
-														<tr bgcolor="#EAEDED">
-															<td class="p-2">
-																<font color="red">Generation*</font>
-															</td>
-															<td>
-
-																</br>
-																@error('_generation_key') <span class="text-danger error">{{ $message }}</span> @enderror
-															</td>
-														</tr>
-
-														<tr>
-															<td class="border px-2 p-1">
-																Room*
-															</td>
-															<td class="border px-2 p-1">
-																<select wire:model.lazy="mroom_id" wire:change="matingRoomSelected" class="form-control-sm border" name="room_id" id="room_id">
-																	<option value="-1"></option>
-																		@foreach($rooms as $row)
-																			<option value="{{ $row->room_id }}">{{ $row->room_name }}</option>
-																		@endforeach
-																</select>
-																</br>
-																@error('mroom_id') 
-																	<span class="text-danger error">
-																		{{ $message }}
-																	</span> 
-																@enderror
-															</td>
-														</tr>
-														<tr>
-															<td class="border px-2 p-1">
-																<font color="red">Rack*</font>
-															</td>
-															<td class="border px-2 p-1">
-																<select wire:model.lazy="mrack_id" wire:change="matingRackSelected" class="form-control-sm border" name="rack_id" id="rack_id">
-																	<option value="0"></option>
-																		@foreach($mracksInRoom as $row)
-																			<option value="{{ $row->rack_id }}">{{ $row->rack_name }}</option>
-																		@endforeach																		
-																</select>
-																</br>
-																@error('mrack_id') 
-																	<span class="text-danger error">
-																		{{ $message }}
-																	</span> 
-																@enderror
-															</td>
-														</tr>
-
-														<tr class="border">
-															<td class="border px-2 p-1">
-																<font color="red">Total Free Slots</font>: 
-															</td>
-															<td class="border px-2 p-1">
-																{{ $mfree_slots }}
-															</td>
-														</tr>
-														<tr class="border">
-															<td class="border px-2 p-1"> 
-																<font color="red">First 5 Free Slot ID</font>
-															</td>
-
-															<td class="border px-2 p-1">
-																{{ $mfslot_num }}
-															</td>
-														</tr>
-														<tr bgcolor="#EADDED">
-															<td class="border px-2 p-1">
-																<font color="red">Slot ID</font>
-															</td>
-															<td class="border px-2 p-1">
-																<input wire:model.lazy="mslot_id" class="form-control-sm border" placeholder="Auto Selected" value="" type="text">
-																(Auto Selected)
-																</br>
-																@error('mslot_id') 
-																	<span class="text-danger error">
-																		{{ $message }}
-																	</span> 
-																@enderror
-															</td>
-														</tr>
-
-														<tr>
-															<td class="border px-2  p-1">
-																Comments
-															</td>
-															<td class="border px-2  p-1">
-																<input wire:model.lazy="comment" class="form-control-sm border bg-secondary-subtle" type="text" class="w-full" placeholder="Comments">
-															</td>
-														</tr>
-
-														<tr>
-															<td colspan="2" class="border px-2 p-1">
-																{{ $mpairErrorMessage }}
-															</td>
-														</tr>
-														
-														<tr>
-															<td class="border px-2 p-1">
-																<button wire:click="prepareMatingEntryData()" class="btn btn-warning rounded">Prepare Mating Entries</button>
-															</td>
-															<td class="border px-2 p-1">
-															</td>
-														</tr>
-														
+													@if(count($dspair) > 0 )
+														<thead>
+															
+															<th>Dam</th>
+															<th>Sire</th>
+															<th>RefID</th>
+														</thead>
+														<tbody>
+															@foreach($dspair as $row)
+																<tr class="bg-warning-subtle">
+																	<td class="border px-2 p-1">
+																		{{ $row['dam1ID'] }}
+																	</td>
+																	<td class="border px-2 p-1">
+																		{{ $row['sireID'] }}
+																	</td>
+																	<td class="border px-2 p-1">
+																		Auto Assigned
+																	</td>
+																</tr>
+															@endforeach
+															<tr>
+																<td colspan="2" class="border px-2 p-1">
+																	{{ $mpairErrorMessage }}
+																</td>
+															</tr>
 													</tbody>
+													@else
+														<thead>
+															<th>No Data for Display</th>
+														</thead>
+														<tbody>
+														</tbody>
+													@endif
 												</table>
 											</div>         
 										</div>
@@ -622,10 +492,170 @@
 									<div class="chart tab-pane active" id="revenue-chart" style="position: relative;">
 										<table class="w-full p-5 text-sm text-gray-900">
 											<thead>
-												<th></th>
 											</thead>
-											<tbody>
-											</tbody>
+												<tbody>
+													<tr class="bg-warning">
+														<td colspan="2" class="border px-2 p-1">
+														</td>
+													</tr>
+
+													<tr>
+														<td class="border px-2 p-1">
+															Auto Generate Mating Record
+														</td>
+														<td class="border px-2 p-1">
+															<input wire:model.lazy="agmatingr" class="form-control-sm border" type="checkbox" value="true">
+														</td>
+													</tr>
+
+
+
+													<tr>
+														<td class="border px-2 p-1">
+															Mating Date
+														</td>
+														<td class="border px-2 p-1">
+															<input wire:model.lazy="mating_date" class="form-control-sm border" value="{{ date('Y-m-d') }}" type="date">
+														</td>
+													</tr>
+
+													<tr>
+														<td class="border px-2 p-1">
+															Wean Time
+														</td>
+														<td class="border px-2 p-1">
+															<input wire:model.lazy="wean_days" class="form-control-sm border" value="28" type="text"> Days
+														</td>
+													</tr>
+
+													<tr>
+														<td class="border px-2 p-1">
+															Wean Note
+														</td>
+														<td class="border px-2 p-1">
+															<input wire:model.lazy="wean_note" class="form-control-sm border"  type="text">
+														</td>
+													</tr>
+													
+
+													<tr bgcolor="#AHDADE">
+														<td class="border px-2 p-1">
+														</td >
+														<td class="border px-2 p-1">											
+														</td >
+													</tr>
+													
+													<tr bgcolor="#EAEDED">
+														<td class="p-2">
+															<font color="red">Generation*</font>
+														</td>
+														<td>
+															<select wire:model.lazy="nm_gen_key" class="form-control-sm border" name="_generation_key" id="_generation_key">
+																<option value=""></option>
+																	@foreach($generations as $item)
+																		<option value="{{ $item->generation }}">{{ $item->generation }}</option>
+																	@endforeach
+															</select>
+															</br>
+															@error('_generation_key') 
+																<span class="text-danger error">
+																	{{ $message }}
+																</span> 
+															@enderror
+														</td>
+													</tr>
+
+													<tr>
+														<td class="border px-2 p-1">
+															Room*
+														</td>
+														<td class="border px-2 p-1">
+															<select wire:model.lazy="mroom_id" wire:change="matingRoomSelected" class="form-control-sm border" name="room_id" id="room_id">
+																<option value="-1"></option>
+																	@foreach($rooms as $row)
+																		<option value="{{ $row->room_id }}">{{ $row->room_name }}</option>
+																	@endforeach
+															</select>
+															</br>
+															@error('mroom_id') 
+																<span class="text-danger error">
+																	{{ $message }}
+																</span> 
+															@enderror
+														</td>
+													</tr>
+													
+													<tr>
+														<td class="border px-2 p-1">
+															<font color="red">Rack*</font>
+														</td>
+														<td class="border px-2 p-1">
+															<select wire:model.lazy="mrack_id" wire:change="matingRackSelected" class="form-control-sm border" name="rack_id" id="rack_id">
+																<option value="0"></option>
+																	@foreach($mracksInRoom as $row)
+																		<option value="{{ $row->rack_id }}">{{ $row->rack_name }}</option>
+																	@endforeach																		
+															</select>
+															</br>
+															@error('mrack_id') 
+																<span class="text-danger error">
+																	{{ $message }}
+																</span> 
+															@enderror
+														</td>
+													</tr>
+
+													<tr class="border">
+														<td class="border px-2 p-1">
+															<font color="red">Total Free Slots</font>: 
+														</td>
+														<td class="border px-2 p-1">
+															{{ $mfree_slots }}
+														</td>
+													</tr>
+													<tr class="border">
+														<td class="border px-2 p-1"> 
+															<font color="red">First 5 Free Slot ID</font>
+														</td>
+
+														<td class="border px-2 p-1">
+															{{ $mfslot_num }}
+														</td>
+													</tr>
+													
+													<tr bgcolor="#EADDED">
+														<td class="border px-2 p-1">
+															<font color="red">Slot ID</font>
+														</td>
+														<td class="border px-2 p-1">
+															<input wire:model.lazy="mslot_id" class="form-control-sm border" placeholder="Auto Selected" value="" type="text">
+															(Auto Selected)
+															</br>
+															@error('mslot_id') 
+																<span class="text-danger error">
+																	{{ $message }}
+																</span> 
+															@enderror
+														</td>
+													</tr>
+
+													<tr>
+														<td class="border px-2  p-1">
+															Comments
+														</td>
+														<td class="border px-2  p-1">
+															<input wire:model.lazy="mating_comment" class="form-control-sm border bg-secondary-subtle" type="text" class="w-full" placeholder="Comments">
+														</td>
+													</tr>
+													
+													<tr>
+														<td class="border px-2 p-1">
+															<button wire:click="prepareMatingEntryData()" class="btn btn-warning rounded">Post Mating Entries</button>
+														</td>
+														<td class="border px-2 p-1">
+														</td>
+													</tr>
+												</tbody>
 										</table>														
 									</div>
 								</div>

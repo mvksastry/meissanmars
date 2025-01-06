@@ -143,7 +143,7 @@
 							<button wire:click="putPupsToDB()" class="btn btn-primary rounded">Put Pups To DB</button>
 						</td>
 						<td class="border px-2 p-1">
-							<button wire:target.prevent="resetForm" class="btn btn-primary rounded">Cancel</button>
+							<button wire:click="prepareMatingSetup()" class="btn btn-primary rounded">Setup Mating</button>
 						</td>
           </tr>
 				</tbody>
