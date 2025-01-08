@@ -10,6 +10,15 @@
 				<tbody>
 					@foreach($caInfos as $x)
 						<tr bgcolor="#E1BEE7">
+							<td>Cage Label</td>
+							<td>{{ $x->cage_label }}</td>
+						</tr>
+						<tr bgcolor="#E1BEE7">
+							<td>Cage Type</td>
+							<td>{{ $x->cage_type }}</td>
+						</tr>
+						<tr>
+						<tr bgcolor="#E1BEE7">
 							<td>Cage Id</td>
 							<td>{{ $x->cage_id }}</td>
 						</tr>
