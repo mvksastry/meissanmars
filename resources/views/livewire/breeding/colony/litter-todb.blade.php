@@ -95,6 +95,8 @@
 		</section>
 		<!-- Main content -->
     
+		
+		@if($panel2)
 		<section class="content">
 			<div class="container-fluid">
 				
@@ -122,9 +124,9 @@
 								<!-- Morris chart - Sales -->
                   <div class="chart tab-pane active" id="revenue-chart" style="position: relative;">                   
                     <div class="p-2">
-                      @if($panel2)
-                           @include('livewire.breeding.colony.resultsForOpenLitterEntries')
-                      @endif
+                      
+                        @include('livewire.breeding.colony.resultsForOpenLitterEntries')
+                      
                     </div>         
                   </div>
                 </div>
@@ -137,7 +139,10 @@
 			</div><!-- /.container-fluid -->
 		</section>
 		<!-- Main content -->    
-
+		@endif
+		
+		
+		
 		@if($panel5)
 			<section class="content">
 				<div class="container-fluid">
@@ -379,11 +384,6 @@
 						</section>						
 						
 						
-						
-						
-						
-						
-
 						<!-- /.card -->
 						<!-- /.card -->
 					</div>
@@ -461,13 +461,6 @@
 								</div><!-- /.card-body -->
 							</div>
 						</section>
-
-
-
-
-
-
-
 
 
 
@@ -613,6 +606,7 @@
 															{{ $mfree_slots }}
 														</td>
 													</tr>
+													
 													<tr class="border">
 														<td class="border px-2 p-1"> 
 															<font color="red">First 5 Free Slot ID</font>
@@ -669,6 +663,7 @@
 			<!-- Main content -->   
 		@endif
 
+		@if($panel4)
 		<section class="content">
 			<div class="container-fluid"> 
         <div class="row">
@@ -679,7 +674,7 @@
 						  <div class="card-header">
 							<h3 class="card-title">
 							  <i class="fas fa-chart-pie mr-1"></i>
-							  DB Entries: Feedback Messages 
+							  DB Entries:  Messages & Errors 
 							</h3>
 							<div class="card-tools">
 							  <ul class="nav nav-pills ml-auto">
@@ -737,7 +732,7 @@
 						  <div class="card-header">
 							<h3 class="card-title">
 							  <i class="fas fa-chart-pie mr-1"></i>
-							  Feedback Messages Mating set-up
+							  Mating Entries:  Messages & Errors 
 							</h3>
 							<div class="card-tools">
 							  <ul class="nav nav-pills ml-auto">
@@ -754,7 +749,7 @@
                   <!-- Show the selection form-->
 									<table class="w-full p-5 text-sm text-gray-900">
 										<thead>
-											<th>Errors and Failures</th>
+											<th>Messages/Errors/Failures</th>
 										</thead>
 										<tbody>
 											@foreach($msgLTM as $val)
@@ -764,26 +759,12 @@
 													</td>
 												</tr>
 											@endforeach											
-												<tr class="bg-danger">
-													<td class="border px-2 p-1">
-													
-													</td>
-												</tr>
-											
 												<tr bgcolor="#AHDADE">
 													<td class="border px-2 p-1">
 													</td >
 													<td class="border px-2 p-1">											
 													</td >
-												</tr>
-																				
-												<tr class="bg-warning-subtle">
-													<td class="p-2">
-														<font color="red">
-															
-														</font>
-													</td>
-												</tr>
+												</tr>										
 											
 										</tbody>
 									</table>														
@@ -802,7 +783,7 @@
 				</div>
 			</div>
 		</section>
-
+		@endif
     <!-- / End of Left Panel Graph Card-->
 	</div>
 

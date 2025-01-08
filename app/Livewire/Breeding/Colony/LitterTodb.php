@@ -148,10 +148,11 @@ class LitterTodb extends Component
 		$this->openLitterEntries = Litter::with('mating')->where('entry_status', 'open')->get();
 		//dd($this->openLitterEntries);
 		//dd($this->rooms);
-		$this->panel2 = true;
+		
 		
     if(count($this->openLitterEntries) > 0 )
 		{
+			$this->panel2 = true;
 			$this->panel5 = true;
 		}
   }
@@ -573,6 +574,8 @@ class LitterTodb extends Component
 			}
 			
 		$this->resetDbMatingEntryForm();
+		$this->panel5 = false;
+		$this->panel6 = false;
 		
 	}		
 		
