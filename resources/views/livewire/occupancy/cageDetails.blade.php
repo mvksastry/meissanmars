@@ -4,6 +4,7 @@
 		<div class="border-b border-gray-800 p-3">
 			<h5 class="font-bold uppercase text-gray-900">Cage Details</h5>
 		</div>
+		<?php $type =["P" => "Project", "S"=>"Stock", "M"=>"Mating", "W"=>"Weaning"]; ?>
 			<table id="userIndex2" class="table table-bordered table-hover">
 				<thead>
 				</thead>
@@ -15,7 +16,7 @@
 						</tr>
 						<tr bgcolor="#E1BEE7">
 							<td>Cage Type</td>
-							<td>{{ $x->cage_type }}</td>
+							<td>{{ $type[$x->cage_type] }}</td>
 						</tr>
 						<tr>
 						<tr bgcolor="#E1BEE7">
