@@ -50,8 +50,8 @@ trait BLitterToMating
 				//$purpose = $input['purpose'];
 				//$speciesName = $input['speciesName'];
 				$matingKey   = Mating::max('_mating_key') + 1;
-				$matingRefID = Mating::max('matingRefID') + 1;
-				//dd($this->newMatingId);
+				$matingRefID = Mating::where('_strain_key', $this->strainKey)->max('matingRefID') + 1;
+				//dd($this->strainKey, $matingRefID);
 				$matingUnitTypeKey = null; //entry for second table
 				
 				//query the db to get the  keys by ID here for dam1, dam2 and sire IDs.

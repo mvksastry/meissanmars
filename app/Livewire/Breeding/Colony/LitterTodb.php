@@ -484,7 +484,7 @@ class LitterTodb extends Component
 			$base['needsTyping'] = 0;
 			$base['comment'] = $this->mating_comment;
 			$base['proposedDiet'] = null;
-			
+				
 			foreach($this->dspair as $row)
 			{
 				$finalMatArray[] = array_merge($row, $base);
