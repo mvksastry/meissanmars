@@ -149,10 +149,10 @@ class LitterTodb extends Component
 		//dd($this->openLitterEntries);
 		//dd($this->rooms);
 		
+		$this->panel2 = true;
 		
     if(count($this->openLitterEntries) > 0 )
 		{
-			$this->panel2 = true;
 			$this->panel5 = true;
 		}
   }
@@ -271,6 +271,7 @@ class LitterTodb extends Component
 		$this->mpairs = []; 
 		$this->fpairs = [];
 		$this->panel3 = true;
+		$this->panel4 = true;
 	}
 	
 	public function putPupsToDB()
@@ -576,7 +577,6 @@ class LitterTodb extends Component
 		$this->resetDbMatingEntryForm();
 		$this->panel5 = false;
 		$this->panel6 = false;
-		
 	}		
 		
 	public function fPartnerSelected()
