@@ -576,7 +576,7 @@ class LitterTodb extends Component
 			
 		$this->resetDbMatingEntryForm();
 		$this->panel5 = false;
-		$this->panel6 = false;
+		//$this->panel6 = false;
 	}		
 		
 	public function fPartnerSelected()
