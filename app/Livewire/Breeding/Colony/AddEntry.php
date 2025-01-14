@@ -320,9 +320,9 @@ class AddEntry extends Component
 	public function closeEntriesRemaining()
 	{
 		//dd("reached");
-		//this means default limit added and hence make the 
-		//entries in the rack, slot, cage ids.
-		//dd($this->mice_ids, $this->mice_idx);
+		//this means that default limit NOT added and hence make the 
+		//entries in the rack, slot, cage ids. Eg, when less than
+		//default limit is to be added.
 		$input['_room_key'] = $this->room_id; // changed by ks
 		$input['rack_id'] = $this->rack_id;
 		$input['slot_id'] = $this->cageInfos; //This is slot id
@@ -336,7 +336,7 @@ class AddEntry extends Component
 		$result = $this->updateRackSlotCageInfo($input);
 		$this->mice_idx = [];
 		$this->closeRemainingEntryButton = false;
-		
+		$this->addToCageFlag = false;
 	}
 /*
 	public function suggestedCage()

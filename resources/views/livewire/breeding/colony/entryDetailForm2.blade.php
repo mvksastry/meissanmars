@@ -434,9 +434,10 @@
 
 					<tr bgcolor="#FFDD00">
 						<td>
+						Entries to be closed:
 						</td>
            	<td class="p-2">
-							Entries to be closed: {{ json_encode($mice_idx) }}
+							 {{ json_encode($mice_idx) }}
 						</td>
 						<td>
 						 
