@@ -431,6 +431,22 @@
 						<td>
 						</td>
 					</tr>
+
+					<tr bgcolor="#FFDD00">
+						<td>
+						</td>
+           	<td class="p-2">
+							Entries to be closed: {{ json_encode($mice_idx) }}
+						</td>
+						<td>
+						 
+           	</td>
+						<td>
+						@if($closeRemainingEntryButton)
+							<button wire:click="closeEntriesRemaining()" class="btn btn-primary rounded">Close Entries</button>
+						@endif
+						</td>
+					</tr>
 					
           <tr bgcolor="#EADDED">
            	<td class="p-2">

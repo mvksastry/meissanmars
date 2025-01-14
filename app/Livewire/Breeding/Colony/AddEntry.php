@@ -75,6 +75,7 @@ class AddEntry extends Component
 	public $mouseIdFlag=false, $mouseTagFlag=false, $slotSelectFlag=false;
 	public $displayPTandUS=false;
 
+	public $closeRemainingEntryButton = false;
 
 	public $strainDB, $genderDB, $LiveNewTagCheck, $idsearch, $runner;
 
@@ -254,7 +255,6 @@ class AddEntry extends Component
 				$this->cmsg2 = "Note: Default limit breached";
 			}
 
-			
 			//input data preparation for cage rack slot info tables;
 			array_push($this->mice_idx, $input['speciesId']);
 			//now add to db here
@@ -293,19 +293,8 @@ class AddEntry extends Component
 						$this->cageInfos = $this->rarray[0];
 						// disable for testing enable for live
 						
-						//select next available slot id here if no slots available
-						//close the flag.
-						//dd($this->cageInfos);
-						/*
-						if($this->createCage($this->cageInfos))
-						{
-							$this->addToCageFlag = true;
-						}
-						else {
-							$this->addToCageFlag = false;
-						}
-						*/
 						$this->mice_idx = [];
+						$this->closeRemainingEntryButton = false;
 					}
 					else {
 						$this->cageInfos = null;
@@ -314,6 +303,10 @@ class AddEntry extends Component
 					}
 					$this->count = 0;
 				}
+				else {
+					$this->closeRemainingEntryButton = true;
+				}
+				
 			}
 			else {
 				$this->addToCageFlag = false;
@@ -324,6 +317,27 @@ class AddEntry extends Component
 		}
 	}
 	
+	public function closeEntriesRemaining()
+	{
+		//dd("reached");
+		//this means default limit added and hence make the 
+		//entries in the rack, slot, cage ids.
+		//dd($this->mice_ids, $this->mice_idx);
+		$input['_room_key'] = $this->room_id; // changed by ks
+		$input['rack_id'] = $this->rack_id;
+		$input['slot_id'] = $this->cageInfos; //This is slot id
+		$input['_species_key'] = $this->speciesKey;
+		$input['_strain_key'] = intval($this->_strain_key);
+		$input['animal_count'] = $this->count;
+		$input['mice_ids'] = $this->mice_idx;
+		$input['cage_type'] = 'S';
+		$input['cage_label'] = $this->cage_card;
+		//dd($input);
+		$result = $this->updateRackSlotCageInfo($input);
+		$this->mice_idx = [];
+		$this->closeRemainingEntryButton = false;
+		
+	}
 /*
 	public function suggestedCage()
 	{
@@ -390,6 +404,7 @@ class AddEntry extends Component
 				{
 					$this->cmsg5 = $value;
 					$this->cmsg4 = "New Code Valid";
+					//$this->mice_idx[] = $value;
 					$this->mouseIdFlag = true;
 				}
 				else {
