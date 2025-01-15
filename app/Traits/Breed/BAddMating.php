@@ -66,6 +66,7 @@ public function addMating($input)
     $newMatingEntry = new Mating();
 
     $newMatingEntry->_mating_key     = $matingKey;
+		$newMatingEntry->parentID        = $input['parentID'];
 		$newMatingEntry->matingRefID     = $input['matingRefID'];
     $newMatingEntry->_species_key    = $this->getSpeciesKeyBySpeciesName($speciesName);
     $newMatingEntry->_matingType_key = $input['matgType'];

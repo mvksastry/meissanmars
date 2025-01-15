@@ -68,7 +68,7 @@ class AddMating extends Component
 		//selected objects meaning before form Entry
 		public $selectedDam1, $selectedDam2, $selectedSire;
 		
-    public $speciesName, $purpose, $newMatingId, $newMatingRefID;
+    public $speciesName, $purpose, $newMatingId, $parentID, $newMatingRefID;
     public $dam1Key, $dam1Msg, $dam2Key, $dam2Msg, $sireKey, $sireMsg;
     public $dam1Id, $dam2Id, $sireId, $diet_key, $strain_key, $matgType=1, $generation_key;
     public $genotypeneed, $ownerwg="EAF-NCCS", $matingDate,  $weantime, $slot_id, $weannote, $comments;
@@ -90,6 +90,7 @@ class AddMating extends Component
 
 	protected $rules = [
 
+		'parentID'       => 'required|numeric',
 		'newMatingRefID' => 'required|numeric',
 		'strain_key'     => 'required|numeric',
 		'generation_key' => 'required|alpha_num',
@@ -263,6 +264,7 @@ class AddMating extends Component
 
       $input['speciesName'] = $this->speciesName;
       $input['purpose'] = $this->purpose;
+			$input['parentID'] = $this->parentID;
 			$input['matingRefID'] = $this->newMatingRefID;
       $input['dam1Id'] = $this->dam1Id;
       $input['dam1Key'] = $this->dam1Key;

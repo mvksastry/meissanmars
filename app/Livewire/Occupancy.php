@@ -36,6 +36,8 @@ class Occupancy extends Component
 	public $rack_info, $caInfos;
   
   public $cage_id, $appearance, $numdead, $moribund, $housing, $xyz, $notes;
+	public $room_name;
+
 
   public function render()
   {
@@ -51,6 +53,7 @@ class Occupancy extends Component
 		$this->irqMessage = "";
 		//$this->irqMessage = $id;
 		$room = Room::where('image_id', $id)->first();
+		$this->room_name = $room->room_name;
 		$this->racks = Rack::where('room_id', $room->room_id)->get();
 	}
 

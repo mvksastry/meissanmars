@@ -26,10 +26,26 @@
 						</td>
 
 						<td class="space-x-5">
-							<font color="red">Mating Ref ID</font>
+							
 						</td>
 						<td>
-							<input wire:model.lazy="newMatingRefID" style="background-color:#EAEDED; font-weight: bold; font-size: 12px;" type="text" placeholder="Ref ID" value="" >
+							
+            </td>
+          </tr>
+
+          <tr bgcolor="#EADDED">
+            <td class="p-2">
+              <font color="red">Parent ID* </font>
+            </td>
+            <td>
+              <input wire:model.lazy="parentID" type="text">
+							
+						</td>
+            <td >
+              <font color="red">Breeding Ref ID</font>
+            </td>
+            <td>
+							<input wire:model.lazy="newMatingRefID" type="text" placeholder="Ref ID" value="" >
 							</br>
 							@error('newMatingRefID') 
 								<span class="text-danger error">
@@ -37,25 +53,31 @@
 								</span> 
 							@enderror
             </td>
+						<td>
+              
+            </td>
+            <td>
+            </td>
           </tr>
+
 					
           <tr bgcolor="#EADDED">
             <td class="p-2">
-              <font color="red">Dam 1 ID* </font>
+              <font color="red">Breeder F1 ID* </font>
             </td>
             <td>
               <input wire:model.lazy="dam1Id" type="text">
 							<button wire:click="search('{{ $speciesName.'_Dam1' }}')" class="btn btn-primary btn-sm rounded">Dam 1 Search</button>
 						</td>
             <td >
-              <font color="red">Dam 2 ID* </font>
+              <font color="red">Breeder F2 ID* </font>
             </td>
             <td>
 							<input wire:model.lazy="dam2Id" type="text">
 							<button wire:click="search('{{ $speciesName.'_Dam2' }}')" class="btn btn-primary btn-sm rounded">Dam 2 Search</button>
             </td>
 						<td>
-              <font color="red">Sire ID* </font>
+              <font color="red">Breeder M ID* </font>
             </td>
             <td>
 							<input wire:model.lazy="sireId" type="text">
