@@ -30,6 +30,12 @@
 						</td>
 						<td>
 							<input wire:model.lazy="newMatingRefID" style="background-color:#EAEDED; font-weight: bold; font-size: 12px;" type="text" placeholder="Ref ID" value="" >
+							</br>
+							@error('newMatingRefID') 
+								<span class="text-danger error">
+									{{ $message }}
+								</span> 
+							@enderror
             </td>
           </tr>
 					

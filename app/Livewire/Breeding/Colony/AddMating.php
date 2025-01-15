@@ -90,6 +90,7 @@ class AddMating extends Component
 
 	protected $rules = [
 
+		'newMatingRefID' => 'required|numeric',
 		'strain_key'     => 'required|numeric',
 		'generation_key' => 'required|alpha_num',
 		'ownerwg'        => 'required|alpha_dash',
