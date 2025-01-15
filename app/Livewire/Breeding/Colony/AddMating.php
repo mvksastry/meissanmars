@@ -361,10 +361,10 @@ class AddMating extends Component
       //$this->sireKey = null;
       $this->diet_key = null;
       $this->strain_key = null;
-      $this->matgType = null;
+      $this->matgType = 1;
       $this->generation_key = null;
       $this->genotypeneed = false;
-      $this->ownerwg = null;
+      $this->ownerwg = "EAF-NCCS";
       $this->matingDate = null;
       $this->weantime = null;
       //$this->cage_id = null; 
