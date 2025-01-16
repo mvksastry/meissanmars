@@ -82,7 +82,7 @@ trait BLitterToMating
 				$newMatingEntry = new Mating();
 
 				$newMatingEntry->_mating_key     = $matingKey;
-				//$newMatingEntry->parentID        = $input['parentID'];
+				$newMatingEntry->parentID        = $input['parentID'];
 				$newMatingEntry->matingRefID     = $matingRefID;
 				$newMatingEntry->_species_key    = $input['_species_key'];
 				$newMatingEntry->_matingType_key = $input['_matingType_key'];
