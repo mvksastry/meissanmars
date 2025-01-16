@@ -623,7 +623,7 @@ class LitterTodb extends Component
 						$t1['dam1ID'] = $f[1];
 						$t1['dam2ID'] = null;
 						$t1['sireID'] = $m[1];
-						$t1['parentID'] = $m[2];
+						//$t1['parentID'] = $m[2];
 						array_push($this->dspair, $t1);
 						$t1 = array();
 					}

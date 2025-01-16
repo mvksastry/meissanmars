@@ -57,7 +57,7 @@
 						<td class="border px-2 p-1">
 							<input wire:model.lazy="mpairs" wire:change="mPartnerSelected()" 
 								class="form-control-sm border" type="checkbox" 
-								value="{{ $row['_litter_key'] }}&&{{ $row['ID'] }}&&{{ $row['RefID'] }}">
+								value="{{ $row['_litter_key'] }}&&{{ $row['ID'] }}">
 						</td>
 					</tr>
 					@endforeach
