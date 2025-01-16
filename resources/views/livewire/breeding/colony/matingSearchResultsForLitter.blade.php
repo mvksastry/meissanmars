@@ -17,7 +17,7 @@
 							Mating ID <font color="red"></font>
 						</td>
 						<td align="center">
-							Mating Ref ID <font color="red"></font>
+							Breed. Ref ID <font color="red"></font>
 						</td>
 						<td align="center">
 							<font color="red">Dam 1</br>Key</font>
