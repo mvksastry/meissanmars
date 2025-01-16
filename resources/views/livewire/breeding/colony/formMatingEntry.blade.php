@@ -39,7 +39,12 @@
             </td>
             <td>
               <input wire:model.lazy="parentID" type="text">
-							
+							</br>
+							@error('parentID') 
+								<span class="text-danger error">
+									{{ $message }}
+								</span> 
+							@enderror
 						</td>
             <td >
               <font color="red">Breeding Ref ID</font>
@@ -61,7 +66,7 @@
           </tr>
 
 					
-          <tr bgcolor="#EADDED">
+          <tr bgcolor="#EAEDED">
             <td class="p-2">
               <font color="red">Breeder F1 ID* </font>
             </td>
@@ -92,7 +97,7 @@
 						<td>
 							Strain:{{ $dam1Strain }};  Cage: {{ $dam1CageId }};  Diet: {{ $dam1Diet }}
 							</br>
-							{{ $dam1Msg }}
+							Selection: {{ $dam1Msg }}
 						</td>
 
 						<td>
@@ -101,7 +106,7 @@
 						<td>
 							Strain:{{ $dam2Strain }};  Cage: {{ $dam2CageId }};  Diet: {{ $dam2Diet }}
 							</br>
-							{{ $dam2Msg }}
+							Selection: {{ $dam2Msg }}
 						</td>
 
 						<td>
@@ -110,11 +115,11 @@
 						<td>
 							Strain:{{ $sireStrain }};  Cage: {{ $sireCageId }};  Diet: {{ $sireDiet }}
 							</br>
-							{{ $sireMsg }}
+							Selection: {{ $sireMsg }}
 						</td>
           </tr>
 
-          <tr bgcolor="#EADDED" >
+          <tr class="pt-2" bgcolor="#EADDED" >
 						<td>
 							Mating Diet
 						</td>
@@ -180,6 +185,7 @@
          		<td colspan="1">
          			<select wire:model.lazy="generation_key">
            			<option value=""></option>
+								<option value="F00">F00</option>
            				@foreach($generations as $item)
            					<option value="{{ $item->generation }}">{{ $item->generation }}</option>
           				@endforeach
@@ -194,7 +200,7 @@
 						<td colspan="2">
 							Needs Genotyping
 							<input wire:model.lazy="genotypeneed" type="checkbox">
-						</td>
+						</td>                                    
 						<td>
 							<font color="red">Owner/ Workgroup*</font>
 						</td>
@@ -231,7 +237,7 @@
 							<font color="red">Wean time</font>
             </td>
             <td colspan="2">
-							<input class="mx-5" wire:model.lazy="weantime" checked value="21" type="radio">Standard (21 days)
+							<input class="mx-5" wire:model.lazy="weantime" value="21" type="radio">Standard (21 days)
 							</br>
 							<input class="mx-5" wire:model.lazy="weantime" value="28" type="radio">Extended (28 days)
 							</br>
