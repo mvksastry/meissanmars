@@ -606,8 +606,8 @@ class LitterTodb extends Component
 		//prepare the pairs and select them
 		$t1=array(); 
 		
-		$males = $this->mpairs;
-		$fmales = $this->fpairs;
+		$males = $this->mpairs;  //obtained through check box in the form
+		$fmales = $this->fpairs; //obtained through check box in the form
 		
 		if(count($males) == count($fmales))
 		{
@@ -623,6 +623,7 @@ class LitterTodb extends Component
 						$t1['dam1ID'] = $f[1];
 						$t1['dam2ID'] = null;
 						$t1['sireID'] = $m[1];
+						$t1['parentID'] = $m[2];
 						array_push($this->dspair, $t1);
 						$t1 = array();
 					}
