@@ -40,12 +40,12 @@
 									</td>
 									<td class="mx-2">
 									<?php 
-									if($row->numFemale != null && $row->numMale != null)
-									{
+									//if($row->numFemale != null && $row->numMale != null)
+									//{
 										$total = $total + $row->totalBorn; 
-									}
+									//}
 									?>
-									{{ $row->totalBorn }} 
+									{{ $total }} - - {{ $row->totalBorn }} 
 									</td>
 									<td class="mx-2">
 									{{ $row->numFemale }} <?php $females = $females + $row->numFemale; ?>
