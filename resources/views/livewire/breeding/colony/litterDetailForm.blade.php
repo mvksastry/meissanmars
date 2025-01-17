@@ -64,63 +64,6 @@
 							<input wire:model="autoDates" class="border bg-secondary-subtle" type="checkbox" value="true">Calculate Dates
 						</td>
 					</tr>
-
-					<tr class="">
-            <td class="border px-2  p-1 bg-warning-subtle">
-                Status
-            </td>
-            <td class="border bg-warning-subtle px-2  p-1">
-							<select wire:model.lazy="birthEventStatusKey" class="form-control-sm border bg-secondary-subtle">
-								<option value="null">Select</option>
-                  @foreach($birthStatuses as $item)
-                    <option value="{{ $item->abbreviation }}">{{ $item->birthEventStatus }}</option>
-                  @endforeach
-              </select>
-            </td>
-          </tr>
-
-
-					<tr class="">
-						<td class="border px-2  p-1 bg-warning-subtle">
-              Origin
-						</td>
-            <td class="border bg-warning-subtle px-2  p-1">
-							<select wire:model.lazy="origin" class="form-control-sm border bg-secondary-subtle">
-								<option value="null">Select</option>
-                  @foreach($origins as $item)
-                    <option value="{{ $item->Origin }}">{{ $item->Origin }}</option>
-                  @endforeach
-	            </select>
-						</td>
-          </tr>
-
-
-
-					<tr class="">
-            <td class="border px-2  p-1 bg-warning-subtle">
-              Litter Type
-            </td>
-            <td class="border bg-warning-subtle px-2  p-1">
-							<select wire:model.lazy="litType" class="form-control-sm border bg-secondary-subtle">
-								<option value="null">Select</option>
-                    @foreach($litterTypes as $item)
-                      <option value="{{ $item->_litterType_key }}">{{ $item->litterType }}</option>
-                    @endforeach
-                </select>
-            </td>
-          </tr>
-
-					<tr>
-            <td class="border px-2  p-1">
-              Litter #
-						</td>
-						<td class="border px-2  p-1">
-              <input wire:model.lazy="litterNum" class="form-control-sm form-control-sm border bg-secondary-subtle" type="text" placeholder="">
-							@if($purpose == "New")
-                <button class="btn btn-primary btn-sm rounded">Next Litter #</button>
-							@endif
-						</td>
-					</tr>
 					
 					<tr>
             <td class="border px-2  p-1">

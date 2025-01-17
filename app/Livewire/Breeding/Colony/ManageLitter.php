@@ -258,12 +258,16 @@ class ManageLitter extends Component
 			$input['bornDead'] = $this->bornDead;
 			$input['numFemales'] = $this->numFemales;
 			$input['numMales'] = $this->numMales;
-			$input['birthEventStatusKey'] = $this->birthEventStatusKey;
-			$input['origin'] = $this->origin;
-			$input['litterNum'] = $this->litterNum;
+			//$input['birthEventStatusKey'] = $this->birthEventStatusKey; // just for simplification of form.
+			$input['birthEventStatusKey'] = 'A';
+			//$input['origin'] = $this->origin;
+			$input['origin'] = "EAF-NCCS";  // just for simplification of form.
+			//$input['litterNum'] = $this->litterNum;
+			$input['litterNum'] = null; // just for simplification of form, not necessary
 			$input['culledAtWean'] = $this->culledAtWean;
 			$input['missAtWean'] = $this->missAtWean;
-			$input['litType'] = $this->litType;
+			//$input['litType'] = $this->litType; // just for simplification of form.
+			$input['litType'] = 1;
 			$input['weanDate'] = $this->weanDate;
 			$input['tagDate'] = $this->tagDate;
 			$input['coment'] = $this->coment;
@@ -309,8 +313,7 @@ class ManageLitter extends Component
     $this->litType = null;
     $this->weanDate = null;
     $this->tagDate = null;
-    $this->coment = null;
-		
+    //$this->coment = null;
 	}
 	public function roomSelected()
 	{
