@@ -42,7 +42,7 @@
 									<?php 
 										$total = $total + $row->totalBorn; 								
 									?>
-									{{ $total }} - - {{ $row->totalBorn }} 
+									{{ $row->totalBorn }} 
 									</td>
 									<td class="mx-2">
 									{{ $row->numFemale }} <?php $females = $females + $row->numFemale; ?>
