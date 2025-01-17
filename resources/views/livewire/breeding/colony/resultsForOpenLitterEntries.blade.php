@@ -14,8 +14,8 @@
 						@if(count($openLitterEntries) > 0)
 							<thead class="thead-dark">
 								<th>Mating</br>Key</th>
-								<th>Ref ID</th>
 								<th>Birth</br>Date</th>
+								<th>Ref ID</th>
 								<th>Total</br>Born</th>
 								<th>F </th>
 								<th>M</th>
@@ -33,10 +33,10 @@
 									{{ $row->_mating_key }}
 									</td>
 									<td class="mx-2">
-									{{ $row->mating->matingRefID }}
+									{{ date('d-m-Y', strtotime($row->birthDate)) }}
 									</td>
 									<td class="mx-2">
-									{{ date('d-m-Y', strtotime($row->birthDate)) }}
+									{{ $row->mating->matingRefID }}
 									</td>
 									<td class="mx-2">
 									<?php 
