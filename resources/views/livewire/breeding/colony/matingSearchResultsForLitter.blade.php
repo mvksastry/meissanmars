@@ -20,13 +20,13 @@
 							Breed. Ref ID <font color="red"></font>
 						</td>
 						<td align="center">
-							<font color="red">Dam 1</br>Key</font>
+							<font color="red">F-1</br>Key</font>
 						</td>
 						<td align="center">
-							<font color="red">Dam 2</br>Key</font>
+							<font color="red">F-2</br>Key</font>
 						</td>
 						<td align="center">
-							<font color="red">Sire</br>Key</font>
+							<font color="red">Male</br>Key</font>
 						</td>
 						<td align="center">
 							<font color="red">Mating Date</font>
