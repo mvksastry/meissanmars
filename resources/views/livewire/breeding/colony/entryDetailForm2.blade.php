@@ -128,6 +128,7 @@
             <td>
                 <select wire:model.lazy="_generation_key" name="_generation_key" id="_generation_key">
                   <option value=""></option>
+									<option value="F00">F00</option>
                   @foreach($generations as $item)
                     <option value="{{ $item->generation }}">{{ $item->generation }}</option>
                   @endforeach

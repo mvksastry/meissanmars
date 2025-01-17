@@ -72,21 +72,21 @@
             </td>
             <td>
               <input wire:model.lazy="dam1Id" type="text">
-							<button wire:click="search('{{ $speciesName.'_Dam1' }}')" class="btn btn-primary btn-sm rounded">Dam 1 Search</button>
+							<button wire:click="search('{{ $speciesName.'_Dam1' }}')" class="btn btn-primary btn-sm rounded">F 1 Search</button>
 						</td>
             <td >
               <font color="red">Breeder F2 ID* </font>
             </td>
             <td>
 							<input wire:model.lazy="dam2Id" type="text">
-							<button wire:click="search('{{ $speciesName.'_Dam2' }}')" class="btn btn-primary btn-sm rounded">Dam 2 Search</button>
+							<button wire:click="search('{{ $speciesName.'_Dam2' }}')" class="btn btn-primary btn-sm rounded">F 2 Search</button>
             </td>
 						<td>
               <font color="red">Breeder M ID* </font>
             </td>
             <td>
 							<input wire:model.lazy="sireId" type="text">
-							<button wire:click="search('{{ $speciesName.'_Sire' }}')" class="btn btn-primary btn-sm rounded">Sire Search</button>
+							<button wire:click="search('{{ $speciesName.'_Sire' }}')" class="btn btn-primary btn-sm rounded">Male Search</button>
             </td>
           </tr>
 
