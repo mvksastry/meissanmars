@@ -64,44 +64,49 @@
 							<input wire:model="autoDates" class="border bg-secondary-subtle" type="checkbox" value="true">Calculate Dates
 						</td>
 					</tr>
+
+
+
+
+
 					
 					<tr>
             <td class="border px-2  p-1">
                 A: # Total Born
             </td>
             <td class="border px-2  p-1">
-                <input wire:model.lazy="totalBorn" class="form-control-sm border bg-primary-subtle" type="text">
+                <input wire:model.lazy="totalBorn" placeholder="Total Born" class="form-control-sm border bg-primary-subtle" type="text">
             </td>
           </tr>
 
 					<tr>
             <td class="border px-2  p-1">
-              B: # Dead
+              B: # Females /
+							</br>
+							C: # Males
+            </td>
+            <td class="border px-2  p-1">
+              <input wire:model.lazy="numFemales" placeholder="Females" class="form-control-sm border bg-secondary-subtle" type="text"> /
+              </br>
+							<input wire:model.lazy="numMales" placeholder="Males" class="form-control-sm border bg-secondary-subtle mt-2 " type="text">
+            </td>
+          </tr>
+
+					<tr>
+            <td class="border px-2  p-1">
+              D: # Dead
 						</td>
 						<td class="border px-2  p-1">
-              <input wire:model.lazy="bornDead" class="form-control-sm border bg-secondary-subtle" type="text" placeholder="">
+              <input wire:model.lazy="bornDead" placeholder="Dead" class="form-control-sm border bg-secondary-subtle" type="text" placeholder="">
 						</td>
 					</tr>
-
-					<tr>
-            <td class="border px-2  p-1">
-              C: # Females /
-							</br>
-							D: # Males
-            </td>
-            <td class="border px-2  p-1">
-              <input wire:model.lazy="numFemales" class="form-control-sm border bg-secondary-subtle" type="text"> /
-              </br>
-							<input wire:model.lazy="numMales" class="form-control-sm border bg-secondary-subtle mt-2 " type="text">
-            </td>
-          </tr>
 
 					<tr>
             <td class="border px-2  p-1">
               E: # Culled at Wean
 						</td>
 						<td class="border px-2  p-1">
-              <input wire:model.lazy="culledAtWean" class="form-control-sm border bg-secondary-subtle" type="text" placeholder="">
+              <input wire:model.lazy="culledAtWean" placeholder="Culled At Wean" class="form-control-sm border bg-secondary-subtle" type="text" placeholder="">
 						</td>
 					</tr>
 
@@ -110,7 +115,7 @@
                 F: # Missing at Wean
             </td>
             <td class="border px-2  p-1">
-                <input wire:model.lazy="missAtWean" class="form-control-sm border bg-secondary-subtle" type="text">
+                <input wire:model.lazy="missAtWean" placeholder="Missing At Wean" class="form-control-sm border bg-secondary-subtle" type="text">
             </td>
           </tr>
 
