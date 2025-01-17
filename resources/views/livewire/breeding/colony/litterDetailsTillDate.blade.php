@@ -10,7 +10,7 @@
 					<th>Birth</br>Date</th>
 					<th>Total</br>Born</th>
 					<th>Dead</th>
-					<th>M / F</th>
+					<th>F / M</th>
 					<th>Status</th>
 					<th>Status</br>Date</th>
 				</thead>
