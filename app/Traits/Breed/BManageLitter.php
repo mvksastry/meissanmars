@@ -10,6 +10,7 @@ use DateTime;
 use App\Traits\Breed\BBase;
 use App\Traits\Breed\BCVTerms;
 
+use App\Models\Mortality;
 
 use App\Models\Breeding\Colony\Mouse;
 use App\Models\Breeding\Colony\Mating;
@@ -56,10 +57,15 @@ trait BManageLitter
 				{
 					$input['numMales'] = null;
 				}
+				
 				if($input['bornDead'] == "")
 				{
 					$input['bornDead'] = null;
 				}
+				else {
+					$result = $this->postLitterMortality($input);
+				}
+				
 				if($input['culledAtWean'] == "")
 				{
 					$input['culledAtWean'] = null;
@@ -139,6 +145,30 @@ trait BManageLitter
 		{
 			
 			
+		}
+		
+		public function postLitterMortality($input)
+		{
+			//now make an entry in mortality table
+				$mort = new Mortality(); 
+				$mort->species_id = $input['xspecies_id'];
+				$mort->strain_id = $input['xstrain_id'];
+				$mort->project_id = null;
+				$mort->pi_id = null;
+				$mort->number_dead = $input['bornDead'];
+				$mort->colony_info = "Breeding";
+				$mort->strain_incharge_id = Auth::user()->name;
+				$mort->cage_id = null;
+				$mort->slot_index = Mating::where('_mating_key', $input['matKey'])->value('suggestedPenID');
+				$mort->date_death = date('Y-m-d');
+				$mort->cod = "Not known";
+				$mort->notes = $input['coment'];
+				$mort->posted_by = Auth::user()->name;
+				$mort->date_posted = date('Y-m-d');
+				
+				$mort->save();
+			
+				return true;
 		}
 
 }

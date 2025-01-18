@@ -132,9 +132,11 @@ trait CageInspections
 				$mort->strain_id = $cageIdInfo->strain_id;
 				$mort->project_id = $project_id;
 				$mort->pi_id = $pi_id;
+				$mort->number_dead = $total_removed;
 				$mort->colony_info = "na";
 				$mort->strain_incharge_id = "na";
 				$mort->cage_id = $cageIdInfo->cage_id;
+				$mort->slot_index = null;
 				$mort->date_death = date('Y-m-d');
 				$mort->cod = "not known";
 				$mort->notes = $notes;
