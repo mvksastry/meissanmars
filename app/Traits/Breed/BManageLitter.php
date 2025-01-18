@@ -57,24 +57,24 @@ trait BManageLitter
 				{
 					$input['numMales'] = null;
 				}
+
+				if($input['culledAtWean'] == "")
+				{
+					$input['culledAtWean'] = 0;
+				}
+				if($input['missAtWean'] == "")
+				{
+					$input['missAtWean'] = 0;
+				}
 				
 				if($input['bornDead'] == "")
 				{
-					$input['bornDead'] = null;
+					$input['bornDead'] = 0;
 				}
 				else {
 					$result = $this->postLitterMortality($input);
 				}
-				
-				if($input['culledAtWean'] == "")
-				{
-					$input['culledAtWean'] = null;
-				}
-				if($input['missAtWean'] == "")
-				{
-					$input['missAtWean'] = null;
-				}
-	
+					
         $version = 1;
 
 				switch ($purpose) {
@@ -155,7 +155,7 @@ trait BManageLitter
 				$mort->strain_id = $input['xstrain_id'];
 				$mort->project_id = null;
 				$mort->pi_id = null;
-				$mort->number_dead = $input['bornDead'];
+				$mort->number_dead = $input['bornDead']+$input['culledAtWean']+$input['missAtWean'];
 				$mort->colony_info = "Breeding";
 				$mort->strain_incharge_id = Auth::user()->name;
 				$mort->cage_id = null;
