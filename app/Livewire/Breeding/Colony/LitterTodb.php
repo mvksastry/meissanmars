@@ -579,6 +579,7 @@ class LitterTodb extends Component
 				}
 				
 			$this->resetDbMatingEntryForm();
+			$this->panel2 = false;
 			$this->panel5 = false;
 			$this->panel6 = false;
 		}		
