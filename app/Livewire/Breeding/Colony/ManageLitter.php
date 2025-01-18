@@ -188,7 +188,7 @@ class ManageLitter extends Component
 		//latest litter details
 		$matchThese = ['_mating_key' => $id, 'entry_status' => 'open'];
 		$latLitEntry = Litter::where($matchThese)->latest()->first();
-		
+		//dd($latLitEntry);
 		// all litter details
 		$this->fullLitterDetails = Litter::where('_mating_key', $id)->get();
 		//dd($latLitEntry, $this->fullLitterDetails);
@@ -218,7 +218,6 @@ class ManageLitter extends Component
 			// no litter entries found and we need to populate the field?
 			$this->purpose = "New";
 		}
-		
 		//dd($this->fullLitterDetails);
     //$this->showSearchMatingEntryForm = false;
     //$this->searchResultsMating = false;

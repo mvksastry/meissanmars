@@ -236,6 +236,7 @@
 															</td>
 															<td>
 																<select wire:model.lazy="_generation_key" class="form-control-sm border" name="_generation_key" id="_generation_key">
+																	<option value="">Select</option>
 																	<option value="F00">F00</option>
 																		@foreach($generations as $item)
 																			<option value="{{ $item->generation }}">{{ $item->generation }}</option>
@@ -641,14 +642,15 @@
 															<input wire:model.lazy="mating_comment" class="form-control-sm border bg-secondary-subtle" type="text" class="w-full" placeholder="Comments">
 														</td>
 													</tr>
-													
-													<tr>
-														<td class="border px-2 p-1">
-															<button wire:click="prepareMatingEntryData()" class="btn btn-warning rounded">Post Mating Entries</button>
-														</td>
-														<td class="border px-2 p-1">
-														</td>
-													</tr>
+													@if($showMatingEntryButton)
+														<tr>
+															<td class="border px-2 p-1">
+																<button wire:click="postMatingEntryData()" class="btn btn-warning rounded">Post Mating Entries</button>
+															</td>
+															<td class="border px-2 p-1">
+															</td>
+														</tr>
+													@endif
 												</tbody>
 										</table>														
 									</div>
