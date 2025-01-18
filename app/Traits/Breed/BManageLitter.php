@@ -165,9 +165,7 @@ trait BManageLitter
 				$mort->notes = $input['coment'];
 				$mort->posted_by = Auth::user()->name;
 				$mort->date_posted = date('Y-m-d');
-				
 				$mort->save();
-			
 				return true;
 		}
 
