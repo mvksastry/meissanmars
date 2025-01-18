@@ -48,11 +48,13 @@ trait BManageLitter
     {
 			  // 1. setting the db
         // 2. preparing the data.
+				$totalRemoved = 0;
 				
 				if($input['numFemales'] == "")
 				{
 					$input['numFemales'] = null;
 				}
+				
 				if($input['numMales'] == "")
 				{
 					$input['numMales'] = null;
@@ -62,6 +64,7 @@ trait BManageLitter
 				{
 					$input['culledAtWean'] = 0;
 				}
+				
 				if($input['missAtWean'] == "")
 				{
 					$input['missAtWean'] = 0;
@@ -70,9 +73,6 @@ trait BManageLitter
 				if($input['bornDead'] == "")
 				{
 					$input['bornDead'] = 0;
-				}
-				else {
-					$result = $this->postLitterMortality($input);
 				}
 					
         $version = 1;
@@ -119,13 +119,18 @@ trait BManageLitter
 				$litterEntry->harvestDate         = date('Y-m-d');
 				$litterEntry->numberHarvested     = $input['totalBorn'] - $input['bornDead'];
 
-
+				$totalRemoved = $input['bornDead'] + $input['culledAtWean'] + $input['missAtWean'];
+				
 	      Log::channel('coding')->info('array ready for insert, before try');
            //Stage 5. insert
            //dd($purpose, $litterKey, $input, $litterEntry);
 					 
            try {
-								$litterEntry->save();								
+								$litterEntry->save();					
+								if($totalRemoved > 0 )
+								{
+									$result = $this->postLitterMortality($input);
+								}
 								$msg = $purpose." Litter Entry Success";
 								Log::channel('coding')->info($msg);
 								return true;
