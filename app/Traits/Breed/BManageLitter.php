@@ -126,11 +126,16 @@ trait BManageLitter
            //dd($purpose, $litterKey, $input, $litterEntry);
 					 
            try {
-								$litterEntry->save();					
-								if($totalRemoved > 0 )
+								$result = $litterEntry->save();		
+								
+								if($result)
 								{
-									$result = $this->postLitterMortality($input);
+									if($totalRemoved > 0 )
+									{
+										$result = $this->postLitterMortality($input);
+									}
 								}
+								
 								$msg = $purpose." Litter Entry Success";
 								Log::channel('coding')->info($msg);
 								return true;
@@ -171,6 +176,8 @@ trait BManageLitter
 				$mort->posted_by = Auth::user()->name;
 				$mort->date_posted = date('Y-m-d');
 				$mort->save();
+				$msg = " Dead Litter/still born Entry Success";
+				Log::channel('coding')->info($msg);
 				return true;
 		}
 
