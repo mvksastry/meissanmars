@@ -53,7 +53,7 @@
 				<?php //$id = $row->_mouse_key ?>
 					<tr>
 						<td align="center" width="4%">
-							<button wire:click="pick('{{ $row['mating_key'] }}')" class="btn btn-info rounded">Pick</button>
+							<button wire:click="pick('{{ $row['mating_key'] }}')" class="btn btn-info rounded">{{ $row['matingRefID'] }}</button>
 						</td>
 						<td align="center">
 							{{ $row['matingID'] }}

@@ -167,13 +167,13 @@ trait BManageLitter
 				$mort->pi_id = null;
 				$mort->number_dead = $input['bornDead']+$input['culledAtWean']+$input['missAtWean'];
 				$mort->colony_info = "Breeding";
-				$mort->strain_incharge_id = Auth::user()->name;
+				$mort->strain_incharge_id = Auth::id();
 				$mort->cage_id = null;
 				$mort->slot_index = Mating::where('_mating_key', $input['matKey'])->value('suggestedPenID');
 				$mort->date_death = date('Y-m-d');
 				$mort->cod = "Not known";
 				$mort->notes = $input['coment'];
-				$mort->posted_by = Auth::user()->name;
+				$mort->posted_by = Auth::id();
 				$mort->date_posted = date('Y-m-d');
 				$mort->save();
 				$msg = " Dead Litter/still born Entry Success";
