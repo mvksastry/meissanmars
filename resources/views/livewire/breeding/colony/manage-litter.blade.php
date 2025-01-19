@@ -35,7 +35,7 @@
 				
 				<!-- Main row -->
 				<div class="row">
-					<!-- Left col -->
+				
 					<section class="col-lg-5 connectedSortable">
 						<!-- Custom tabs (Charts with tabs)-->
 						<div class="card card-primary card-outline">
@@ -53,47 +53,41 @@
 						  </div><!-- /.card-header -->
               @include('livewire.breeding.colony.selectSpeciesImages')
 						</div>
-						<!-- /.card -->
-						<!-- /.card -->
 					</section>
-
-          <section class="col-lg-7 connectedSortable">
-						<!-- Custom tabs (Charts with tabs)-->
-						<div class="card card-primary card-outline">
-						  <div class="card-header">
-							<h3 class="card-title">
-							  <i class="fas fa-chart-pie mr-1"></i>
-							  Search Mating Entries
-							</h3>
-							<div class="card-tools">
-							  <ul class="nav nav-pills ml-auto">
-                  <li class="nav-item"></li>
-                  <li class="nav-item"></li>
-							  </ul>
-							</div>
-						  </div><!-- /.card-header -->
-						  <div class="card-body">
-							<div class="tab-content p-0">
-								<!-- Morris chart - Sales -->
-								<div class="chart tab-pane active" id="revenue-chart" style="position: relative;">
-									@if($showSearchMatingEntryForm)
-                       @include('livewire.breeding.colony.searchMatingEntryForm')
-                  @endif
+					
+					@if($showSearchMatingEntryForm)
+						<section class="col-lg-7 connectedSortable">
+							<!-- Custom tabs (Charts with tabs)-->
+							<div class="card card-primary card-outline">
+								<div class="card-header">
+								<h3 class="card-title">
+									<i class="fas fa-chart-pie mr-1"></i>
+									Search Mating Entries
+								</h3>
+								<div class="card-tools">
+									<ul class="nav nav-pills ml-auto">
+										<li class="nav-item"></li>
+										<li class="nav-item"></li>
+									</ul>
 								</div>
+								</div><!-- /.card-header -->
+								<div class="card-body">
+								<div class="tab-content p-0">
+									<!-- Morris chart - Sales -->
+									<div class="chart tab-pane active" id="revenue-chart" style="position: relative;">
+										@include('livewire.breeding.colony.searchMatingEntryForm')
+									</div>
+								</div>
+								</div><!-- /.card-body -->
 							</div>
-						  </div><!-- /.card-body -->
-						</div>
-						<!-- /.card -->
-						<!-- /.card -->
-					</section>
-          
-					<!-- /.Left col -->
-					<!-- right col -->
+						</section>
+          @endif
 				</div><!-- /.row (main row) -->
 			</div><!-- /.container-fluid -->
 		</section>
 		<!-- Main content -->
     
+		@if($searchResultsMating)
 		<section class="content">
 			<div class="container-fluid">
 				
@@ -120,9 +114,7 @@
 								<!-- Morris chart - Sales -->
                   <div class="chart tab-pane active" id="revenue-chart" style="position: relative;">                   
                     <div class="p-2">
-                      @if($searchResultsMating)
-                           @include('livewire.breeding.colony.matingSearchResultsForLitter')
-                      @endif
+                      @include('livewire.breeding.colony.matingSearchResultsForLitter')                     
                     </div>         
                   </div>
                 </div>
@@ -135,8 +127,9 @@
 			</div><!-- /.container-fluid -->
 		</section>
 		<!-- Main content -->    
-      
-        
+    @endif
+       
+		@if($showLitterEntryForm)
 		<section class="content">
 			<div class="container-fluid">
 				        
@@ -161,9 +154,7 @@
 								<!-- Morris chart - Sales -->
 								<div class="chart tab-pane active" id="revenue-chart" style="position: relative;">
                   <!-- Show the selection form-->
-                  		@if($showLitterEntryForm)
-                         @include('livewire.breeding.colony.litterDetailForm')
-                      @endif
+                    @include('livewire.breeding.colony.litterDetailForm')                      
 								</div>
 							</div>
 						  </div><!-- /.card-body -->
@@ -196,11 +187,7 @@
                      <!-- Show the selection form-->
                   	@if($showLitterEntriesTillDate)
                          @include('livewire.breeding.colony.litterDetailsTillDate')
-                    @endif										
-                  	@if($showLitterEntryForm)
-											@include('livewire.breeding.colony.litterDetailsTillDate')
-                         
-                    @endif						
+                    @endif																
 								</div>
 							</div>
 						  </div><!-- /.card-body -->
@@ -215,7 +202,8 @@
 			</div><!-- /.container-fluid -->
 		</section>
 		<!-- Main content -->    
-
+		@endif
+		
     <!-- / End of Left Panel Graph Card-->
 	</div>
 

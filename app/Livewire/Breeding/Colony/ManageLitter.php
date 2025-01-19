@@ -49,7 +49,7 @@ class ManageLitter extends Component
 
   public $iaMessage, $iaMessage2;
 
-  public $showLitterEntryForm=false, $showSearchMatingEntryForm, $litterCalculation;
+  public  $litterCalculation;
 
   //compulsory information
   public $speciesName, $speciesKey, $purpose, $matKey, $xspecies_id, $xstrain_id;
@@ -66,7 +66,7 @@ class ManageLitter extends Component
   public $litType=1, $dateBorn, $weanDate, $tagDate, $birthEventStatusKey="A", $coment;
 
   public $matingId_contains, $matingId, $strainKey, $spKey, $lifeStatus, $ownerWg, $fromDate, $toDate;
-  public $matSearchResults, $searchResultsMating, $mqryResult, $wean_time=0;
+  public $matSearchResults, $mqryResult, $wean_time=0;
   public $fullLitterDetails=[], $matingReferenceID=null, $curLitterKey=null;
 	
   public $roomId, $rackId;
@@ -76,9 +76,13 @@ class ManageLitter extends Component
 	
 	public $colonyInfo=null, $cofdeath=null, $mortNotes=null;
 	public $totalInvalid = 0;
+	
 	//panels
 	public $showLitterEntriesTillDate = false;
 	public $showCodRowInputs = false;
+	public $showLitterEntryForm=false;
+	public $showSearchMatingEntryForm = false;
+	public $searchResultsMating = false;
 	
 	protected $rules = [
 				'matKey'        => 'required|numeric',
@@ -96,89 +100,52 @@ class ManageLitter extends Component
 	
 	public function render()
 	{
-		if($this->ppidb)
-		{ 
-			$this->doLitterCalc(); 
-		}
-
-		if($this->autoDates)
-		{ 
-			$this->doDates(); 
-		} else { 
-			$this->weanDate="";
-		}
 		return view('livewire.breeding.colony.manage-litter');
 	}
 		
-  public function doDates()
-  {
-    $dob = $this->dateBorn;
-		
-		$wean_days = " + ".$this->wean_time." days";
-		
-    if(strtotime($dob) == null || empty(strtotime($dob)))
-    {
-        $dob = date('Y-m-d');
-        $this->dateBorn = $dob;
-        $this->weanDate = date('Y-m-d', strtotime($dob.$wean_days));
-        $this->tagDate = date('Y-m-d');
-    }
-    else{
-        $this->weanDate = date('Y-m-d', strtotime($dob.$wean_days));
-    }
-  }
-
-  public function doLitterCalc()
+	public function show($id)
 	{
-    $qry = Litter::where('_mating_key', $this->matKey)->first();
-    if(!empty($qry))
-    {
-      $total = $qry->totalBorn;
-      $f = $qry->numFemale;
-      $m = $qry->numMale;
-      $bd = $qry->numberBornDead;
-      $ncaw = $qry->numberCulledAtWean;
-      $maw = $qry->numberMissingAtWean;
-
-      if($total = $f+$m+$bd+$ncaw+$maw)
-      {
-          $this->litterCalculation = true;
-      }
-      else {
-          $this->litterCalculation = false;
-      }
-    }
-    else {
-      $total = $this->totalBorn;
-      $f = $this->numFemales;
-      $m = $this->numMales;
-      $bd = $this->bornDead;
-      $ncaw = $this->culledAtWean;
-      $maw = $this->missAtWean;
-
-      if($total == $f+$m+$bd+$ncaw+$maw){
-
-          $this->litterCalculation = true;
-      }
-      $this->litterCalculation = false;
-    }
-  }		
-
-  public function searchMates($speciesName)
-  {
-    if($speciesName == "Mice") { $this->spKey = 1; }
-    if($speciesName == "Rat") { $this->spKey = 4; }
-
-    $this->strains = Strain::where('species_id', $this->spKey)->get();
+		if($id == 1) 
+		{ 
+			$this->speciesName = "Mice"; 
+			$this->iaMessage = "Selected Mice"; 
+			$this->spKey = 1;
+		}
+		if($id == 4) 
+		{ 
+			$this->speciesName = "Rat"; 
+			$this->iaMessage = "Selected Rat"; 
+			$this->spKey = 4;
+		}
+		//close existing panels
+		$this->showSearchMatingEntryForm = false;
+		$this->searchResultsMating = false;
+		
+    $this->purpose = "New";
+		$q1 = CVSpecies::where('_species_key', $id)->first();
+		$this->speciesKey = $q1->_species_key;
+		$this->useScheduleTerms = Usescheduleterm::all();
+		$this->protocols = CVProtocol::where('_species_key', $id)->get();
+		$this->lifestatus = Lifestatus::all();
+		//$this->diets = CVDiet::where('_species_key', $id)->get();
+		$this->origins = CVOrigin::all();
+    $this->litterTypes = CVLittertype::all();
+    $this->birthStatuses = CVBirtheventstatus::all();
+		//$this->containerId = Container::max('containerID');
+		$this->rooms = Room::all();
+		$this->racks = Rack::all();
+		
+		$this->strains = Strain::where('species_id', $this->spKey)->get();
     $this->lifestatus = Lifestatus::all();
     $this->owners = Owner::all();
+		
+		$this->showSearchMatingEntryForm = true;
+	}		
+		
 
-    $this->showSearchMatingEntryForm = true;
-  }
 
   public function pullMatingEntries()
 	{
-
     $input['speciesName']       = $this->speciesName;
     $input['speciesKey']        = $this->spKey;
     $input['matingId_contains'] = $this->matingId_contains;
@@ -230,40 +197,18 @@ class ManageLitter extends Component
 			$this->weanDate = $latLitEntry->weanDate;
 			$this->tagDate = $latLitEntry->tagDate;
 			$this->coment = $latLitEntry->comment;
-		
+			
 			// in this case I should populate the form with latest data??
 		}
 		else {
 			// no litter entries found and we need to populate the field?
 			$this->purpose = "New";
 		}
-		//dd($this->fullLitterDetails);
-    //$this->showSearchMatingEntryForm = false;
-    //$this->searchResultsMating = false;
+		
+		$this->showLitterEntryForm = true;
+		$this->showLitterEntriesTillDate = true;
   }
 	
-  public function show($id)
-	{
-		if($id == 1) { $this->speciesName = "Mice"; $this->iaMessage = "Selected Mice"; }
-		if($id == 4) { $this->speciesName = "Rat"; $this->iaMessage = "Selected Rat"; }
-
-    $this->purpose = "New";
-		$q1 = CVSpecies::where('_species_key', $id)->first();
-		$this->speciesKey = $q1->_species_key;
-		$this->useScheduleTerms = Usescheduleterm::all();
-		$this->protocols = CVProtocol::where('_species_key', $id)->get();
-		$this->lifestatus = Lifestatus::all();
-		//$this->diets = CVDiet::where('_species_key', $id)->get();
-		$this->origins = CVOrigin::all();
-    $this->litterTypes = CVLittertype::all();
-    $this->birthStatuses = CVBirtheventstatus::all();
-		//$this->containerId = Container::max('containerID');
-		$this->rooms = Room::all();
-		$this->racks = Rack::all();
-		//$this->cageInfos = $this->suggestedCage();
-		$this->showLitterEntryForm = true;
-	}	
-
   public function enterLitter()
   {
 		if($this->matKey != null)
@@ -349,45 +294,9 @@ class ManageLitter extends Component
 		$this->cofdeath = null;
 		$this->mortNotes = null;
 		$this->showCodRowInputs = false;
+		$this->iaMessage2 = "";
 	}
-	public function roomSelected()
-	{
-		$this->fslot_num = "";
-		$this->cageInfos = null;
-		$this->free_slots = null;
-		$room_id = $this->room_id;
-		$this->racksInRoom = Rack::where('room_id', $room_id)->get();
-		//dd($room_id, $this->racksInRoom);
-	}	
 
-	public function rackSelected()
-	{
-		$rack_id = $this->rack_id;
-		$slots = Slot::where('rack_id', $rack_id)->where('status','A')->get();
-		$this->free_slots = $slots->count();
-		//if no free slots available throw Message
-		if($this->free_slots > 0)
-		{
-			$this->sarray = $slots->toArray();
-			$this->rarray = [];
-			foreach($this->sarray as $row)
-			{
-				$this->rarray[] = $row['slot_id'];
-			}
-			$this->fslot_num = json_encode(array_slice($this->rarray, 0, 5, true));
-			//dd($rarray, $sarray);
-			$this->cageInfos = $this->rarray[0];
-			$this->slot_id = $this->rarray[0];
-			//dd($this->cageInfos);
-			//$this->validateOnly($this->cageInfos);
-			//$this->slotSelectFlag = true;
-			//$this->cageCreateFlag = true;
-		}
-		else {
-			$this->fslot_num = "No Free slots in rack";
-		}
-	}
-	
 	public function deadValueEntered()
 	{
 		$this->totalInvalid = $this->bornDead + $this->culledAtWean + $this->missAtWean;
@@ -417,5 +326,126 @@ class ManageLitter extends Component
 			$this->showCodRowInputs = true;
 		}
 	}
+
+	/*
+	if($this->ppidb)
+	{ 
+		$this->doLitterCalc(); 
+	}
+	*/
+	/*
+	if($this->autoDates)
+	{ 
+		$this->doDates(); 
+	} else { 
+		$this->weanDate="";
+	}
+	*/
+
+	/*	
+  public function doDates()
+  {
+    $dob = $this->dateBorn;
+		
+		$wean_days = " + ".$this->wean_time." days";
+		
+    if(strtotime($dob) == null || empty(strtotime($dob)))
+    {
+        $dob = date('Y-m-d');
+        $this->dateBorn = $dob;
+        $this->weanDate = date('Y-m-d', strtotime($dob.$wean_days));
+        $this->tagDate = date('Y-m-d');
+    }
+    else{
+        $this->weanDate = date('Y-m-d', strtotime($dob.$wean_days));
+    }
+  }
+	*/
+	
+	/*
+  public function searchMates($speciesName)
+  {
+    $this->showSearchMatingEntryForm = true;
+  }		
+	*/
+	/*
+  public function doLitterCalc()
+	{
+    $qry = Litter::where('_mating_key', $this->matKey)->first();
+    if(!empty($qry))
+    {
+      $total = $qry->totalBorn;
+      $f = $qry->numFemale;
+      $m = $qry->numMale;
+      $bd = $qry->numberBornDead;
+      $ncaw = $qry->numberCulledAtWean;
+      $maw = $qry->numberMissingAtWean;
+
+      if($total = $f+$m+$bd+$ncaw+$maw)
+      {
+          $this->litterCalculation = true;
+      }
+      else {
+          $this->litterCalculation = false;
+      }
+    }
+    else {
+      $total = $this->totalBorn;
+      $f = $this->numFemales;
+      $m = $this->numMales;
+      $bd = $this->bornDead;
+      $ncaw = $this->culledAtWean;
+      $maw = $this->missAtWean;
+
+      if($total == $f+$m+$bd+$ncaw+$maw){
+
+          $this->litterCalculation = true;
+      }
+      $this->litterCalculation = false;
+    }
+  }		
+	*/	
+	/*
+	public function roomSelected()
+	{
+		$this->fslot_num = "";
+		$this->cageInfos = null;
+		$this->free_slots = null;
+		$room_id = $this->room_id;
+		$this->racksInRoom = Rack::where('room_id', $room_id)->get();
+		//dd($room_id, $this->racksInRoom);
+	}	
+	*/
+	/*
+	public function rackSelected()
+	{
+		$rack_id = $this->rack_id;
+		$slots = Slot::where('rack_id', $rack_id)->where('status','A')->get();
+		$this->free_slots = $slots->count();
+		//if no free slots available throw Message
+		if($this->free_slots > 0)
+		{
+			$this->sarray = $slots->toArray();
+			$this->rarray = [];
+			foreach($this->sarray as $row)
+			{
+				$this->rarray[] = $row['slot_id'];
+			}
+			$this->fslot_num = json_encode(array_slice($this->rarray, 0, 5, true));
+			//dd($rarray, $sarray);
+			$this->cageInfos = $this->rarray[0];
+			$this->slot_id = $this->rarray[0];
+			//dd($this->cageInfos);
+			//$this->validateOnly($this->cageInfos);
+			//$this->slotSelectFlag = true;
+			//$this->cageCreateFlag = true;
+		}
+		else {
+			$this->fslot_num = "No Free slots in rack";
+		}
+	}
+	*/
+	
+
 	
 }
