@@ -62,6 +62,9 @@
 							(Def: Today)
 						</br>
 							<input wire:model="autoDates" class="border bg-secondary-subtle" type="checkbox" value="true">Calculate Dates
+						</br>
+						@error('dateBorn') <span class="text-danger error">{{ $message }}</span> @enderror
+						
 						</td>
 					</tr>
 
@@ -76,6 +79,9 @@
             </td>
             <td class="border px-2  p-1">
                 <input wire:model.lazy="totalBorn" placeholder="Total Born" class="form-control-sm border bg-primary-subtle" type="text">
+						</br>
+						@error('totalBorn') <span class="text-danger error">{{ $message }}</span> @enderror
+
             </td>
           </tr>
 
@@ -88,8 +94,12 @@
             <td class="border px-2  p-1">
               <input wire:model.lazy="numFemales" placeholder="Females" class="form-control-sm border bg-secondary-subtle" type="text"> /
               </br>
+							@error('numFemales') <span class="text-danger error">{{ $message }}</span> @enderror
+							</br>
 							<input wire:model.lazy="numMales" placeholder="Males" class="form-control-sm border bg-secondary-subtle mt-2 " type="text">
-            </td>
+							</br>
+							@error('numMales') <span class="text-danger error">{{ $message }}</span> @enderror
+						</td>
           </tr>
 
 					<tr>
@@ -97,7 +107,10 @@
               D: # Dead
 						</td>
 						<td class="border px-2  p-1">
-              <input wire:model.lazy="bornDead" placeholder="Dead" class="form-control-sm border bg-secondary-subtle" type="text" placeholder="">
+              <input wire:model.lazy="bornDead" wire:change="deadValueEntered()" placeholder="Dead" class="form-control-sm border bg-secondary-subtle" type="text" placeholder="">
+							</br>
+							@error('bornDead') <span class="text-danger error">{{ $message }}</span> @enderror
+
 						</td>
 					</tr>
 
@@ -106,7 +119,9 @@
               E: # Culled at Wean
 						</td>
 						<td class="border px-2  p-1">
-              <input wire:model.lazy="culledAtWean" placeholder="Culled At Wean" class="form-control-sm border bg-secondary-subtle" type="text" placeholder="">
+              <input wire:model.lazy="culledAtWean" wire:change="culledAtWeanEntered()" placeholder="Culled At Wean" class="form-control-sm border bg-secondary-subtle" type="text" placeholder="">
+							</br>
+							@error('culledAtWean') <span class="text-danger error">{{ $message }}</span> @enderror
 						</td>
 					</tr>
 
@@ -115,9 +130,15 @@
                 F: # Missing at Wean
             </td>
             <td class="border px-2  p-1">
-                <input wire:model.lazy="missAtWean" placeholder="Missing At Wean" class="form-control-sm border bg-secondary-subtle" type="text">
+                <input wire:model.lazy="missAtWean" wire:change="missAtWeanEntered()" placeholder="Missing At Wean" class="form-control-sm border bg-secondary-subtle" type="text">
+							</br>
+							@error('missAtWean') <span class="text-danger error">{{ $message }}</span> @enderror
             </td>
           </tr>
+
+
+
+
 
 					<tr>
             <td class="border px-2  p-1">
@@ -140,12 +161,59 @@
 
 					<tr>
             <td class="border px-2  p-1">
-              Comments
+              Comments (Litter Entries)
 						</td>
             <td class="border px-2  p-1">
               <input wire:model.lazy="coment" class="form-control-sm border bg-secondary-subtle" type="text" class="w-full" placeholder="Comments">
+							</br>
+							@error('coment') <span class="text-danger error">{{ $message }}</span> @enderror
+ 
 						</td>
 					</tr>
+
+					@if($showCodRowInputs)
+						<tr>
+							<td class="border px-2  p-1">
+									Colony Info 
+							</td>
+							<td class="border px-2  p-1">
+								<input wire:model.lazy="colonyInfo" class="form-control-sm border bg-secondary-subtle" type="text" placeholder="Colony Info">
+							</br>
+							@error('colonyInfo') <span class="text-danger error">{{ $message }}</span> @enderror
+
+							</td>
+						</tr>
+
+						<tr>
+							<td class="border px-2  p-1">
+								Cause of Death
+							</td>
+							<td class="border px-2  p-1">
+								<input wire:model.lazy="cofdeath" class="form-control-sm border bg-secondary-subtle" type="text" placeholder="Cause of Death">
+							</br>
+							@error('cofdeath') <span class="text-danger error">{{ $message }}</span> @enderror
+
+							</td>
+						</tr>
+
+						<tr>
+							<td class="border px-2  p-1">
+								Notes (Mortality Related)
+							</td>
+							<td class="border px-2  p-1">
+								<input wire:model.lazy="mortNotes" class="form-control-sm border bg-secondary-subtle" type="text" class="w-full" placeholder="Notes ">
+							</br>
+							@error('mortNotes') <span class="text-danger error">{{ $message }}</span> @enderror
+
+							</td>
+						</tr>						
+					@endif
+
+					<tr class="border bg-warning-subtle">
+						<td colspan="2" class="bg-warning border px-2 p-1">
+						{{ $iaMessage2 }}
+						</td>
+          </tr>
 
 					<tr>
 						<td class="border px-2 p-1">

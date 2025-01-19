@@ -41,11 +41,13 @@ use App\Traits\Breed\BManageLitter;
 
 use Illuminate\Support\Facades\Route;
 
+use Validator;
+
 class ManageLitter extends Component
 {
 	use BMatingSearch, BManageLitter;
 
-  public $iaMessage;
+  public $iaMessage, $iaMessage2;
 
   public $showLitterEntryForm=false, $showSearchMatingEntryForm, $litterCalculation;
 
@@ -72,8 +74,25 @@ class ManageLitter extends Component
 	public $rooms, $racks;
 	public $fslot_num,$free_slots,$racksInRoom=[], $rack_id, $room_id, $slot_id;
 	
+	public $colonyInfo=null, $cofdeath=null, $mortNotes=null;
+	public $totalInvalid = 0;
 	//panels
 	public $showLitterEntriesTillDate = false;
+	public $showCodRowInputs = false;
+	
+	protected $rules = [
+				'matKey'        => 'required|numeric',
+        'dateBorn'      => 'required|date_format:Y-m-d',
+				'totalBorn'     => 'required|numeric',
+				'numFemales'    => 'required|numeric',
+				'numMales'      => 'required|numeric',
+				'bornDead'      => 'sometimes|nullable|numeric',
+				'culledAtWean'  => 'sometimes|nullable|numeric',
+				'missAtWean'    => 'sometimes|nullable|numeric',
+				'coment'        => 'sometimes|nullable|regex:/^[\pL\s\- .,;0-9_]+$/u|max:500',
+				'colonyInfo'    => 'sometimes|nullable|regex:/^[\pL\s\- .,;0-9_]+$/u|max:500',
+				'mortNotes'			=> 'sometimes|nullable|regex:/^[\pL\s\- .,;0-9_]+$/u|max:500',
+  ];	
 	
 	public function render()
 	{
@@ -247,48 +266,61 @@ class ManageLitter extends Component
 
   public function enterLitter()
   {
-		if($this->purpose == "New" || $this->purpose == "Update")
+		if($this->matKey != null)
 		{
-			$input['xspecies_id'] = $this->xspecies_id;
-			$input['xstrain_id'] = $this->xstrain_id;
-			$input['matKey'] = $this->matKey;
-			$input['dateBorn'] = $this->dateBorn;
-			$input['totalBorn'] = $this->totalBorn;
-			$input['bornDead'] = $this->bornDead;
-			$input['numFemales'] = $this->numFemales;
-			$input['numMales'] = $this->numMales;
-			//$input['birthEventStatusKey'] = $this->birthEventStatusKey; // just for simplification of form.
-			$input['birthEventStatusKey'] = 'A';
-			//$input['origin'] = $this->origin;
-			$input['origin'] = "EAF-NCCS";  // just for simplification of form.
-			//$input['litterNum'] = $this->litterNum;
-			$input['litterNum'] = null; // just for simplification of form, not necessary
-			$input['culledAtWean'] = $this->culledAtWean;
-			$input['missAtWean'] = $this->missAtWean;
-			//$input['litType'] = $this->litType; // just for simplification of form.
-			$input['litType'] = 1;
-			$input['weanDate'] = $this->weanDate;
-			$input['tagDate'] = $this->tagDate;
-			$input['coment'] = $this->coment;
-
-			$msg = $this->addLitterData($this->purpose, $input);
-			
-			// now change cage_type from M to W meaning pups present in 
-			// the cage
-			$slot_index = Mating::where('_mating_key', $this->matKey)->value('suggestedPenID');
-			$cage_id = Slot::where('slot_index', $slot_index)->value('cage_id');
-			$cageInfo = Cage::where('cage_id', $cage_id)->first();
-			//dd($this->matKey, $slot_index, $cage_id, $cageInfo);
-			$cageInfo->cage_type = 'W';
-			$cageInfo->save();
-			
-			if($msg)
+			if($this->purpose == "New" || $this->purpose == "Update")
 			{
-				$this->resetLitterDetails();
+				$this->validate();
+				
+				$input['xspecies_id'] = $this->xspecies_id;
+				$input['xstrain_id'] = $this->xstrain_id;
+				$input['matKey'] = $this->matKey;
+				$input['dateBorn'] = $this->dateBorn;
+				$input['totalBorn'] = $this->totalBorn;
+				$input['bornDead'] = $this->bornDead;
+				$input['numFemales'] = $this->numFemales;
+				$input['numMales'] = $this->numMales;
+				//$input['birthEventStatusKey'] = $this->birthEventStatusKey; // just for simplification of form.
+				$input['birthEventStatusKey'] = 'A';
+				//$input['origin'] = $this->origin;
+				$input['origin'] = "EAF-NCCS";  // just for simplification of form.
+				//$input['litterNum'] = $this->litterNum;
+				$input['litterNum'] = null; // just for simplification of form, not necessary
+				$input['culledAtWean'] = $this->culledAtWean;
+				$input['missAtWean'] = $this->missAtWean;
+				//$input['litType'] = $this->litType; // just for simplification of form.
+				$input['litType'] = 1;
+				$input['weanDate'] = $this->weanDate;
+				$input['tagDate'] = $this->tagDate;
+				$input['coment'] = $this->coment;
+
+				$input['colonyInfo'] = $this->colonyInfo;
+				$input['cofdeath'] = $this->cofdeath;
+				$input['mortNotes'] = $this->mortNotes;
+				
+				$msg = $this->addLitterData($this->purpose, $input);
+				
+				// now change cage_type from M to W meaning pups present in 
+				// the cage
+				$slot_index = Mating::where('_mating_key', $this->matKey)->value('suggestedPenID');
+				$cage_id = Slot::where('slot_index', $slot_index)->value('cage_id');
+				$cageInfo = Cage::where('cage_id', $cage_id)->first();
+				//dd($this->matKey, $slot_index, $cage_id, $cageInfo);
+				$cageInfo->cage_type = 'W';
+				$cageInfo->save();
+				
+				if($msg)
+				{
+					$this->resetLitterDetails();
+				}
 			}
+			else {
+				$this->iaMessage2 = "Refresh Form, Pick Mating ID";
+			}
+		
 		}
 		else {
-			$this->iaMessage = "Refresh Form, Pick Mating ID";
+			$this->iaMessage2 = "Pick Mating ID";
 		}
   }
 
@@ -313,6 +345,10 @@ class ManageLitter extends Component
     $this->weanDate = null;
     $this->tagDate = null;
     //$this->coment = null;
+		$this->colonyInfo= null;
+		$this->cofdeath = null;
+		$this->mortNotes = null;
+		$this->showCodRowInputs = false;
 	}
 	public function roomSelected()
 	{
@@ -349,6 +385,36 @@ class ManageLitter extends Component
 		}
 		else {
 			$this->fslot_num = "No Free slots in rack";
+		}
+	}
+	
+	public function deadValueEntered()
+	{
+		$this->totalInvalid = $this->bornDead + $this->culledAtWean + $this->missAtWean;
+		//dd($totalInvalid);
+		if($this->totalInvalid > 0)
+		{
+			$this->showCodRowInputs = true;
+		}
+	}
+	
+	public function culledAtWeanEntered()
+	{
+		$this->totalInvalid = $this->bornDead + $this->culledAtWean + $this->missAtWean;
+		//dd($totalInvalid);
+		if($this->totalInvalid > 0)
+		{
+			$this->showCodRowInputs = true;
+		}
+	}
+	
+	public function missAtWeanEntered()
+	{
+		$this->totalInvalid = $this->bornDead + $this->culledAtWean + $this->missAtWean;
+		//dd($totalInvalid);
+		if($this->totalInvalid > 0)
+		{
+			$this->showCodRowInputs = true;
 		}
 	}
 	
