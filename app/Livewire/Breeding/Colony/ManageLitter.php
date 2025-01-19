@@ -142,8 +142,6 @@ class ManageLitter extends Component
 		$this->showSearchMatingEntryForm = true;
 	}		
 		
-
-
   public function pullMatingEntries()
 	{
     $input['speciesName']       = $this->speciesName;
@@ -262,7 +260,6 @@ class ManageLitter extends Component
 			else {
 				$this->iaMessage2 = "Refresh Form, Pick Mating ID";
 			}
-		
 		}
 		else {
 			$this->iaMessage2 = "Pick Mating ID";
