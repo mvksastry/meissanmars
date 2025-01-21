@@ -17,13 +17,13 @@ use Illuminate\Support\Facades\Route;
 use App\Models\Breeding\Colony\Mouse;
 use Validator;
 
-class ColonyReview extends Component
+class MouseEntries extends Component
 {
 		public $mouseEntries=[];
 		
     public function render()
     {
-        return view('livewire.breeding.colony.colony-review');
+			$this->mouseEntries = Mouse::with('strainSelected')->get();
+			return view('livewire.breeding.colony.mouse-entries');
     }
-	
 }
