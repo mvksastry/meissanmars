@@ -58,10 +58,12 @@
 														<tr>
 															<th>Litter Key</th>
 															<th>Birth Date</th>
-															<th>Parent ID</th>
-															<th>Total; F; M;</th>
 															<th>Ref ID</th>
-															<th>Wean Note</th>
+															<th>Parent ID</th>
+															<th>Total; F; M; SB; CW; MW</th>
+															<th>Weaned On</th>
+															<th>Status</th>
+															<th>Status Date</th>
 															<th>Comment</th>
 														</tr>
 													</thead>
@@ -71,13 +73,21 @@
 																<tr>
 																	<td>{{ $row->_litter_key }}</td>
 																	<td>{{ date('d-m-Y', strtotime($row->birthDate)) }}</td>
-																	<td></td>
-																	<td>T:{{ $row->totalBorn }}; F: {{ $row->numFemale }}; M: {{ $row->numMale }}</td>
+																	<td>A{{ $row->mating->matingRefID }}</td>
+																	<td>{{ $row->mating->parentID }}</td>
+																	<td>T:{{ $row->totalBorn }}; 
+																			F: {{ $row->numFemale }}; 
+																			M: {{ $row->numMale }};
+																			SB:{{ $row->numberBornDead }};
+																			CW:{{ $row->numberCulledAtWean }};
+																			MW:{{ $row->numberMissingAtWean }}
+																	</td>
+																	<td>{{ date('d-m-Y', strtotime($row->weanDate)) }}</td>
 																	
 																	
-																	<td></td>
-																	<td>{{ $row->entry_status }}</td>
+																	<td>{{ ucfirst($row->entry_status) }}</td>
 																	<td>{{ $row->entry_status_date }}</td>
+																	<td>{{ $row->comment }}</td>
 																</tr>
 															@endforeach
 														@endif

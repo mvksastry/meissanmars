@@ -23,7 +23,7 @@ class LitterEntries extends Component
 		
     public function render()
     {
-				$this->litterEntries = Litter::all();
+				$this->litterEntries = Litter::with('mating')->get();
         return view('livewire.breeding.colony.litter-entries');
     }
 }
