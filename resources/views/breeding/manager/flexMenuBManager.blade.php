@@ -45,7 +45,7 @@
         <div class="icon">
           <i class="ion ion-card"></i>
         </div>
-        <a href="{{ route('kanban.index') }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+        <a href="/colony-review" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
       </div>
     </div>
     <!-- ./col -->
