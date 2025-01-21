@@ -34,11 +34,11 @@ class ColonyReview extends Component
 
 		public function matingDBReview()
 		{
-			return view('livewire.breeding.colony.colony-base');
+			return view('livewire.breeding.colony.mating-entries');
 		}	
 		
 		public function litterDBReview()
 		{
-			return view('livewire.breeding.colony.colony-base');
+			return view('livewire.breeding.colony.litter-entries');
 		}
 }
