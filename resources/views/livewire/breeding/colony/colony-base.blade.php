@@ -1,8 +1,10 @@
 <div>
+    {{-- Close your eyes. Count to one. That is how long forever feels. --}}
     {{-- Care about people's approval and you will be their prisoner. --}}
     {{-- To attain knowledge, add things every day; To attain wisdom, subtract things every day. --}}
     <!-- Content Wrapper. Contains page content -->
 	<div class="content-wrapper">
+	
 		<!-- Content Header (Page header) -->
 		<div class="content-header">
 			<div class="container-fluid">
@@ -31,12 +33,12 @@
 					<!-- Left col -->
 						<!-- Custom tabs (Charts with tabs)-->
 						  <div class="card-body">
-								<div class="tab-content p-0">
-									<!-- Morris chart - Sales -->
-									<div class="chart tab-pane active" id="revenue-chart" style="position: relative;">
-										
-									</div>
+							<div class="tab-content p-0">
+								<!-- Morris chart - Sales -->
+								<div class="chart tab-pane active" id="revenue-chart" style="position: relative;">
+									<livewire:breeding.colony.mouse-entries /> 
 								</div>
+							</div>
 						  </div><!-- /.card-body -->
 						<!-- /.card -->
 						<!-- /.card -->
@@ -47,4 +49,3 @@
     <!-- / End of Left Panel Graph Card-->
   </div>
 </div>
-

@@ -23,7 +23,22 @@ class ColonyReview extends Component
 		
     public function render()
     {
-        return view('livewire.breeding.colony.colony-review');
+      return view('livewire.breeding.colony.colony-review');
     }
-	
+		
+		public function mouseDBReview()
+		{
+			//dd("reached");
+			return view('livewire.breeding.colony.mouse-entries');
+		}
+
+		public function matingDBReview()
+		{
+			return view('livewire.breeding.colony.colony-base');
+		}	
+		
+		public function litterDBReview()
+		{
+			return view('livewire.breeding.colony.colony-base');
+		}
 }

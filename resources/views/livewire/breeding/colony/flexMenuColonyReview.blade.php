@@ -6,7 +6,7 @@
     <div class="col-lg-3 col-6">
       <!-- small box -->
       <div class="small-box">
-        <a href="#" wire:click.prevent="mouseDBEntries()" class="small-box-footer"> 
+        <a href="/mouse-entries" class="small-box-footer"> 
         <button type="button" class="btn btn-outline-primary btn-block">
           <i  class="fas fa-arrow-circle-right"></i>
           REVIEW MOUSE DB
@@ -18,7 +18,7 @@
     <div class="col-lg-3 col-6">
       <!-- small box -->
       <div class="small-box">
-        <a href="/mating-entries" class="small-box-footer"> 
+        <a href="#" wire:click.prevent="matingDBReview()" class="small-box-footer"> 
         <button type="button" class="btn btn-outline-primary btn-block">
           <i class="fas fa-arrow-circle-right"></i>
           MATING ENTRIES
@@ -45,7 +45,7 @@
     <div class="col-lg-3 col-6">
       <!-- small box -->
       <div class="small-box">
-        <a href="/litter-entries" class="small-box-footer"> 
+        <a href="#" wire:click.prevent="litterDBReview()" class="small-box-footer"> 
         <button type="button" class="btn btn-outline-primary btn-block">
         <i class="fas fa-arrow-circle-right"></i>
           LITTER ENTRIES

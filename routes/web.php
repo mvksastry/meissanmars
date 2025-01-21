@@ -113,6 +113,9 @@ use App\Livewire\Breeding\Colony\ColonyPermissions;
 use App\Livewire\Breeding\Colony\ColonyReview;
 use App\Livewire\Breeding\Colony\DailyColonyReports;
 use App\Livewire\Breeding\Colony\ColonyAuthorizations;
+
+//DB Review related
+use App\Livewire\Breeding\Colony\MouseEntries;
 //-------------------------------------------------------//
 
 //livewire - Breeding/Colnoy Permission Management
@@ -316,7 +319,11 @@ Route::middleware(['auth','verified'])->group(function() {
 		Route::get('/litter-todb', LitterTodb::class);
 		Route::get('/wean-home', WeanHome::class);
 		Route::get('/colony-permissions', ColonyPermissions::class);
+		// -------------- //
+		
+		// Breeding - Livewire Colony Routes
 		Route::get('/colony-review', ColonyReview::class);
+		Route::get('/mouse-entries', MouseEntries::class);
     // -------------- //
         
 		// Breeding - Livewire Colony Routes		

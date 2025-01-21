@@ -37,16 +37,16 @@
 						<!-- Custom tabs (Charts with tabs)-->
 						<div class="card card-primary card-outline">
 						  <div class="card-header">
-							<h3 class="card-title">
-							  <i class="fas fa-chart-pie mr-1"></i>
-							  Racks
-							</h3>
-							<div class="card-tools">
-							  <ul class="nav nav-pills ml-auto">
-                  <li class="nav-item"></li>
-                  <li class="nav-item"></li>
-							  </ul>
-							</div>
+								<h3 class="card-title">
+									<i class="fas fa-chart-pie mr-1"></i>
+									Racks
+								</h3>
+								<div class="card-tools">
+									<ul class="nav nav-pills ml-auto">
+										<li class="nav-item"></li>
+										<li class="nav-item"></li>
+									</ul>
+								</div>
 						  </div><!-- /.card-header -->
 						  <div class="card-body">
 							<div class="tab-content p-0">
