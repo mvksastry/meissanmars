@@ -3,6 +3,7 @@
 namespace App\Models\Breeding\Colony;
 
 use App\Models\Strain;
+use App\Models\Rack;
 use App\Models\Breeding\Cvterms\CVProtocol;
 use App\Models\Breeding\Cvterms\CVGeneration;
 use App\Models\Breeding\Cvterms\Lifestatus;
@@ -105,7 +106,12 @@ class Mouse extends Model
     {
       return $this->hasMany(Container::class, '_container_key', '_pen_key');
     }
-
+		
+		public function rack()
+		{
+			return $this->hasOne(Rack::class, 'rack_id', 'rack_id');
+		}
+		
     // Customize log name
     protected static $logName = 'Mouse';
 

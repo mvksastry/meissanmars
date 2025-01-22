@@ -56,7 +56,7 @@
 														<tr>
 															<th>Mouse Key</th>
 															<th>ID</th>
-															<th>Strain Key</th>
+															<th>Strain</th>
 															<th>Birth Date</th>
 															<th>Sex</th>
 															<th>Cage/Rack/Slot</th>
@@ -72,7 +72,13 @@
 																	<td>{{ $row->strainSelected->strain_name }}</td>
 																	<td>{{ date('d-m-Y', strtotime($row->birthDate)) }}</td>
 																	<td>{{ $row->sex }}</td>
-																	<td>{{ $row->cage_id }}/{{ $row->rack_id }}/{{ $row->slot_id }}</td>
+																	<td>{{ $row->cage_id }}/
+																	@if($row->rack != null)
+																	{{ $row->rack->rack_name }}
+																	@else
+																		-
+																	@endif
+																	/{{ $row->slot_id }}</td>
 																	<td>{{ $row->cod }}/{{ $row->codNotes }}</td>
 																</tr>
 															@endforeach
