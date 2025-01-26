@@ -12,8 +12,8 @@ use Spatie\Activitylog\LogOptions;
 
 class B2p extends Model
 {
-   use HasFactory;
-	use HasRoles;
+		use HasFactory;
+		use HasRoles;
     use LogsActivity;
 		
 		protected $primaryKey = 'b2p_id';
@@ -33,6 +33,21 @@ class B2p extends Model
 			'moved_ids',
 			'comment'	
 		];
+		
+		public function species()
+    {
+      return $this->hasOne(Species::class, 'species_id', 'species_id');
+    }
+
+		public function strain()
+    {
+      return $this->hasOne(Strain::class, 'strain_id', 'strain_id');
+    }
+
+		public function movedby()
+    {
+      return $this->hasOne(User::class, 'id', 'moved_by');
+    }
 		
     // Customize log name
     protected static $logName = 'B2p';

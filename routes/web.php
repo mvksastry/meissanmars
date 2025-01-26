@@ -118,6 +118,8 @@ use App\Livewire\Breeding\Colony\ColonyAuthorizations;
 use App\Livewire\Breeding\Colony\MouseEntries;
 use App\Livewire\Breeding\Colony\MatingEntries;
 use App\Livewire\Breeding\Colony\LitterEntries;
+use App\Livewire\Breeding\Colony\SupplyRegister;
+use App\Livewire\Breeding\Colony\MortalityRegister;
 //-------------------------------------------------------//
 
 //livewire - Breeding/Colnoy Permission Management
@@ -328,6 +330,8 @@ Route::middleware(['auth','verified'])->group(function() {
 		Route::get('/mouse-entries', MouseEntries::class);
 		Route::get('/mating-entries', MatingEntries::class);
 		Route::get('/litter-entries', LitterEntries::class);
+		Route::get('/supply-register', SupplyRegister::class);
+		Route::get('/mortality-register', MortalityRegister::class);
     // -------------- //
         
 		// Breeding - Livewire Colony Routes		

@@ -40,7 +40,27 @@ class Mortality extends Model
 		'posted_by',
 		'date_posted',		
   ];
-		
+
+	public function species()
+  {
+    return $this->hasOne(Species::class, 'species_id', 'species_id');
+  }
+
+	public function strain()
+  {
+    return $this->hasOne(Strain::class, 'strain_id', 'strain_id');
+  }
+
+	public function incharge()
+  {
+    return $this->hasOne(User::class, 'id', 'strain_incharge_id');
+  }
+
+	public function postedby()
+  {
+    return $this->hasOne(User::class, 'id', 'posted_by');
+  }
+	
 	public function user()
   {
     return $this->hasOne(User::class, 'id', 'pi_id');
