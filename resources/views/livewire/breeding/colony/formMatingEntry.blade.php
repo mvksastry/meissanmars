@@ -183,9 +183,9 @@
          			<font color="red">Litter Generation*</font>
          		</td>
          		<td colspan="1">
-         			<select wire:model.lazy="generation_key">
-           			<option value=""></option>
-								<option value="F00">F00</option>
+								<select wire:model.lazy="generation_key">
+									<option value="">Select</option>
+									<option value="F00">F00</option>
            				@foreach($generations as $item)
            					<option value="{{ $item->generation }}">{{ $item->generation }}</option>
           				@endforeach
