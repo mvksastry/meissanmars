@@ -639,6 +639,13 @@
 														</td>
 														<td class="border px-2  p-1">
 															<input wire:model.lazy="mating_comment" class="form-control-sm border bg-secondary-subtle" type="text" class="w-full" placeholder="Comments">
+														</br>
+															@error('mating_comment') 
+																<span class="text-danger error">
+																	{{ $message }}
+																</span> 
+															@enderror
+														
 														</td>
 														
 													</tr>

@@ -128,13 +128,13 @@ class LitterTodb extends Component
 		protected $rules = [
         'mating_date'         => 'required|date_format:Y-m-d',
 				'wean_days'       		=> 'required|numeric',
-				'wean_note'           => 'sometimes|nullable|numeric',
-				'nm_gen_key'          =>  'required|regex:/^[\w-]*$/',
+				'wean_note'           => 'sometimes|nullable|regex:/^[\pL\s\- .,;0-9_]+$/u|max:500',
+				'nm_gen_key'          => 'required|regex:/^[\pL\s\- .,;0-9_]+$/u|max:3',
 				'mroom_id'            => 'required|numeric',
 				'mrack_id'            => 'required|numeric',
 				'mslot_id'            => 'required|numeric',
-				'mating_comment'     => 'sometimes|nullable|alpha_dash',
-  ];
+				'mating_comment'      => 'sometimes|nullable|regex:/^[\pL\s\- .,;0-9_]+$/u|max:500',
+  ]; 
 	
 		public function render()
 		{
