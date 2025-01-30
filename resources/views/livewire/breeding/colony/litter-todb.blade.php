@@ -438,7 +438,7 @@
 																		{{ $row['sireID'] }}
 																	</td>
 																	<td class="border px-2 p-1">
-																		Auto Assigned
+																		{{ $row['mRefID'] }}
 																	</td>
 																</tr>
 															@endforeach

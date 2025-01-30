@@ -636,6 +636,7 @@ class LitterTodb extends Component
 			$this->dspair = [];
 			//prepare the pairs and select them
 			$t1=array(); 
+			$matingRefID = Mating::where('_strain_key', $this->strainKey)->max('matingRefID') + 1;
 			
 			$males = $this->mpairs;  //obtained through check box in the form
 			$fmales = $this->fpairs; //obtained through check box in the form
@@ -655,8 +656,10 @@ class LitterTodb extends Component
 							$t1['dam2ID'] = null;
 							$t1['sireID'] = $m[1];
 							$t1['parentID'] = $m[2];
+							$t1['mRefID'] = $matingRefID;
 							array_push($this->dspair, $t1);
 							$t1 = array();
+							$matingRefID = $matingRefID + 1;
 						}
 						break;
 					}
