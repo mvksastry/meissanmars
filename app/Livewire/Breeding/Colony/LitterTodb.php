@@ -118,7 +118,7 @@ class LitterTodb extends Component
 		
 		//flags
 		public $newMatingFlag = false;
-		public $showMatingEntryButton = true;
+		public $showMatingEntryButton = false;
 		public $matingGoFlag = false;
 		
 		//data entry flags
@@ -490,7 +490,9 @@ class LitterTodb extends Component
 					 not be available immediately. Must put pups first for this operation.
 				*/
 			$this->validate();
-			$this->matingGoFlag = false;
+			
+			//$this->matingGoFlag = false;
+			
 			if($this->matingGoFlag)
 			{				
 				$base['purpose'] = "new";
@@ -604,7 +606,7 @@ class LitterTodb extends Component
 				$this->panel6 = false;
 			}
 			else {
-				$this->matingEntryErrorMsg = " Please select Room, Rack";
+				$this->matingEntryErrorMsg = "Please select Room, Rack";
 			}
 		}		
 			
