@@ -51,6 +51,8 @@ use Carbon\Carbon;
 use Illuminate\Log\Logger;
 use Log;
 
+use Validator;
+
 class LitterTodb extends Component
 {
 		use BOpenLitterSearch;
@@ -63,7 +65,7 @@ class LitterTodb extends Component
 		
 		//form messages
 		public $iaMessage, $mpairErrorMessage = null;
-
+		public $matingEntryErrorMsg = null;
 		//panels
 		public $panel1 = false, $panel2 = false, $panel3 = false, $panel4 = false;
 		public $panel5 = false, $panel6 = false;
@@ -116,11 +118,24 @@ class LitterTodb extends Component
 		
 		//flags
 		public $newMatingFlag = false;
-		public $showMatingEntryButton = false;
+		public $showMatingEntryButton = true;
+		public $matingGoFlag = false;
+		
 		//data entry flags
 		public $litterUpdateFlag = false;
 		public $cageUpdateFlag = false;
 
+		protected $rules = [
+        'mating_date'         => 'required|date_format:Y-m-d',
+				'wean_days'       		=> 'required|numeric',
+				'wean_note'           => 'sometimes|nullable|numeric',
+				'nm_gen_key'          =>  'required|regex:/^[\w-]*$/',
+				'mroom_id'            => 'required|numeric',
+				'mrack_id'            => 'required|numeric',
+				'mslot_id'            => 'required|numeric',
+				'mating_comment'     => 'sometimes|nullable|alpha_dash',
+  ];
+	
 		public function render()
 		{
 			//$this->pullAllOpenLitterEntries();
@@ -456,8 +471,10 @@ class LitterTodb extends Component
 				//dd($rarray, $sarray);
 				$this->mcageInfos = $this->mrarray[0];
 				$this->mslot_id = $this->mrarray[0];
+				$this->matingGoFlag = true;
 			}
 			else {
+				
 				$this->mfslot_num = "No Free slots in rack";
 			}		
 		}
@@ -472,6 +489,10 @@ class LitterTodb extends Component
 				4. Make sure you  retrive mouse keys from mouse table as dam sire keys will
 					 not be available immediately. Must put pups first for this operation.
 				*/
+			$this->validate();
+			$this->matingGoFlag = false;
+			if($this->matingGoFlag)
+			{				
 				$base['purpose'] = "new";
 				$base['version'] = 1;
 				$base['_mating_key'] = null;
@@ -577,11 +598,14 @@ class LitterTodb extends Component
 						$this->mrarray = array_values($this->mrarray);
 					}
 				}
-				
-			$this->resetDbMatingEntryForm();
-			$this->panel2 = false;
-			$this->panel5 = false;
-			$this->panel6 = false;
+				$this->resetDbMatingEntryForm();
+				$this->panel2 = false;
+				$this->panel5 = false;
+				$this->panel6 = false;
+			}
+			else {
+				$this->matingEntryErrorMsg = " Please select Room, Rack";
+			}
 		}		
 			
 		public function fPartnerSelected()

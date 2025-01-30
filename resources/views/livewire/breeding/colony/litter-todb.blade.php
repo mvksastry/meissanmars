@@ -443,7 +443,7 @@
 																</tr>
 															@endforeach
 															<tr>
-																<td colspan="2" class="border px-2 p-1">
+																<td colspan="3" class="border px-2 p-1">
 																	{{ $mpairErrorMessage }}
 																</td>
 															</tr>
@@ -502,8 +502,6 @@
 														</td>
 													</tr>
 
-
-
 													<tr>
 														<td class="border px-2 p-1">
 															Mating Date
@@ -546,12 +544,13 @@
 														<td>
 															<select wire:model.lazy="nm_gen_key" class="form-control-sm border" name="_generation_key" id="_generation_key">
 																<option value=""></option>
+																<option value="F00">F00</option>
 																	@foreach($generations as $item)
 																		<option value="{{ $item->generation }}">{{ $item->generation }}</option>
 																	@endforeach
 															</select>
 															</br>
-															@error('_generation_key') 
+															@error('nm_gen_key') 
 																<span class="text-danger error">
 																	{{ $message }}
 																</span> 
@@ -641,8 +640,16 @@
 														<td class="border px-2  p-1">
 															<input wire:model.lazy="mating_comment" class="form-control-sm border bg-secondary-subtle" type="text" class="w-full" placeholder="Comments">
 														</td>
+														
 													</tr>
 													@if($showMatingEntryButton)
+														@if($matingEntryErrorMsg != null)
+														<tr>
+															<td colspan="2" class="border px-2 p-1">
+															{{  $matingEntryErrorMsg }}
+															</td>
+														</tr>
+														@endif
 														<tr>
 															<td class="border px-2 p-1">
 																<button wire:click="postMatingEntryData()" class="btn btn-warning rounded">Post Mating Entries</button>

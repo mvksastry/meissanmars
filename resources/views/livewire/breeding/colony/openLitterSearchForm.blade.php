@@ -69,7 +69,9 @@
 
 				<tr>
 					<td>
+					<!--
 						<button wire:click="pullSelectedLitterEntries()" class="btn btn-info rounded">Pull Entries</button>
+					-->
 					</td>
 				</tr>
 				<tr>
