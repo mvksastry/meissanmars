@@ -489,12 +489,13 @@ class LitterTodb extends Component
 				4. Make sure you  retrive mouse keys from mouse table as dam sire keys will
 					 not be available immediately. Must put pups first for this operation.
 				*/
-			$this->validate();
-			
+			//$this->validate();
+			//dd("reached");
 			//$this->matingGoFlag = false;
 			
 			if($this->matingGoFlag)
 			{				
+		
 				$base['purpose'] = "new";
 				$base['version'] = 1;
 				$base['_mating_key'] = null;
