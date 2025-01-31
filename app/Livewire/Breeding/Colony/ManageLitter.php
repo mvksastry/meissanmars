@@ -339,7 +339,7 @@ class ManageLitter extends Component
 	}
 	*/
 
-	/*	
+		
   public function doDates()
   {
     $dob = $this->dateBorn;
@@ -357,7 +357,7 @@ class ManageLitter extends Component
         $this->weanDate = date('Y-m-d', strtotime($dob.$wean_days));
     }
   }
-	*/
+	
 	
 	/*
   public function searchMates($speciesName)

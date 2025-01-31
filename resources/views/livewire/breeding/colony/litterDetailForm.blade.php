@@ -58,7 +58,7 @@
               Date Born
 						</td>
 						<td class="border px-2  p-1">
-              <input wire:model.lazy="dateBorn" class="form-control-sm border bg-secondary-subtle" type="date" placeholder="YYYY-MM-DD">
+              <input wire:model.lazy="dateBorn" wire:change="doDates" class="form-control-sm border bg-secondary-subtle" type="date" placeholder="YYYY-MM-DD">
 							(Def: Today)
 						</br>
 							<input wire:model="autoDates" class="border bg-secondary-subtle" type="checkbox" value="true">Calculate Dates
