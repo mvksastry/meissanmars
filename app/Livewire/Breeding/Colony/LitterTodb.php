@@ -522,7 +522,7 @@ class LitterTodb extends Component
 				}
 				
 				$msg = 'Data collection for mating entries seems to be complete';
-				array_push($this->msgLTM, $msg);
+				//array_push($this->msgLTM, $msg);
 				Log::channel('coding')->info($msg);
 				
 				//dd($finalMatArray);	

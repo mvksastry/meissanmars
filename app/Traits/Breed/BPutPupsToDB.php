@@ -46,7 +46,7 @@ trait BPutPupsToDB
 				//dd($mice_idx, $miceArrayInfo);
 				$msgx2 = 'Data collection for [ '.$miceArrayInfo['ID'].'] insert array complete';
 				Log::channel('coding')->info($msgx2);
-				array_push($this->success_box, $msgx2);
+				//array_push($this->success_box, $msgx2);
 
 				//now insert into db here using try catch to revert if any error
 

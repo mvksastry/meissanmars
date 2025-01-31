@@ -105,7 +105,7 @@ trait BLitterToMating
 				//data collection complete
 				//dd($newMatingEntry);
 				$msg = 'Data collection for mating id [ '.$matingRefID.'] complete';
-				array_push($this->msgLTM, $msg);
+				//array_push($this->msgLTM, $msg);
 				Log::channel('coding')->info($msg);
 
 					 //Stage 5. insert
