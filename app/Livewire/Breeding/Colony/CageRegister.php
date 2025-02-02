@@ -39,7 +39,6 @@ class CageRegister extends Component
     public function render()
     {
 			$this->rooms = Room::all();
-			
 			$this->cageEntries1 = Cage::with('user')->with('species')->with('strain')->get();
       return view('livewire.breeding.colony.cage-register');
     }
@@ -66,6 +65,5 @@ class CageRegister extends Component
 										->where('rack_id', $id)->where('cage_id', '<>', 0)->get();
 			//dd($this->cageEntries2);
 			$this->cagesPanel = true;
-			//return redirect(request()->header('Referer'));
 		}
 }
