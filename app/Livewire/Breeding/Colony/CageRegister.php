@@ -58,15 +58,12 @@ class CageRegister extends Component
 		
 		public function rackLayout($id)
 		{
+			//dd($id);
+			$this->rackName = Rack::where('rack_id', $id)->pluck('rack_name');
 			$this->defaultPanel = false;
 			$this->cageEntries = [];
-			$cages = Slot::where('rack_id', $id)->where('cage_id', '<>', 0)->pluck('cage_id')->toArray();
-			
-			$this->cageEntries2 = Cage::with('user')
-																	->with('species')
-																	->with('strain')
-																	->whereIn('cage_id',$cages)
-																	->get();
+			$this->cageEntries2 = Slot::with('cages')
+										->where('rack_id', $id)->where('cage_id', '<>', 0)->get();
 			//dd($this->cageEntries2);
 			$this->cagesPanel = true;
 			//return redirect(request()->header('Referer'));

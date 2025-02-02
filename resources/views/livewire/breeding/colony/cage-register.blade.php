@@ -212,7 +212,7 @@
 								<div class="card-header">
 									<h3 class="card-title">
 										<i class="fas fa-chart-pie mr-1"></i>
-										Cage Details
+										Cage Details in Rack: {{ $rackName }}
 									</h3>
 									<div class="card-tools">
 										<ul class="nav nav-pills ml-auto">
@@ -232,6 +232,7 @@
 													<thead>
 														<tr>
 															<th>Cage ID</th>
+															<th>Slot ID</th>
 															<th>Project ID</th>
 															<th>Issue ID</th>
 															<th>Request By</th>
@@ -250,30 +251,31 @@
 														@if(count($cageEntries2) > 0 )
 															@foreach($cageEntries2 as $row)
 																<tr>
-																	<td>{{ $row->cage_id }}</td>
-																	<td>{{ $row->project_id  }}</td>
-																	<td>{{ $row->issue_id  }}</td>
-																	@if($row->user != null)
-																	<td>{{ $row->user->name }}</td>
+																	<td>{{ $row->cages->cage_id }}</td>
+																	<td>{{ $row->slot_id }}</td>
+																	<td>{{ $row->cages->project_id  }}</td>
+																	<td>{{ $row->cages->issue_id  }}</td>
+																	@if($row->cages->user != null)
+																	<td>{{ $row->cages->user->name }}</td>
 																	@else 
 																		<td>-</td>
 																	@endif
 																	
-																	@if($row->species != null)
-																	<td>{{ $row->species->species_name }}</td>
+																	@if($row->cages->species != null)
+																	<td>{{ $row->cages->species->species_name }}</td>
 																	@endif
 																	
-																	@if($row->strain != null)
-																	<td>{{ $row->strain->strain_name  }}</td>
+																	@if($row->cages->strain != null)
+																	<td>{{ $row->cages->strain->strain_name  }}</td>
 																	@endif
 																	
-																	<td>{{ $row->start_date  }}</td>
-																	<td>{{ $row->end_date  }}</td>
-																	<td>{{ $row->ack_date  }}</td>
-																	<td>{{ $row->cage_status  }}</td>
-																	<td>{{ $row->cage_type }}</td>
-																	<td>{{ $row->cage_label }}</td>
-																	<td>{{ $row->notes  }}</td>
+																	<td>{{ $row->cages->start_date  }}</td>
+																	<td>{{ $row->cages->end_date  }}</td>
+																	<td>{{ $row->cages->ack_date  }}</td>
+																	<td>{{ $row->cages->cage_status  }}</td>
+																	<td>{{ $row->cages->cage_type }}</td>
+																	<td>{{ $row->cages->cage_label }}</td>
+																	<td>{{ $row->cages->notes  }}</td>
 																</tr>
 															@endforeach
 														@endif
