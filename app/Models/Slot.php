@@ -24,7 +24,7 @@ class Slot extends Model
     * @var array
     */
     protected $fillable = [
-        'slot_id',
+      'slot_id',
     	'rack_id',
     	'cage_id',
     	'status'
@@ -37,8 +37,13 @@ class Slot extends Model
 
     public function occupancy()
     {
-        return $this->hasOne(Occupancies::class, 'rack_id', 'rack_id');
+      return $this->hasOne(Occupancies::class, 'rack_id', 'rack_id');
     }
+		
+		public function cages()
+		{
+			return $this->hasOne(Cage::class, 'cage_id', 'cage_id');
+		}
 
     // Customize log name
     protected static $logName = 'Slot';

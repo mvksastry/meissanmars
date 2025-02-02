@@ -115,12 +115,13 @@ use App\Livewire\Breeding\Colony\DailyColonyReports;
 use App\Livewire\Breeding\Colony\ColonyAuthorizations;
 
 //DB Review related
+use App\Livewire\Breeding\Colony\CageRegister;
 use App\Livewire\Breeding\Colony\MouseEntries;
 use App\Livewire\Breeding\Colony\MatingEntries;
 use App\Livewire\Breeding\Colony\LitterEntries;
 use App\Livewire\Breeding\Colony\SupplyRegister;
 use App\Livewire\Breeding\Colony\MortalityRegister;
-//-------------------------------------------------------//
+//------------------------------------------------------//
 
 //livewire - Breeding/Colnoy Permission Management
 use App\Livewire\Breeding\Colony\AssignSpecies;
@@ -332,6 +333,7 @@ Route::middleware(['auth','verified'])->group(function() {
 		Route::get('/litter-entries', LitterEntries::class);
 		Route::get('/supply-register', SupplyRegister::class);
 		Route::get('/mortality-register', MortalityRegister::class);
+		Route::get('/cage-register', CageRegister::class);
     // -------------- //
         
 		// Breeding - Livewire Colony Routes		
