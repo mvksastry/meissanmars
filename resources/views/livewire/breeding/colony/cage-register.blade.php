@@ -159,8 +159,8 @@
 														</tr>
 													</thead>
 													<tbody>
-														@if(count($cageEntries) > 0 )
-															@foreach($cageEntries as $row)
+														@if(count($cageEntries1) > 0 )
+															@foreach($cageEntries1 as $row)
 																<tr>
 																	<td>{{ $row->cage_id }}</td>
 																	<td>{{ $row->project_id  }}</td>

@@ -22,7 +22,7 @@ use Validator;
 
 class CageRegister extends Component
 {
-		public $cageEntries=[], $cageEntries2=[], $rooms, $room_name;
+		public $cageEntries1 = [], $cageEntries2 = [], $rooms, $room_name;
 		public $rackUpdate = false;
 		public $layoutRack = false;
 		public $cageInfos = false;
@@ -40,7 +40,7 @@ class CageRegister extends Component
     {
 			$this->rooms = Room::all();
 			
-			$this->cageEntries = Cage::with('user')->with('species')->with('strain')->get();
+			$this->cageEntries1 = Cage::with('user')->with('species')->with('strain')->get();
       return view('livewire.breeding.colony.cage-register');
     }
 		
@@ -61,7 +61,7 @@ class CageRegister extends Component
 			//dd($id);
 			$this->rackName = Rack::where('rack_id', $id)->pluck('rack_name');
 			$this->defaultPanel = false;
-			$this->cageEntries = [];
+			$this->cageEntries1 = [];
 			$this->cageEntries2 = Slot::with('cages')
 										->where('rack_id', $id)->where('cage_id', '<>', 0)->get();
 			//dd($this->cageEntries2);
