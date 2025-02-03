@@ -3,7 +3,7 @@
 	<head>
 		@include('layouts.partials.header')
     @livewireStyles
-    @powerGridStyles
+    
 	</head>
 	<body class="hold-transition sidebar-mini layout-fixed">
 		<div class="wrapper">
@@ -65,7 +65,7 @@
 		</div>
 		<!-- scripts -->
     @livewireScripts
-    @powerGridScripts
+    
 		@include('layouts.partials.scripts')
     @livewire('wire-elements-modal')
 		<!-- /.scripts -->

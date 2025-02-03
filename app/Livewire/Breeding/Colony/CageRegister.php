@@ -3,6 +3,7 @@
 namespace App\Livewire\Breeding\Colony;
 
 use Livewire\Component;
+use Livewire\Attributes\On; 
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
@@ -36,6 +37,8 @@ class CageRegister extends Component
 		//panels
 		public $defaultPanel = true, $cagesPanel = false;
 		
+		//protected $listeners = ['dataTableDisplay' => 'displayDataTable'];
+		
     public function render()
     {
 			$this->rooms = Room::all();
@@ -65,5 +68,7 @@ class CageRegister extends Component
 										->where('rack_id', $id)->where('cage_id', '<>', 0)->get();
 			//dd($this->cageEntries2);
 			$this->cagesPanel = true;
+			$this->dispatch('dataTableDisplay');
 		}
+			
 }

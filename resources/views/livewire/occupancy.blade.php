@@ -53,14 +53,12 @@
 								<!-- Morris chart - Sales -->
 								<div class="chart tab-pane active" id="revenue-chart" style="position: relative;">
                   @if( count($rooms) > 0 )
-                   <div class="p-2">
-                    @foreach($rooms as $room)
-                    
-                      <button wire:click="show('{{ $room->image_id }}')">
-                      <img class="inline m-1 border border-primary" src="{{ asset($roomPath.$room->image_id) }}" alt="" width="75px" height="75px">
-                      </button>
-                      
-                    @endforeach
+										<div class="p-2">
+											@foreach($rooms as $room)
+												<button wire:click="show('{{ $room->image_id }}')">
+												<img class="inline m-1 border border-primary" src="{{ asset($roomPath.$room->image_id) }}" alt="" width="75px" height="75px">
+												</button>												
+											@endforeach
                     </div>
                   @else                  
                     No Information to display
@@ -137,11 +135,9 @@
 							<div class="tab-content p-0">
 								<!-- Morris chart - Sales -->
 								<div class="chart tab-pane active" id="revenue-chart" style="position: relative;">
-
                   @if($layoutRack)
                     @include('livewire.occupancy.rackLayout')
-                  @endif
-									
+                  @endif								
 								</div>
 							</div>
 						  </div><!-- /.card-body -->
@@ -169,11 +165,9 @@
 							<div class="tab-content p-0">
 								<!-- Morris chart - Sales -->
 								<div class="chart tab-pane active" id="revenue-chart" style="position: relative;">
-
                   @if($cageInfos)
                     @include('livewire.occupancy.cageDetails')
-                  @endif
-										
+                  @endif										
 								</div>
 							</div>
 						  </div><!-- /.card-body -->
