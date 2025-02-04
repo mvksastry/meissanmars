@@ -294,13 +294,15 @@
 		</section>	
 			@script
 				<script>
-					$(document).ready(function() {
-						alert("started:");
-							$('#example3').DataTable({
-									"responsive": true, "lengthChange": false, "autoWidth": false,
-									"buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+						document.addEventListener("cageRegister", function(){
+							$(document).ready(function(){
+								$('#example3').DataTable({
+										"responsive": true, "lengthChange": false, "autoWidth": false,
+										"buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
 								}).buttons().container().appendTo('#example3_wrapper .col-md-6:eq(0)');
-					});
+							});
+						});
+					
 				</script>
 			@endscript		
 		@endif

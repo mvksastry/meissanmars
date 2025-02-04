@@ -68,7 +68,7 @@ class CageRegister extends Component
 										->where('rack_id', $id)->where('cage_id', '<>', 0)->get();
 			//dd($this->cageEntries2);
 			$this->cagesPanel = true;
-			$this->dispatch('dataTableDisplay');
+			$this->dispatch('cageRegister');
 		}
 			
 }
