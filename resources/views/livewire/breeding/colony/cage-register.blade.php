@@ -203,8 +203,8 @@
 		@endif
 
 		@if($cagesPanel)
-		<section class="content">
-			<div class="container-fluid">
+			<section class="content">
+				<div class="container-fluid">
 					<!-- Main row -->
 					<div class="row">
 						<section class="col-lg-12 connectedSortable">
@@ -290,23 +290,24 @@
 							</div>
 						</section>
 					</div>
-			</div>
-		</section>	
-			@script
-				<script>
-						document.addEventListener("cageRegister", function(){
-							$(document).ready(function(){
-								$('#example3').DataTable({
-										"responsive": true, "lengthChange": false, "autoWidth": false,
-										"buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-								}).buttons().container().appendTo('#example3_wrapper .col-md-6:eq(0)');
-							});
-						});
-					
-				</script>
-			@endscript		
+				</div>
+			</section>	
+		
 		@endif
 		<!-- Main content -->
     <!-- / End of Left Panel Graph Card-->
   </div>
 </div>
+@script
+	<script>
+			document.addEventListener("cageRegister", function(){
+				$(document).ready(function(){
+					$('#example3').DataTable({
+							"responsive": true, "lengthChange": false, "autoWidth": false,
+							"buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+					}).buttons().container().appendTo('#example3_wrapper .col-md-6:eq(0)');
+				});
+			});
+		
+	</script>
+@endscript
