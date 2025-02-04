@@ -291,42 +291,20 @@
 						</section>
 					</div>
 			</div>
-		</section>			
+		</section>	
+			@script
+				<script>
+					$(document).ready(function() {
+						alert("started:");
+							$('#example3').DataTable({
+									"responsive": true, "lengthChange": false, "autoWidth": false,
+									"buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+								}).buttons().container().appendTo('#example3_wrapper .col-md-6:eq(0)');
+					});
+				</script>
+			@endscript		
 		@endif
 		<!-- Main content -->
     <!-- / End of Left Panel Graph Card-->
   </div>
 </div>
-
-@script
-<script>
-
-		document.addEventListener('livewire:dataTableDisplay', function () {  
-
-		alert('Event triggered!');
- 
-    //datatable structures
-    $("#example3").DataTable({
-      "responsive": true, "lengthChange": false, "autoWidth": false,
-      "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-    }).buttons().container().appendTo('#example3_wrapper .col-md-6:eq(0)');
-
-    $("#inventory").DataTable({
-      "responsive": true, "lengthChange": false, "autoWidth": false,
-      "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-    }).buttons().container().appendTo('#inventory_wrapper .col-md-6:eq(0)');
-    
-    $('#example2').DataTable({
-      "paging": true,
-      "lengthChange": false,
-      "searching": false,
-      "ordering": true,
-      "info": true,
-      "autoWidth": false,
-      "responsive": true,
-    });
-		
- });   
- 
-</script>
-@endscript
