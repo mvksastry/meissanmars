@@ -303,11 +303,18 @@
 			document.addEventListener("cageRegister", function(){
 				$(document).ready(function(){
 					$('#example3').DataTable({
-							"responsive": true, "lengthChange": false, "autoWidth": false,
-							"buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+							"responsive": true, 
+							"lengthChange": false, 
+							"autoWidth": false,
+							"buttons": ["copy", "csv", "excel", "print", "colvis",
+									{
+                    extend: 'pdfHtml5',
+                    orientation: 'landscape',
+                    pageSize: 'A4'
+									}
+							],
 					}).buttons().container().appendTo('#example3_wrapper .col-md-6:eq(0)');
 				});
 			});
-		
 	</script>
 @endscript
