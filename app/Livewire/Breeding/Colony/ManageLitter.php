@@ -156,6 +156,7 @@ class ManageLitter extends Component
     $this->matSearchResults = $this->searchMatings($input);
 
     $this->searchResultsMating=true;
+		$this->dispatch('matingSearchResultsDone');
   }
 
   public function pick($id)

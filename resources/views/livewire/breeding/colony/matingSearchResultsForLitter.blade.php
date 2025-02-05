@@ -6,49 +6,52 @@
 		</div>
 
 		<div class="p-1">
-			<table class="text-sm table-striped table-dark border p-3">
+			<table id="example4" class="text-sm table-bordered table-striped table-dark border p-3">
 				
 				<?php if(!empty($matSearchResults)) { ?>
+				<thead>
 					<tr class="p-3">
-						<td align="center">
+						<th align="center">
 							<font color="red"> Select </font>
-						</td>
-						<td align="center">
+						</th>
+						<th align="center">
 							Mating ID <font color="red"></font>
-						</td>
-						<td align="center">
+						</th>
+						<th align="center">
 							Breed. Ref ID <font color="red"></font>
-						</td>
-						<td align="center">
+						</th>
+						<th align="center">
 							<font color="red">F-1</br>Key</font>
-						</td>
-						<td align="center">
+						</th>
+						<th align="center">
 							<font color="red">F-2</br>Key</font>
-						</td>
-						<td align="center">
+						</th>
+						<th align="center">
 							<font color="red">Male</br>Key</font>
-						</td>
+						</th>
 						<td align="center">
 							<font color="red">Mating Date</font>
-						</td>
-						<td align="center">
+						</th>
+						<th align="center">
 							<font color="red">Wean Time</br>Days</font>
-						</td>
-						<td align="center">
+						</th>
+						<th align="center">
 							<font color="red">Generation</font>
-						</td>
-						<td align="center">
+						</th>
+						<th align="center">
 							<font color="red">Owner</font>
-						</td>
+						</th>
 
-						<td align="center">
+						<th align="center">
 							<font color="red">Wean Note</font>
-						</td>
-						<td align="center">
+						</th>
+						<th align="center">
 							<font color="red">Comments</font>
-						</td>
+						</th>
 					</tr>
+				</thead>
 				<?php $i = 1; ?>
+				<tbody>
 				@foreach($matSearchResults as $row)
 				<?php //$id = $row->_mouse_key ?>
 					<tr>
@@ -98,8 +101,30 @@
 						</td>
 					</tr>
 				 <?php } ?>
+				</tbody>
 			</table>
 		</div>
 
 	</div>
 </div>
+
+@script
+	<script>
+			document.addEventListener("matingSearchResultsDone", function(){
+				$(document).ready(function(){
+					$('#example4').DataTable({
+							"responsive": true, 
+							"lengthChange": false, 
+							"autoWidth": false,
+							"buttons": ["copy", "csv", "excel", "print", "colvis",
+									{
+                    extend: 'pdfHtml5',
+                    orientation: 'landscape',
+                    pageSize: 'A4'
+									}
+							],
+					}).buttons().container().appendTo('#example4_wrapper .col-md-6:eq(0)');
+				});
+			});
+	</script>
+@endscript
