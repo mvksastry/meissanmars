@@ -12,41 +12,39 @@
 				<thead>
 					<tr class="p-3">
 						<th align="center">
-							<font color="red"> Select </font>
+							<font color="red"> Breeding </br>Ref ID </font>
 						</th>
 						<th align="center">
-							Mating ID <font color="red"></font>
+							Mating ID
+						</th>
+						
+						<th align="center">
+							F-1</br>Key
 						</th>
 						<th align="center">
-							Breed. Ref ID <font color="red"></font>
+							F-2</br>Key
 						</th>
 						<th align="center">
-							<font color="red">F-1</br>Key</font>
+							Male</br>Key
 						</th>
 						<th align="center">
-							<font color="red">F-2</br>Key</font>
+							Mating Date
 						</th>
 						<th align="center">
-							<font color="red">Male</br>Key</font>
-						</th>
-						<td align="center">
-							<font color="red">Mating Date</font>
+							Wean Time</br>(Days)
 						</th>
 						<th align="center">
-							<font color="red">Wean Time</br>Days</font>
+							Generation
 						</th>
 						<th align="center">
-							<font color="red">Generation</font>
-						</th>
-						<th align="center">
-							<font color="red">Owner</font>
+							Owner
 						</th>
 
 						<th align="center">
-							<font color="red">Wean Note</font>
+							Wean Note
 						</th>
 						<th align="center">
-							<font color="red">Comments</font>
+							Comments
 						</th>
 					</tr>
 				</thead>
@@ -61,9 +59,7 @@
 						<td align="center">
 							{{ $row['matingID'] }}
 						</td>
-						<td align="center">
-							{{ $row['matingRefID'] }}
-						</td>
+						
 						<td align="center">
 							{{ $row['_dam1_key'] }}
 						</td>
