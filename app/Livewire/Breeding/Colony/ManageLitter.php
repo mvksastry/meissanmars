@@ -3,6 +3,8 @@
 namespace App\Livewire\Breeding\Colony;
 
 use Livewire\Component;
+use Livewire\Attributes\On; 
+use Livewire\WithPagination;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -97,7 +99,14 @@ class ManageLitter extends Component
 				'colonyInfo'    => 'sometimes|nullable|regex:/^[\pL\s\- .,;0-9_]+$/u|max:500',
 				'mortNotes'			=> 'sometimes|nullable|regex:/^[\pL\s\- .,;0-9_]+$/u|max:500',
   ];	
-	
+	 
+  #[On('pickedid')] 
+	public function pickedMatingID(int $pickedid)
+	{
+			//dd($pickedid);
+			$this->pick($pickedid);
+	}
+
 	public function render()
 	{
 		return view('livewire.breeding.colony.manage-litter');
@@ -154,7 +163,7 @@ class ManageLitter extends Component
     $input['ownerWg']           = $this->ownerWg;
 
     $this->matSearchResults = $this->searchMatings($input);
-
+		$this->matSearch = Mating::paginate(10);
     $this->searchResultsMating=true;
 		$this->dispatch('matingSearchResultsDone');
   }
@@ -204,9 +213,10 @@ class ManageLitter extends Component
 			// no litter entries found and we need to populate the field?
 			$this->purpose = "New";
 		}
-		
+		$this->dispatch('matingSearchResultsDone');
 		$this->showLitterEntryForm = true;
 		$this->showLitterEntriesTillDate = true;
+		
   }
 	
   public function enterLitter()

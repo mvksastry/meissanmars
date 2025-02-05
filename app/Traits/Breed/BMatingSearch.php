@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use DateTime;
 use App\Traits\Breed\BBase;
 use App\Traits\Breed\BCVTerms;
-
+use App\Models\Breeding\Colony\Mating;
 
 trait BMatingSearch
 {
@@ -90,7 +90,7 @@ trait BMatingSearch
         //dd($baseSqlStatement);
         //echo "Query to be executed = ".$baseSqlStatement;echo "</br>";
         $result = DB::select($baseSqlStatement);
-        //dd($result);
+        //dd($this->matSearch);
         $res = array();
         foreach($result as $row)
         {

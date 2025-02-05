@@ -6,8 +6,9 @@
 		</div>
 
 		<div class="p-1">
-			<table class="text-sm table-bordered table-striped table-dark border p-3">
-				
+		
+		
+			<table id="example4" class="text-sm table-bordered table-striped table-dark border p-3">		
 				<?php if(!empty($matSearchResults)) { ?>
 				<thead>
 					<tr class="p-3">
@@ -50,13 +51,13 @@
 						</th>
 					</tr>
 				</thead>
-				<?php $i = 1; ?>
+				
 				<tbody>
 				@foreach($matSearchResults as $row)
-				<?php //$id = $row->_mouse_key ?>
+				
 					<tr>
 						<td align="center" width="4%">
-							<button wire:click="pick('{{ $row['mating_key'] }}')" class="btn btn-info rounded">{{ $row['matingRefID'] }}</button>
+							<button id="pickedid" value="{{ $row['mating_key'] }}" class="btn btn-info rounded">{{ $row['matingRefID'] }}</button>					
 						</td>
 						<td align="center">
 							{{ $row['matingID'] }}
@@ -92,7 +93,7 @@
 							{{ $row['comment'] }}
 						</td>
 					</tr>
-					<?php $i = $i+1; ?>
+					
 				@endforeach
 				<?php } else { ?>
 					 <tr>
@@ -103,11 +104,21 @@
 				 <?php } ?>
 				</tbody>
 			</table>
+			
 		</div>
 
 	</div>
 </div>
-
+@script
+<script>
+	$(document).on('click', '#pickedid', function()
+	{
+		let id = $(this).val(); 
+		//alert("working"+id);
+		Livewire.dispatch('pickedid', { pickedid: id })
+	});
+</script>
+@endscript
 @script
 	<script>
 			document.addEventListener("matingSearchResultsDone", function(){
