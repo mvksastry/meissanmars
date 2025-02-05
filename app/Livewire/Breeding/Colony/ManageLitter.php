@@ -161,6 +161,7 @@ class ManageLitter extends Component
 
   public function pick($id)
   {
+		//dd($id);
 		$this->resetLitterDetails();
     $qry = Mating::where('_mating_key', $id)->first();
 		$this->matingReferenceID = $qry->matingRefID;

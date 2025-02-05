@@ -6,18 +6,20 @@
 		</div>
 
 		<div class="p-1">
-			<table id="example4" class="text-sm table-bordered table-striped table-dark border p-3">
+			<table class="text-sm table-bordered table-striped table-dark border p-3">
 				
 				<?php if(!empty($matSearchResults)) { ?>
 				<thead>
 					<tr class="p-3">
 						<th align="center">
-							<font color="red"> Breeding </br>Ref ID </font>
+							<font color="red"> Select </font>
 						</th>
 						<th align="center">
 							Mating ID
 						</th>
-						
+						<th align="center">
+							Breed. Ref ID
+						</th>
 						<th align="center">
 							F-1</br>Key
 						</th>
@@ -31,7 +33,7 @@
 							Mating Date
 						</th>
 						<th align="center">
-							Wean Time</br>(Days)
+							Wean Time</br>Days
 						</th>
 						<th align="center">
 							Generation
@@ -59,7 +61,9 @@
 						<td align="center">
 							{{ $row['matingID'] }}
 						</td>
-						
+						<td align="center">
+							{{ $row['matingRefID'] }}
+						</td>
 						<td align="center">
 							{{ $row['_dam1_key'] }}
 						</td>
