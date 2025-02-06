@@ -112,11 +112,11 @@
 
 @script
 <script>
-		document.addEventListener("fMSResults", function(){
-			//alert("working");
+		document.addEventListener("fMSResults", function(body){
+			var body = @this.body
 			$(document).Toasts('create', {
         title: 'Results Loaded',
-        body: 'Mating Search Results Found'
+        body: body
       });
 		});
 </script>

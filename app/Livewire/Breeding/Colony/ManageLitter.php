@@ -86,6 +86,8 @@ class ManageLitter extends Component
 	public $showSearchMatingEntryForm = false;
 	public $searchResultsMating = false;
 	
+	public $body=null;
+	
 	protected $rules = [
 				'matKey'        => 'required|numeric',
         'dateBorn'      => 'required|date_format:Y-m-d',
@@ -208,17 +210,20 @@ class ManageLitter extends Component
 			$this->weanDate = $latLitEntry->weanDate;
 			$this->tagDate = $latLitEntry->tagDate;
 			$this->coment = $latLitEntry->comment;
-			
+			$this->body = "Litter Entries found";
+			$this->dispatch('fMSResults', $this->body);
 			// in this case I should populate the form with latest data??
 		}
 		else {
 			// no litter entries found and we need to populate the field?
+			$this->body = "New Litter Entry";
+			$this->dispatch('fMSResults', $this->body);
 			$this->purpose = "New";
 		}
 		$this->dispatch('matingSearchResultsDone');
 		$this->showLitterEntryForm = true;
 		$this->showLitterEntriesTillDate = true;
-		$this->dispatch('fMSResults');
+		//$this->dispatch('fMSResults');
   }
 	
   public function enterLitter()
