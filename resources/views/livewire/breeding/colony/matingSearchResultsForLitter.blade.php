@@ -112,7 +112,6 @@
 
 @script
 <script>
-
 		document.addEventListener("fMSResults", function(body){
 			var body = @this.body
 			$(document).Toasts('create', {

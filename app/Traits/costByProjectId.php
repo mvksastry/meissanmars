@@ -152,10 +152,11 @@ trait costByProjectId
   public function fetchCostByProjects()
   {
     $projects = Iaecproject::where('status', 'active')->get();
+
     $finalarray = array();
     foreach($projects as $project)
     {
-      $cost[] = $this->ProjectWiseCost($project->project_id);
+      $cost[] = $this->ProjectWiseCost($project->iaecproject_id);
       $ra[] = $cost[0][1];
       array_push($finalarray, $ra[0][0]);
       $ra = array();
