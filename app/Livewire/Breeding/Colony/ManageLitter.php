@@ -217,7 +217,14 @@ class ManageLitter extends Component
 		else {
 			// no litter entries found and we need to populate the field?
 			$this->body = "New Litter Entry";
-			$this->dispatch('fMSResults', $this->body);
+			$this->dispatch('fMSResults', $this->body);	
+			/*
+			$this->dispatch('swal', [
+					'title' => "New Litter Entry",
+					'icon'=>'success',
+					'iconColor'=>'blue',
+			]);
+			*/
 			$this->purpose = "New";
 		}
 		$this->dispatch('matingSearchResultsDone');

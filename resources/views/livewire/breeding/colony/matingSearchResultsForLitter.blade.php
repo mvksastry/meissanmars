@@ -112,12 +112,18 @@
 
 @script
 <script>
+
 		document.addEventListener("fMSResults", function(body){
 			var body = @this.body
 			$(document).Toasts('create', {
         title: 'Results Loaded',
+				icon: 'success',
+				autohide: true,
+        delay: 5750,
         body: body
       });
+			//Swal.fire(body)
+			//Swal.fire('Results Loaded', body, 'success')			
 		});
 </script>
 @endscript
