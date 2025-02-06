@@ -9,7 +9,7 @@
 				<div>
 					Search Result for: {{ $searchFor }}
 				</div>
-				<?php if(!empty($queryResult)) { ?>
+				@if(!empty($queryResult))
 					<tr>
 						<td align="center">
 							<font color="red"> Select </font>
@@ -48,56 +48,53 @@
 							<font color="red">Owner</font>
 						</td>
 					</tr>
-				<?php $i = 1; ?>
-				@foreach($queryResult as $row)
-				<?php //$id = $row->_mouse_key ?>
-					<tr>
-						<td align="center" width="4%">
-							<button wire:click="pick('{{ $searchFor.'_'.$row['ID'] }}')" class="btn btn-sm btn-info rounded">Pick</button>
-						</td>
-						<td align="center">
-							{{ $row['ID'] }}
-						</td>
-						<td align="center">
-							{{ $row['strainName'] }}
-						</td>
-						<td align="center" >
-							{{ $row['generation'] }}
-						</td>
-						<td align="center" >
-							{{ $row['protocol'] }}
-						</td>
-						<td align="center" >
-							{{ date('d-m-Y',strtotime($row['birthDate'])) }}
-						</td>
-						<td align="center" >
-							{{ $row['sex'] }}
-						</td>
-						<td align="center" >
-							{{ $row['lifeStatus'] }}
-						</td>
-						<td align="center" >
-							{{ $row['breedingStatus'] }}
-						</td>
-						<td align="center" >
-							{{ $row['exit_date'] }}
-						</td>
-						<td align="center" >
-							{{ $row['origin'] }}
-						</td>
-						<td align="center">
-							{{ $row['owner'] }}
-						</td>
-					</tr>
-					<?php $i = $i+1; ?>
-				@endforeach
-				<?php } else { ?>
+					@foreach($queryResult as $row)
+						<tr>
+							<td align="center" width="4%">
+								<button wire:click="pick('{{ $searchFor.'_'.$row['ID'] }}')" class="btn btn-sm btn-info rounded">Pick</button>
+							</td>
+							<td align="center">
+								{{ $row['ID'] }}
+							</td>
+							<td align="center">
+								{{ $row['strainName'] }}
+							</td>
+							<td align="center" >
+								{{ $row['generation'] }}
+							</td>
+							<td align="center" >
+								{{ $row['protocol'] }}
+							</td>
+							<td align="center" >
+								{{ date('d-m-Y',strtotime($row['birthDate'])) }}
+							</td>
+							<td align="center" >
+								{{ $row['sex'] }}
+							</td>
+							<td align="center" >
+								{{ $row['lifeStatus'] }}
+							</td>
+							<td align="center" >
+								{{ $row['breedingStatus'] }}
+							</td>
+							<td align="center" >
+								{{ $row['exit_date'] }}
+							</td>
+							<td align="center" >
+								{{ $row['origin'] }}
+							</td>
+							<td align="center">
+								{{ $row['owner'] }}
+							</td>
+						</tr>
+					@endforeach
+				@else
 					 <tr>
 						<td align="center">
 							<font color="red"> No Data Retrived: Refine Selection </font>
 						</td>
 					</tr>
-				 <?php } ?>
+				@endif
 			</table>
 		</div>
 

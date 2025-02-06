@@ -109,6 +109,18 @@
 
 	</div>
 </div>
+
+@script
+<script>
+		document.addEventListener("fMSResults", function(){
+			//alert("working");
+			$(document).Toasts('create', {
+        title: 'Results Loaded',
+        body: 'Mating Search Results Found'
+      });
+		});
+</script>
+@endscript
 @script
 <script>
 	$(document).on('click', '#pickedid', function()

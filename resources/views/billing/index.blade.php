@@ -54,7 +54,7 @@
                   <div class="chart tab-pane active" id="revenue-chart" style="position: relative;">
 
                     @if( count($cbp) > 0 )
-                      <table id="userIndex2" class="table table-bordered table-hover">
+                      <table id="example1" class="table table-bordered table-hover">
                         <thead>
                           <tr bgcolor="#BBDEFB">												
                             <th style="text-align:center;">
@@ -62,21 +62,18 @@
                             </th>
                             <th></th>
                             <th></th>
-                            <th></th>
-                            <th></th>
-                            <th></th>
                           </tr>
                         </thead>
                         <tbody>
                         @foreach($cbp as $val)
                           <tr bgcolor="#E1BEE7"   data-entry-id="">
-                            <td">
+                            <td>
                               {{ $val[0] }}
                             </td>
-                            <td">
+                            <td>
                               {{ $val[1] }}
                             </td>
-                            <td">
+                            <td>
                               &#x20B9; {{ $val[2] }}
                             </td>
                           </tr>

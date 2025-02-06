@@ -35,6 +35,7 @@ class BillingController extends Controller
     public function index()
     {
       $cbp = $this->fetchCostByProjects();
+			//dd($cbp);
       return view('billing.index')
         ->with('cbp', $cbp);
     }

@@ -101,8 +101,7 @@
       "autoWidth": false,
       "responsive": true,
     });
-    
-    
+    		
     //Initialize Select2 Elements
     $('.selectPerms').select2()
     

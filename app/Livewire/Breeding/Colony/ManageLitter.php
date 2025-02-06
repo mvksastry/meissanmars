@@ -109,6 +109,7 @@ class ManageLitter extends Component
 
 	public function render()
 	{
+		//session()->flash("success", "Image uploaded successfully");
 		return view('livewire.breeding.colony.manage-litter');
 	}
 		
@@ -170,6 +171,7 @@ class ManageLitter extends Component
 
   public function pick($id)
   {
+		//$this->dispatch('fMSResults');
 		//dd($id);
 		$this->resetLitterDetails();
     $qry = Mating::where('_mating_key', $id)->first();
@@ -216,7 +218,7 @@ class ManageLitter extends Component
 		$this->dispatch('matingSearchResultsDone');
 		$this->showLitterEntryForm = true;
 		$this->showLitterEntriesTillDate = true;
-		
+		$this->dispatch('fMSResults');
   }
 	
   public function enterLitter()

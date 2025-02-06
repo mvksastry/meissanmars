@@ -51,7 +51,7 @@
                     @if( count($strain_info) > 0 )
 											<form method="POST" action="{{ route('billing.setperdiem') }}">
 												@csrf
-                          <table id="userIndex2" class="table table-bordered table-hover">
+                          <table id="example2" class="table table-bordered table-hover">
                             <thead>
                               <tr bgcolor="#BBDEFB">												
                                 <th style="text-align:center;">
