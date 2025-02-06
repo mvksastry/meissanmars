@@ -78,3 +78,27 @@
 		</div>
 	</div>
 </div>
+
+@script
+<script>
+		document.addEventListener("success", function(body){
+			var body = @this.body
+			toastr.success(body);
+		});
+
+		document.addEventListener("error", function(body){
+			var body = @this.body
+			toastr.error(body);
+		});		
+
+		document.addEventListener("warning", function(body){
+			var body = @this.body
+			toastr.warning(body);
+		});		
+
+		document.addEventListener("info", function(body){
+			var body = @this.body
+			toastr.info(body);
+		});		
+</script>
+@endscript

@@ -152,6 +152,8 @@ class ManageLitter extends Component
     $this->owners = Owner::all();
 		
 		$this->showSearchMatingEntryForm = true;
+		$this->body = "Search Entry Form Shown";
+		$this->dispatch('success', $this->body);
 	}		
 		
   public function pullMatingEntries()
@@ -235,6 +237,7 @@ class ManageLitter extends Component
 	
   public function enterLitter()
   {
+		$this->dispatch('matingSearchResultsDone');
 		if($this->matKey != null)
 		{
 			if($this->purpose == "New" || $this->purpose == "Update")
@@ -280,14 +283,20 @@ class ManageLitter extends Component
 				
 				if($msg)
 				{
+					$this->body = "Litter Entry Success";
+					$this->dispatch('success');
 					$this->resetLitterDetails();
 				}
 			}
 			else {
+				$this->body = "Refresh Form, Pick Mating ID";
+				$this->dispatch('error');
 				$this->iaMessage2 = "Refresh Form, Pick Mating ID";
 			}
 		}
 		else {
+			$this->body = "Pick Mating ID";
+			$this->dispatch('error');
 			$this->iaMessage2 = "Pick Mating ID";
 		}
   }

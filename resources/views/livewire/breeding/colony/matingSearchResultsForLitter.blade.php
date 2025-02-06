@@ -145,12 +145,13 @@
 							"responsive": true, 
 							"lengthChange": false, 
 							"autoWidth": false,
-							"buttons": ["copy", "csv", "excel", "print", "colvis",
+							"buttons": ["copy", "csv", "excel", "print", 
 									{
                     extend: 'pdfHtml5',
                     orientation: 'landscape',
                     pageSize: 'A4'
-									}
+									},
+									"colvis"
 							],
 					}).buttons().container().appendTo('#example4_wrapper .col-md-6:eq(0)');
 				});

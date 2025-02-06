@@ -17,14 +17,13 @@ class ModalTest extends ModalComponent
     {
       $this->product_id = $product_id;
       //dd($this->product_id);
-      
     }
     
     public function render()
     {
       $prodetails = Products::where('product_id', $this->product_id)->first();
       dd($prodetails);
-        return view('livewire.modal-test')->with(['prodetails'=>$prodetails]);
+      return view('livewire.modal-test')->with(['prodetails'=>$prodetails]);
     }
     
     public static function modalMaxWidth(): string
