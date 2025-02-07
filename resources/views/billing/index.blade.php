@@ -58,10 +58,10 @@
                         <thead>
                           <tr bgcolor="#BBDEFB">												
                             <th style="text-align:center;">
-                            <input type="checkbox" id="select-all" />
+                            <input type="checkbox" id="select-all" /> IAEC Project ID
                             </th>
-                            <th></th>
-                            <th></th>
+                            <th>Total Cages</th>
+                            <th>Cost (&#x20B9;) </th>
                           </tr>
                         </thead>
                         <tbody>
