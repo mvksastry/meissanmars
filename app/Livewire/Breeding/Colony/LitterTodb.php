@@ -126,7 +126,7 @@ class LitterTodb extends Component
 		public $cageUpdateFlag = false;
 		
 		//toast message body
-		public $body;
+		public $body=null;
 
 		protected $rules = [
         'mating_date'         => 'required|date_format:Y-m-d',
@@ -187,6 +187,9 @@ class LitterTodb extends Component
 		
 		public function	prepareDBEntryData()
 		{
+			//$this->body = "Not Enough Free Slots, Add Rack with slots";
+			//$this->dispatch('warning');
+					
 			//standard common info for mouse entries
 			$input['exitDate'] = null;
 			$input['cod'] = null;  
@@ -293,6 +296,7 @@ class LitterTodb extends Component
 			$this->fpairs = [];
 			$this->panel3 = true;
 			$this->panel4 = true;
+
 		}
 	
 		public function putPupsToDB()
@@ -322,7 +326,7 @@ class LitterTodb extends Component
 			*/
 				//process males first or females just swap the code.
 				$totalCagesFM = $this->cagesM + $this->cagesF;
-				
+	
 				if($this->free_slots > $totalCagesFM)
 				{					
 					$mRes = $this->processPupsToDBEntries(
@@ -346,7 +350,7 @@ class LitterTodb extends Component
 								);
 				}
 				else {
-					$this->body = "Litter Entry Success";
+					$this->body = "Not Enough Free Slots, Add Rack with slots";
 					$this->dispatch('error');
 				}					
 			//now close the open litter entries status to 
@@ -464,7 +468,7 @@ class LitterTodb extends Component
 			$slots = Slot::where('rack_id', $mrack_id)->where('status','A')->get();
 			$this->mfree_slots = $slots->count();
 			//if no free slots available throw Message
-			if($this->mfree_slots > 0)
+			if($this->mfree_slots > count($this->dspair))
 			{
 				$this->msarray = $slots->toArray();
 				$this->mrarray = [];
@@ -486,7 +490,6 @@ class LitterTodb extends Component
 				$this->matingGoFlag = true;
 			}
 			else {
-				
 				$this->mfslot_num = "No Free slots in rack";
 			}		
 		}

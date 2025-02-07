@@ -806,3 +806,31 @@
 
 
 </div>
+
+@script
+<script>
+	document.addEventListener("success", function(body){
+		var body = @this.body
+		//Swal.fire(body)
+		Swal.fire('Message', body, 'success')			
+	});
+
+	document.addEventListener("error", function(body){
+		var body = @this.body
+		//Swal.fire(body)
+		Swal.fire('Message', body, 'error')			
+	});
+	
+	document.addEventListener("warning", function(body){
+		var body = @this.body
+		//Swal.fire(body)
+		Swal.fire('Message', body, 'warning')			
+	});		
+
+	document.addEventListener("info", function(body){
+		var body = @this.body
+		//Swal.fire(body)
+		Swal.fire('Message', body, 'info')			
+	});		
+</script>
+@endscript
