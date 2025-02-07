@@ -124,6 +124,9 @@ class LitterTodb extends Component
 		//data entry flags
 		public $litterUpdateFlag = false;
 		public $cageUpdateFlag = false;
+		
+		//toast message body
+		public $body;
 
 		protected $rules = [
         'mating_date'         => 'required|date_format:Y-m-d',
@@ -318,25 +321,34 @@ class LitterTodb extends Component
 				All this lifting is done by the trait BPutPupsToDB.
 			*/
 				//process males first or females just swap the code.
-				$mRes = $this->processPupsToDBEntries(
-								$this->cagesM, 
-								$this->numMalesPerCage, 
-								$this->maleGroup, 
-								$this->rack_id, 
-								$this->rarray
-							);
+				$totalCagesFM = $this->cagesM + $this->cagesF;
+				
+				if($this->free_slots > $totalCagesFM)
+				{					
+					$mRes = $this->processPupsToDBEntries(
+									$this->cagesM, 
+									$this->numMalesPerCage, 
+									$this->maleGroup, 
+									$this->rack_id, 
+									$this->rarray
+								);
 
-				//remove the slot number already used earlier request
-				$this->rarray = array_slice($this->rarray, $this->cagesM);
-							
-				//process females first or males just swap the code.
-				$fRes = $this->processPupsToDBEntries(
-								$this->cagesF, 
-								$this->numFemalesPerCage, 
-								$this->femaleGroup, 
-								$this->rack_id, 
-								$this->rarray
-							);
+					//remove the slot number already used earlier request
+					$this->rarray = array_slice($this->rarray, $this->cagesM);
+								
+					//process females first or males just swap the code.
+					$fRes = $this->processPupsToDBEntries(
+									$this->cagesF, 
+									$this->numFemalesPerCage, 
+									$this->femaleGroup, 
+									$this->rack_id, 
+									$this->rarray
+								);
+				}
+				else {
+					$this->body = "Litter Entry Success";
+					$this->dispatch('error');
+				}					
 			//now close the open litter entries status to 
 			//closed and status_entry_date to current date
 			
