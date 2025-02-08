@@ -30,15 +30,21 @@ trait BPutPupsToDB
 		//decode rack id and slot array first.
 		//select the array that has maximum slots
 		$this->rarray = max($this->rackIdSlotArray);
+		//unset($this->rarray[0]);
+		//$this->rarray = array_values($this->rarray);
+		//dd($this->rarray);
+		$this->active_rack_id = array_search(max($this->rackIdSlotArray), $this->rackIdSlotArray);
 		
-		$active_rack_id = array_search(max($this->rackIdSlotArray), $this->rackIdSlotArray);
-		$msg = 'Active rack id mouse DB is [ '.$active_rack_id.' ] ';
-		Log::channel('coding')->info($msg);
-		
+				
 		$lk = 0;
 		
 		for($k=0; $k < $cagesMF; $k++)
 		{
+			$msg = 'Active rack id for mouse DB is [ '.$this->active_rack_id.' ] ';
+			Log::channel('coding')->info($msg);
+			$msg = 'Active slot id for mouse DB is [ '.$this->rarray[0].' ] ';
+			Log::channel('coding')->info($msg);	
+		  			
 			$mice_idx = array();
 			$numberF = $numMFPerCage[$k];
 
@@ -82,13 +88,10 @@ trait BPutPupsToDB
 			
 			if($this->cageUpdateFlag)
 			{
-				//dd($mice_idx);
-				$msg = 'Active slot id mouse DB is [ '.$this->rarray[0].' ] ';
-				Log::channel('coding')->info($msg);
-								
+				//dd($mice_idx);							
 				$miceArrayInfo['animal_count'] = $numberF;
 				$miceArrayInfo['mice_ids'] = $mice_idx;
-				$miceArrayInfo['rack_id'] = $active_rack_id;
+				$miceArrayInfo['rack_id'] = $this->active_rack_id;
 				$miceArrayInfo['slot_id'] = $this->rarray[0];
 				$miceArrayInfo['cage_type'] = 'S';
 				$miceArrayInfo['cage_label'] = $this->cage_label;
@@ -112,18 +115,20 @@ trait BPutPupsToDB
 					$this->rarray = array_values($this->rarray);
 				}
 				else {
-					unset($this->rackIdSlotArray[$active_rack_id]);
+					unset($this->rackIdSlotArray[$this->active_rack_id]);
 					$this->rarray = max($this->rackIdSlotArray);
-					$active_rack_id = array_search(max($this->rackIdSlotArray), $this->rackIdSlotArray);					
+					$this->active_rack_id = array_search(max($this->rackIdSlotArray), $this->rackIdSlotArray);	
+					$this->rarray = $this->rackIdSlotArray[$this->active_rack_id];
 					$this->slot_error_msg = "Moved to Next Available Rack";
 					array_push($this->success_box, $this->slot_error_msg);
-				}	
-				$this->slot_id = $this->rarray[0];
+				}					
 			}
 			else {
 				array_push($this->error_box, "Cage Insertion, Rack Update and Mouse location updates not done");
 			}
+		
 		}
+		$this->rackIdSlotArray[$this->active_rack_id] = $this->rarray;
 		return $this->cageUpdateFlag;
 	}
 	

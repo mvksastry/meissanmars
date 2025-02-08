@@ -62,7 +62,7 @@ trait BAddCageInfo
 															
 				$matchThese = ['slot_id' => $slot_id, 'rack_id' => $rack_id];
 				$res = Slot::where($matchThese)->update($sInput);
-				$msgx4 = 'Slot Table update success';
+				$msgx4 = 'Slot ['.$slot_id.']; Rack['.$rack_id.']; Cage ID ['.$cage_id.'] update success';
 				Log::channel('coding')->info($msgx4);
 				
 				//Now update the mice table for cage_slot_rack id here.

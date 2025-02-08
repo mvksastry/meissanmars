@@ -362,7 +362,7 @@ class LitterTodb extends Component
 									$this->rackIdSlotArray
 								);
 					//remove the slot number already used earlier request
-					$this->rarray = array_slice($this->rarray, $this->cagesM);
+					//$this->rarray = array_slice($this->rarray, $this->cagesM);
 								
 					//process females first or males just swap the code.
 					$fRes = $this->processPupsToDBEntries(
@@ -372,7 +372,12 @@ class LitterTodb extends Component
 									$this->rackIdSlotArray
 								);
 					//remove the slot number already used earlier request
-					$this->rarray = array_slice($this->rarray, $this->cagesF);
+					//$this->rarray = array_slice($this->rarray, $this->cagesF);
+					//logging at the end
+					$msg = 'At End, Active rack id for mouse DB is [ '.$this->active_rack_id.' ] ';
+					Log::channel('coding')->info($msg);
+					$msg = 'At End, Active slot id for mouse DB is [ '.$this->rarray[0].' ] ';
+					Log::channel('coding')->info($msg);
 				}
 				else {
 					$this->body = "Not Enough Free Slots, Add Rack with slots";
