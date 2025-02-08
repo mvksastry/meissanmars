@@ -577,6 +577,7 @@ class LitterTodb extends Component
 						else {
 							$minVal = min($cageArray);
 							$this->mrarray[$key] = $val1;
+							
 							$this->mrarray[$key] = array_slice($this->mrarray[$key], $minVal);
 							unset($cageArray[array_search($minVal, $cageArray)]);
 							//if(count($this->mrarray[$key]) == 0)
