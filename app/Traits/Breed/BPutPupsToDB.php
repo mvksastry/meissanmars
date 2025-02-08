@@ -33,9 +33,8 @@ trait BPutPupsToDB
 		
 		$rack_id = array_search(max($this->rackIdSlotArray), $this->rackIdSlotArray);
 
-		dd($rack_id, $rarray);
-
 		$lk = 0;
+		
 		for($k=0; $k < $cagesMF; $k++)
 		{
 			$mice_idx = array();
