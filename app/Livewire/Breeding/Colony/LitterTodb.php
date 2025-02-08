@@ -565,7 +565,7 @@ class LitterTodb extends Component
 						if(count($val1) >= $totalNeeded)
 						{
 							$this->mrarray[$key] = $val1;
-							$this->mrarray[$key] = array_slice($this->mrarray[$key], $totalNeeded);
+							$this->mrarray[$key] = array_slice($this->mrarray[$key], $totalToBeRemoved);
 							break;
 						}
 						elseif (count($val1) > $totalToBeRemoved)
