@@ -108,7 +108,7 @@ trait BPutPupsToDB
 					$rarray = array_values($rarray);
 				}
 				else {
-					unset(max($this->rackIdSlotArray[$rack_id]));
+					unset($this->rackIdSlotArray[$rack_id]);
 					$rarray = max($this->rackIdSlotArray);
 					$rack_id = array_search(max($this->rackIdSlotArray), $this->rackIdSlotArray);					
 					$this->slot_error_msg = "Moved to Next Available Rack";

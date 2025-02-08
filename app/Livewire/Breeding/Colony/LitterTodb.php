@@ -535,36 +535,105 @@ class LitterTodb extends Component
 		public function matingRackSelected()
 		{
 			//dd($this->mrack_id);
+			$temp = $this->rackIdSlotArray;
+			
+			//$temp = array(
+					//			11=>array(0=>11,1=>12,2=>13,3=>14,4=>15,5=>16,6=>17,7=>18,8=>19),
+					//			2=>array(0=>1,1=>2,2=>3,3=>4,4=>5,5=>6,6=>7,7=>8)
+			//);
+			//$this->cagesM = 7;
+			//$this->cagesF = 8;
+			
+			$cageArray = array($this->cagesM, $this->cagesF );
+			
+			$this->mrarray = [];
 			$mrack_id = $this->mrack_id;
-			$slots = Slot::where('rack_id', $mrack_id)->where('status','A')->get();
-			$this->mfree_slots = $slots->count();
-			//if no free slots available throw Message
-			if($this->mfree_slots > count($this->dspair))
+			//total cages male + female to be removed for selection
+			$totalToBeRemoved = $this->cagesM + $this->cagesF;
+			$totalNeeded = $totalToBeRemoved + count($this->dspair);
+			
+			$freeSlotsTotal = $this->free_slots1 + $this->free_slots2;
+			//$freeSlotsTotal = 17;
+			//check here if the racks for stock and new mating are identical or not
+			//if identical remove those slots filled thrugh the db entries.
+			if(array_key_exists($mrack_id, $temp))
 			{
-				$this->msarray = $slots->toArray();
-				$this->mrarray = [];
-				foreach($this->msarray as $row)
+				if($freeSlotsTotal > $totalNeeded)
 				{
-					$this->mrarray[] = $row['slot_id'];
+					foreach($temp as $key => $val1)
+					{
+						if(count($val1) >= $totalNeeded)
+						{
+							$this->mrarray[$key] = $val1;
+							$this->mrarray[$key] = array_slice($this->mrarray[$key], $totalNeeded);
+							break;
+						}
+						elseif (count($val1) > $totalToBeRemoved)
+						{
+							$this->mrarray[$key] = $val1;
+							$this->mrarray[$key] = array_slice($this->mrarray[$key], $totalToBeRemoved);
+							break;								
+						}
+						else {
+							$minVal = min($cageArray);
+							$this->mrarray[$key] = $val1;
+							$this->mrarray[$key] = array_slice($this->mrarray[$key], $minVal);
+							unset($cageArray[array_search($minVal, $cageArray)]);
+							//if(count($this->mrarray[$key]) == 0)
+							//{
+							//	unset($this->mrarray[$key]);
+							//}
+						}
+					}
+					$this->mrack_id = array_search(max($this->mrarray), $this->mrarray);
+					$this->mrarray = $this->mrarray[$this->mrack_id];
+					$this->mslot_id = $this->mrarray[0];
+					//dd($temp, $cageArray, $this->mrarray);
+					$this->mfslot_num = json_encode(array_slice($this->mrarray, 0, 5, true));
+					$this->mfree_slots = count($this->mrarray);
+					
+					$this->matingGoFlag = true;
+					$this->body = "Sufficient Free Slots in Selected Racks";
+					$this->dispatch('success');
 				}
-				//check here if the racks for stock and new mating are identical or not
-				//if identical remove those slots filled thrugh the db entries.
-				if($this->rack_id == $this->mrack_id)
-				{
-					$totalToBeRemoved = $this->cagesM + $this->cagesF;
-					$this->mrarray = array_slice($this->mrarray, $totalToBeRemoved);
+				else {
+					//no slots available for mating set-up
+					$this->mfslot_num = "Insufficient Free Slots";
+					$this->body = "Insufficient Free Slots in Selected Racks";
+					$this->dispatch('error');
 				}
-				$this->mfslot_num = json_encode(array_slice($this->mrarray, 0, 5, true));
-				//dd($rarray, $sarray);
-				//$this->mcageInfos = $this->mrarray[0];
-				$this->mslot_id = $this->mrarray[0];
-				$this->matingGoFlag = true;
 			}
 			else {
-				$this->mfslot_num = "No Free slots in rack";
-				$this->body = "No Free slots in rack";
-				$this->dispatch('error');
-			}		
+				$slots = Slot::where('rack_id', $mrack_id)->where('status','A')->get();
+				$this->mfree_slots = $slots->count();			
+				//if no free slots available throw Message
+				if($this->mfree_slots > count($this->dspair))
+				{
+					$this->msarray = $slots->toArray();
+					$this->mrarray = [];
+					foreach($this->msarray as $row)
+					{
+						$this->mrarray[] = $row['slot_id'];
+					}
+					//check here if the racks for stock and new mating are identical or not
+					//if identical remove those slots filled thrugh the db entries.
+					//if($this->rack_id == $this->mrack_id)
+					//{
+					//	$totalToBeRemoved = $this->cagesM + $this->cagesF;
+					//	$this->mrarray = array_slice($this->mrarray, $totalToBeRemoved);
+					//}
+					$this->mfslot_num = json_encode(array_slice($this->mrarray, 0, 5, true));
+					//dd($rarray, $sarray);
+					//$this->mcageInfos = $this->mrarray[0];
+					$this->mslot_id = $this->mrarray[0];
+					$this->matingGoFlag = true;
+				}
+				else {
+					$this->mfslot_num = "No Free slots in rack";
+					$this->body = "No Free slots in rack";
+					$this->dispatch('error');
+				}	
+			}
 		}
 		
 		
@@ -702,8 +771,8 @@ class LitterTodb extends Component
 			}
 			else {
 				$this->matingEntryErrorMsg = "Please select Room, Rack";
-						$this->body = "Please select Mating Pairs";
-						$this->dispatch('error');
+				$this->body = "Please select Mating Pairs";
+				$this->dispatch('error');
 			}
 		}		
 			
