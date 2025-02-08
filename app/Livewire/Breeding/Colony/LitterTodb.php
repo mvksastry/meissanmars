@@ -98,7 +98,7 @@ class LitterTodb extends Component
 		public $matSearchResults, $searchResultsMating, $mqryResult, $wean_time=0;
 		public $fullLitterDetails=[], $matingReferenceID=null, $curLitterKey=null;
 		
-		public $rarray1 = [], $rarray2 = [];
+		public $rarray, $active_rack_id, $rarray1 = [], $rarray2 = [];
 		
 		public $rooms, $racks, $racksInRoom1 = [], $racksInRoom2 = [];
 
@@ -361,7 +361,6 @@ class LitterTodb extends Component
 									$this->maleGroup, 
 									$this->rackIdSlotArray
 								);
-
 					//remove the slot number already used earlier request
 					$this->rarray = array_slice($this->rarray, $this->cagesM);
 								
@@ -372,6 +371,8 @@ class LitterTodb extends Component
 									$this->femaleGroup, 
 									$this->rackIdSlotArray
 								);
+					//remove the slot number already used earlier request
+					$this->rarray = array_slice($this->rarray, $this->cagesF);
 				}
 				else {
 					$this->body = "Not Enough Free Slots, Add Rack with slots";
@@ -421,8 +422,8 @@ class LitterTodb extends Component
 			//
 			$this->comment = null;
 			$this->_generation_key = null;
-			$this->rack_id = null; 
-			//$this->rarray = [];
+			$this->active_rack_id = null; 
+			$this->rarray = [];
 			//$this->rooms = [];
 			//$this->racks = [];
 			
@@ -458,7 +459,7 @@ class LitterTodb extends Component
 			if($this->free_slots1 > 0)
 			{
 				$this->sarray = $slots->toArray();
-				$this->rarray = [];
+				//$this->rarray = [];
 				foreach($this->sarray as $row)
 				{
 					$this->rarray1[] = $row['slot_id'];
@@ -728,6 +729,11 @@ class LitterTodb extends Component
 								//create the mating cage, a new id is created for the mating
 								$newMatingObj = Mating::where('_mating_key', $matingKey)->first();
 								$matingRefID = $newMatingObj->matingRefID;
+								
+								$msg = 'Active rack id mating is [ '.$this->mrack_id.' ] ';
+								Log::channel('coding')->info($msg);
+								$msg = 'Active slot id mating is [ '.$this->mrarray[0].' ] ';
+								Log::channel('coding')->info($msg);
 								
 								$input['_species_key'] = $newMatingObj->_species_key;
 								$input['_strain_key'] = $newMatingObj->_strain_key;
