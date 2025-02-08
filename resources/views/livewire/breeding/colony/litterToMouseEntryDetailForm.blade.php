@@ -144,9 +144,11 @@
 						<td class="border px-2 p-1">
 							<button wire:click="putPupsToDB()" class="btn btn-primary rounded">Put Pups To DB</button>
 						</td>
+						@if($panel6)
 						<td class="border px-2 p-1">
 							<button wire:click="prepareMatingSetup()" class="btn btn-primary rounded">Setup Mating</button>
 						</td>
+						@endif
           </tr>
 				</tbody>
 			</table>

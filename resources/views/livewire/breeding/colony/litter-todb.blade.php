@@ -223,13 +223,6 @@
 															</td>
 														</tr>
 
-														<tr bgcolor="#AHDADE">
-															<td class="border px-2 p-1">
-															</td >
-															<td class="border px-2 p-1">											
-															</td >
-														</tr>
-														
 														<tr bgcolor="#EAEDED">
 															<td class="p-2">
 																<font color="red">Generation*</font>
@@ -246,13 +239,53 @@
 																@error('_generation_key') <span class="text-danger error">{{ $message }}</span> @enderror
 															</td>
 														</tr>
+														
+														<tr bgcolor="#AHDADE">
+															<td class="border px-2 p-1">
+															</td >
+															<td class="border px-2 p-1">											
+															</td >
+														</tr>
+													</tbody>
+												</table>
 
+
+												<table class="w-full p-5 text-sm text-gray-900">													
+													<thead>
+														<th> Item </th>
+														<th> Option 1 </th>
+														<th> Option 2 </th>
+													</thead>
+													<tbody>
 														<tr>
 															<td class="border px-2 p-1">
 																Room*
 															</td>
 															<td class="border px-2 p-1">
-																<select wire:model.lazy="room_id" wire:change="roomSelected" class="form-control-sm border" name="room_id" id="room_id">
+																<select 
+																@if($hideRoom1)
+																	disabled
+																@endif
+																wire:model.lazy="room_id1" wire:change="room1Selected" class="form-control-sm border" name="room_id" id="room_id">
+																	<option value="-1"></option>
+																		@foreach($rooms as $row)
+																			<option value="{{ $row->room_id }}">{{ $row->room_name }}</option>
+																		@endforeach																	
+																</select>
+																</br>
+																@error('room_id') 
+																	<span class="text-danger error">
+																		{{ $message }}
+																	</span> 
+																@enderror
+															</td>
+
+															<td class="border px-2 p-1">
+																<select 
+																@if($hideRoom2)
+																	disabled
+																@endif
+																wire:model.lazy="room_id2" wire:change="room2Selected" class="form-control-sm border" name="room_id" id="room_id">
 																	<option value="-1"></option>
 																		@foreach($rooms as $row)
 																			<option value="{{ $row->room_id }}">{{ $row->room_name }}</option>
@@ -266,19 +299,43 @@
 																@enderror
 															</td>
 														</tr>
+														
 														<tr>
 															<td class="border px-2 p-1">
 																<font color="red">Rack*</font>
 															</td>
 															<td class="border px-2 p-1">
-																<select wire:model.lazy="rack_id" wire:change="rackSelected" class="form-control-sm border" name="rack_id" id="rack_id">
+																<select 
+																@if($hideRack1)
+																	disabled
+																@endif
+																wire:model.lazy="rack_id1" wire:change="rack1Selected" class="form-control-sm border" name="rack_id" id="rack_id">
 																	<option value="0"></option>
-																		@foreach($racksInRoom as $row)
+																		@foreach($racksInRoom1 as $row)
 																			<option value="{{ $row->rack_id }}">{{ $row->rack_name }}</option>
 																		@endforeach	
 																</select>
 																</br>
-																@error('rack_id') 
+																@error('rack_id1') 
+																	<span class="text-danger error">
+																		{{ $message }}
+																	</span> 
+																@enderror
+															</td>
+
+															<td class="border px-2 p-1">
+																<select 
+																@if($hideRack2)
+																	disabled
+																@endif
+																wire:model.lazy="rack_id2" wire:change="rack2Selected" class="form-control-sm border" name="rack_id" id="rack_id">
+																	<option value="0"></option>
+																		@foreach($racksInRoom2 as $row)
+																			<option value="{{ $row->rack_id }}">{{ $row->rack_name }}</option>
+																		@endforeach	
+																</select>
+																</br>
+																@error('rack_id2') 
 																	<span class="text-danger error">
 																		{{ $message }}
 																	</span> 
@@ -291,25 +348,45 @@
 																<font color="red">Total Free Slots</font>: 
 															</td>
 															<td class="border px-2 p-1">
-																{{ $free_slots }}
+																{{ $free_slots1 }}
+															</td>
+															<td class="border px-2 p-1">
+																{{ $free_slots2 }}
 															</td>
 														</tr>
+														
 														<tr class="border">
 															<td class="border px-2 p-1"> 
 																<font color="red">First 5 Free Slot ID</font>
 															</td>
 
 															<td class="border px-2 p-1">
-																{{ $fslot_num }}
+																{{ $fslot_num1 }}
+															</td>
+															
+															<td class="border px-2 p-1">
+																{{ $fslot_num2 }}
 															</td>
 														</tr>
+														
 														<tr bgcolor="#EADDED">
 															<td class="border px-2 p-1">
 																<font color="red">Slot ID</font>
 															</td>
 															<td class="border px-2 p-1">
-																<input wire:model.lazy="slot_id" class="form-control-sm border" placeholder="Auto Selected" value="" type="text">
-																(Auto Selected)
+																<input wire:model.lazy="slot_id1" class="form-control-sm border" placeholder="Auto Selected" value="" type="text">
+															
+																</br>
+																@error('slot_id') 
+																	<span class="text-danger error">
+																		{{ $message }}
+																	</span> 
+																@enderror
+															</td>
+
+															<td class="border px-2 p-1">
+																<input wire:model.lazy="slot_id2" class="form-control-sm border" placeholder="Auto Selected" value="" type="text">
+																
 																</br>
 																@error('slot_id') 
 																	<span class="text-danger error">
@@ -318,7 +395,23 @@
 																@enderror
 															</td>
 														</tr>
-
+														
+														<tr bgcolor="#AHDADE">
+															<td class="border px-2 p-1">
+															</td >
+															<td class="border px-2 p-1">											
+															</td >
+															<td class="border px-2 p-1">
+															</td >
+														</tr>
+													</tbody>
+												</table>
+												
+												
+												<table class="w-full p-5 text-sm text-gray-900">
+													<thead>
+													</thead>
+													<tbody>
 														<tr>
 															<td class="border px-2  p-1">
 																Cage Label
@@ -347,7 +440,6 @@
 													</tbody>
 												</table>
 
-												
 											</div>         
 										</div>
 									</div>

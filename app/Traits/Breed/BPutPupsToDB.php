@@ -24,8 +24,16 @@ use Illuminate\Support\Facades\Log;
 trait BPutPupsToDB
 {
 
-	public function processPupsToDBEntries($cagesMF, $numMFPerCage, $MFGroup, $rack_id, $rarray)
+	public function processPupsToDBEntries($cagesMF, $numMFPerCage, $MFGroup, $rackIdSlotArray)
 	{
+
+		//decode rack id and slot array first.
+		//select the array that has maximum slots
+		$rarray = max($this->rackIdSlotArray);
+		
+		$rack_id = array_search(max($this->rackIdSlotArray), $this->rackIdSlotArray);
+
+		dd($rack_id, $rarray);
 
 		$lk = 0;
 		for($k=0; $k < $cagesMF; $k++)
@@ -98,12 +106,15 @@ trait BPutPupsToDB
 				if(count($rarray) != 0)
 				{
 					$rarray = array_values($rarray);
-					$this->slot_id = $rarray[0];
 				}
 				else {
-					$this->slot_error_msg = "Select New Rack";
-					array_push($this->error_box, $this->slot_error_msg);
+					unset(max($this->rackIdSlotArray[$rack_id]));
+					$rarray = max($this->rackIdSlotArray);
+					$rack_id = array_search(max($this->rackIdSlotArray), $this->rackIdSlotArray);					
+					$this->slot_error_msg = "Moved to Next Available Rack";
+					array_push($this->success_box, $this->slot_error_msg);
 				}	
+				$this->slot_id = $rarray[0];
 			}
 			else {
 				array_push($this->error_box, "Cage Insertion, Rack Update and Mouse location updates not done");
