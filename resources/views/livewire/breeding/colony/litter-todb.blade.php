@@ -192,6 +192,15 @@
 
 														<tr>
 															<td class="border px-2 p-1">
+																Per Cage Number
+															</td>
+															<td class="border px-2 p-1">
+																<input wire:model.lazy="$per_cage" class="form-control-sm border" type="text" value="">
+															</td>
+														</tr>
+														
+														<tr>
+															<td class="border px-2 p-1">
 																Base ID
 															</td>
 															<td class="border px-2 p-1">
