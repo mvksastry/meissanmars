@@ -17,16 +17,8 @@ use App\Models\Rack;
 use App\Models\Room;
 use App\Models\Slot;
 
-//use App\Models\Breeding\Cvterms\CVBirtheventstatus;
-//use App\Models\Breeding\Cvterms\CVDiet;
-//use App\Models\Breeding\Cvterms\CVLittertype;
-//use App\Models\Breeding\Cvterms\CVOrigin;
 use App\Models\Breeding\Cvterms\CVProtocol;
 use App\Models\Breeding\Cvterms\CVSpecies;
-
-//use App\Models\Breeding\Cvterms\Container;
-//use App\Models\Breeding\Cvterms\Lifestatus;
-//use App\Models\Breeding\Cvterms\Owner;
 
 use App\Models\Breeding\Cvterms\Usescheduleterm;
 
@@ -91,10 +83,6 @@ class LitterTodb extends Component
 		
 		public $matingId, $strainKey, $ownerWg;
 		
-		//public $origin="EAF-NCCS", $culledAtWean, $missAtWean, $cageId, $litterNum, $femalePerCage, $malePerCage;
-		//public $litType=1, $dateBorn, $weanDate, $tagDate, $birthEventStatusKey="A", $coment;
-
-		//public $matingId_contains, $matingId, $strainKey, $spKey, $lifeStatus, $ownerWg, $fromDate, $toDate;
 		public $matSearchResults, $searchResultsMating, $mqryResult, $wean_time=0;
 		public $fullLitterDetails=[], $matingReferenceID=null, $curLitterKey=null;
 		
@@ -142,7 +130,7 @@ class LitterTodb extends Component
 				'mrack_id'            => 'required|numeric',
 				'mslot_id'            => 'required|numeric',
 				'mating_comment'      => 'sometimes|nullable|regex:/^[\pL\s\- .,;0-9_]+$/u|max:500',
-  ]; 
+		]; 
 	
 		public function render()
 		{
@@ -173,22 +161,18 @@ class LitterTodb extends Component
 		{
 			$this->openLitterEntries = Litter::with('mating')->where('entry_status', 'open')->get();
 			//dd($this->openLitterEntries);
-			//dd($this->rooms);
-			
+		
 			$this->panel2 = true;
 			
 			if(count($this->openLitterEntries) > 0 )
 			{
+				$this->per_cage = 10;
 				$this->panel5 = true;
 			}
 		}
 		
 		public function	prepareDBEntryData()
 		{
-			//$this->body = "Not Enough Free Slots, Add Rack with slots";
-			//$this->dispatch('warning');
-			//sort out the highest number slots available to lowest on rack number.
-
 			$maxSlotValue = max($this->rackIdSlotArray);
 			$maxSlotRack_id = array_search(max($this->rackIdSlotArray), $this->rackIdSlotArray);
 			ksort( $this->rackIdSlotArray);
@@ -305,8 +289,8 @@ class LitterTodb extends Component
 			$maleCount = count($males);
 			$femaleCount = count($fmales);
 			
-			$this->cagesM = ceil($maleCount/10);
-			$this->cagesF = ceil($femaleCount/10);
+			$this->cagesM = ceil($maleCount/$this->per_cage);
+			$this->cagesF = ceil($femaleCount/$this->per_cage);
 			
 			$this->numMalesPerCage   = $this->splitNumber($maleCount, $this->cagesM); //array
 			$this->numFemalesPerCage = $this->splitNumber($femaleCount, $this->cagesF); //array
@@ -398,8 +382,7 @@ class LitterTodb extends Component
 					array_push($this->success_box, $msgx5);
 					$matchThese = []; $putThese = [];
 					
-					// now change cage_type from M to W meaning pups present in 
-					// the cage
+					// now change cage_type from M to W meaning pups present in the cage
 					$slot_index = Mating::where('_mating_key', $row->_mating_key)->value('suggestedPenID');
 					$cage_id = Slot::where('slot_index', $slot_index)->value('cage_id');
 					$cageInfo = Cage::where('cage_id', $cage_id)->first();
@@ -445,7 +428,6 @@ class LitterTodb extends Component
 			$this->agmatingr = null;
 		}
 
-		
 		// DB entry related rooms and racks
 		public function room1Selected()
 		{
@@ -519,15 +501,14 @@ class LitterTodb extends Component
 			//dd($this->rackIdSlotArray);
 		}		
 		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+		////////////////////////////////////////
+		//                                    //
+		//                                    //
+		//                                    //
+		//                                    //
+		////////////////////////////////////////
+
+		//Selection and processing of mating side
 		public function matingRoomSelected()	
 		{
 			$this->mfslot_num = "";
@@ -537,18 +518,9 @@ class LitterTodb extends Component
 			//dd($this->mracksInRoom);
 		}
 	
-	
 		public function matingRackSelected()
 		{
-			//dd($this->mrack_id);
 			$temp = $this->rackIdSlotArray;
-			
-			//$temp = array(
-					//			11=>array(0=>11,1=>12,2=>13,3=>14,4=>15,5=>16,6=>17,7=>18,8=>19),
-					//			2=>array(0=>1,1=>2,2=>3,3=>4,4=>5,5=>6,6=>7,7=>8)
-			//);
-			//$this->cagesM = 7;
-			//$this->cagesF = 8;
 			
 			$cageArray = array($this->cagesM, $this->cagesF );
 			
@@ -559,7 +531,7 @@ class LitterTodb extends Component
 			$totalNeeded = $totalToBeRemoved + count($this->dspair);
 			
 			$freeSlotsTotal = $this->free_slots1 + $this->free_slots2;
-			//$freeSlotsTotal = 17;
+
 			//check here if the racks for stock and new mating are identical or not
 			//if identical remove those slots filled thrugh the db entries.
 			if(array_key_exists($mrack_id, $temp))
@@ -586,10 +558,6 @@ class LitterTodb extends Component
 							
 							$this->mrarray[$key] = array_slice($this->mrarray[$key], $minVal);
 							unset($cageArray[array_search($minVal, $cageArray)]);
-							//if(count($this->mrarray[$key]) == 0)
-							//{
-							//	unset($this->mrarray[$key]);
-							//}
 						}
 					}
 					$this->mrack_id = array_search(max($this->mrarray), $this->mrarray);
@@ -643,7 +611,6 @@ class LitterTodb extends Component
 			}
 		}
 		
-		
 		public function postMatingEntryData()
 		{
 				/*
@@ -658,128 +625,128 @@ class LitterTodb extends Component
 			//$this->matingGoFlag = false;
 			if(count($this->dspair) > 0)
 			{
-					if($this->matingGoFlag)
-					{				
-						$base['purpose'] = "new";
-						$base['version'] = 1;
-						$base['_mating_key'] = null;
-						$base['_species_key'] = $this->speciesKey;
-						$base['_matingType_key'] = 1;
-						$base['_strain_key'] = $this->strainKey;
-						$base['matingID'] = $base['_mating_key'];
-						$base['matingRefID'] = null;
-						$base['suggestedPenID'] = null;
-						$base['generation_key'] = $this->nm_gen_key;
-						$base['weanTime'] = $this->wean_days;
-						$base['matingDate'] = $this->mating_date;
-						$base['retiredDate'] = null;
-						$base['generation'] = $this->mgen_key;
-						$base['ownerwg'] = "EAF-NCCS";
-						$base['weanNote'] = $this->wean_note;
-						$base['needsTyping'] = 0;
-						$base['comment'] = $this->mating_comment;
-						$base['proposedDiet'] = null;
-							
-						foreach($this->dspair as $row)
-						{
-							$finalMatArray[] = array_merge($row, $base);
-						}
+				if($this->matingGoFlag)
+				{				
+					$base['purpose'] = "new";
+					$base['version'] = 1;
+					$base['_mating_key'] = null;
+					$base['_species_key'] = $this->speciesKey;
+					$base['_matingType_key'] = 1;
+					$base['_strain_key'] = $this->strainKey;
+					$base['matingID'] = $base['_mating_key'];
+					$base['matingRefID'] = null;
+					$base['suggestedPenID'] = null;
+					$base['generation_key'] = $this->nm_gen_key;
+					$base['weanTime'] = $this->wean_days;
+					$base['matingDate'] = $this->mating_date;
+					$base['retiredDate'] = null;
+					$base['generation'] = $this->mgen_key;
+					$base['ownerwg'] = "EAF-NCCS";
+					$base['weanNote'] = $this->wean_note;
+					$base['needsTyping'] = 0;
+					$base['comment'] = $this->mating_comment;
+					$base['proposedDiet'] = null;
 						
-						$msg = 'Data collection for mating entries seems to be complete';
-						//array_push($this->msgLTM, $msg);
-						Log::channel('coding')->info($msg);
+					foreach($this->dspair as $row)
+					{
+						$finalMatArray[] = array_merge($row, $base);
+					}
+					
+					$msg = 'Data collection for mating entries seems to be complete';
+					//array_push($this->msgLTM, $msg);
+					Log::channel('coding')->info($msg);
+					
+					//dd($finalMatArray);	
+					foreach($finalMatArray as $val)
+					{
+						$matingKey = $this->addMatingThroughLitter($val);
 						
-						//dd($finalMatArray);	
-						foreach($finalMatArray as $val)
+						//now change mice id cage, rack and slot details in mouse table
+						if($matingKey != null )
 						{
-							$matingKey = $this->addMatingThroughLitter($val);
-							
-							//now change mice id cage, rack and slot details in mouse table
-							if($matingKey != null )
+							$ac = 0; $acid = [];
+							if($val['dam1ID'] != null)
 							{
-								$ac = 0; $acid = [];
-								if($val['dam1ID'] != null)
-								{
-									$ac = $ac + 1;
-									$acid[] = $val['dam1ID'];
-									$dam1Info = Mouse::where('ID', $val['dam1ID'])->first();
-									$dam1Cage_id = $dam1Info->cage_id;
-									$dam1slot_id = $dam1Info->slot_id;
-									$dam1rack_id = $dam1Info->rack_id;
-									$rex = $this->updateAnimalNumber($val['dam1ID'], $dam1Cage_id, $dam1slot_id, $dam1rack_id);
-								}
-								
-								if($val['dam2ID'] != null)
-								{
-									$ac = $ac + 1;
-									$acid[] = $val['dam2ID'];
-									$dam2Info = Mouse::where('ID', $val['dam2ID'])->first();
-									$dam2Cage_id = $dam2Info->cage_id;
-									$dam2slot_id = $dam2Info->slot_id;
-									$dam2rack_id = $dam2Info->rack_id;
-									$rex = $this->updateAnimalNumber($val['dam2ID'], $dam2Cage_id, $dam2slot_id, $dam2rack_id);
-								}				
-								
-								if($val['sireID'] != null)
-								{
-									$ac = $ac + 1;
-									$acid[] = $val['sireID'];
-									$sireInfo = Mouse::where('ID', $val['sireID'])->first();
-									$sireCage_id = $sireInfo->cage_id;
-									$sireslot_id = $sireInfo->slot_id;
-									$sirerack_id = $sireInfo->rack_id;
-									$rex = $this->updateAnimalNumber($val['sireID'], $sireCage_id, $sireslot_id, $sirerack_id);
-								}				
-								
-								//create the mating cage, a new id is created for the mating
-								$newMatingObj = Mating::where('_mating_key', $matingKey)->first();
-								$matingRefID = $newMatingObj->matingRefID;
-								
-								$msg = 'Active rack id mating is [ '.$this->mrack_id.' ] ';
-								Log::channel('coding')->info($msg);
-								$msg = 'Active slot id mating is [ '.$this->mrarray[0].' ] ';
-								Log::channel('coding')->info($msg);
-								
-								$input['_species_key'] = $newMatingObj->_species_key;
-								$input['_strain_key'] = $newMatingObj->_strain_key;
-								$input['animal_count'] = $ac;
-								$input['mice_ids'] = $acid;
-								$input['rack_id'] = $this->mrack_id;
-								$input['slot_id'] = $this->mrarray[0];
-								$input['cage_type'] = 'M';
-								$input['cage_label'] = $matingRefID;
-								//dd($input);
-								$final_res = $this->updateRackSlotCageInfo($input);
-								
-								//now update the slot index in the mating table for column suggestedPenID
-								$matchThese = ['slot_id' => $this->mrarray[0], 'rack_id' => $this->mrack_id];
-								$slot_index = Slot::where($matchThese)->value('slot_index');
-
-								$matchThis = ['_mating_key' => $matingKey];
-								$putThis = ['suggestedPenID' => $slot_index];
-								$result = Mating::where($matchThis)->update($putThis);
-								//now reduce the mice number by the 
-								//number transferred to mating cage.
-								
-								$msg = 'Mating entry for '.json_encode($acid).' completed';
-								array_push($this->msgLTM, $msg);
-								Log::channel('coding')->info($msg);
-						
-								//now remove the slot id from the array for next insertion.
-								unset($this->mrarray[0]);
-								$this->mrarray = array_values($this->mrarray);
+								$ac = $ac + 1;
+								$acid[] = $val['dam1ID'];
+								$dam1Info = Mouse::where('ID', $val['dam1ID'])->first();
+								$dam1Cage_id = $dam1Info->cage_id;
+								$dam1slot_id = $dam1Info->slot_id;
+								$dam1rack_id = $dam1Info->rack_id;
+								$rex = $this->updateAnimalNumber($val['dam1ID'], $dam1Cage_id, $dam1slot_id, $dam1rack_id);
 							}
+							
+							if($val['dam2ID'] != null)
+							{
+								$ac = $ac + 1;
+								$acid[] = $val['dam2ID'];
+								$dam2Info = Mouse::where('ID', $val['dam2ID'])->first();
+								$dam2Cage_id = $dam2Info->cage_id;
+								$dam2slot_id = $dam2Info->slot_id;
+								$dam2rack_id = $dam2Info->rack_id;
+								$rex = $this->updateAnimalNumber($val['dam2ID'], $dam2Cage_id, $dam2slot_id, $dam2rack_id);
+							}				
+							
+							if($val['sireID'] != null)
+							{
+								$ac = $ac + 1;
+								$acid[] = $val['sireID'];
+								$sireInfo = Mouse::where('ID', $val['sireID'])->first();
+								$sireCage_id = $sireInfo->cage_id;
+								$sireslot_id = $sireInfo->slot_id;
+								$sirerack_id = $sireInfo->rack_id;
+								$rex = $this->updateAnimalNumber($val['sireID'], $sireCage_id, $sireslot_id, $sirerack_id);
+							}				
+							
+							//create the mating cage, a new id is created for the mating
+							$newMatingObj = Mating::where('_mating_key', $matingKey)->first();
+							$matingRefID = $newMatingObj->matingRefID;
+							
+							$msg = 'Active rack id mating is [ '.$this->mrack_id.' ] ';
+							Log::channel('coding')->info($msg);
+							$msg = 'Active slot id mating is [ '.$this->mrarray[0].' ] ';
+							Log::channel('coding')->info($msg);
+							
+							$input['_species_key'] = $newMatingObj->_species_key;
+							$input['_strain_key'] = $newMatingObj->_strain_key;
+							$input['animal_count'] = $ac;
+							$input['mice_ids'] = $acid;
+							$input['rack_id'] = $this->mrack_id;
+							$input['slot_id'] = $this->mrarray[0];
+							$input['cage_type'] = 'M';
+							$input['cage_label'] = $matingRefID;
+							//dd($input);
+							$final_res = $this->updateRackSlotCageInfo($input);
+							
+							//now update the slot index in the mating table for column suggestedPenID
+							$matchThese = ['slot_id' => $this->mrarray[0], 'rack_id' => $this->mrack_id];
+							$slot_index = Slot::where($matchThese)->value('slot_index');
+
+							$matchThis = ['_mating_key' => $matingKey];
+							$putThis = ['suggestedPenID' => $slot_index];
+							$result = Mating::where($matchThis)->update($putThis);
+							//now reduce the mice number by the 
+							//number transferred to mating cage.
+							
+							$msg = 'Mating entry for '.json_encode($acid).' completed';
+							array_push($this->msgLTM, $msg);
+							Log::channel('coding')->info($msg);
+					
+							//now remove the slot id from the array for next insertion.
+							unset($this->mrarray[0]);
+							$this->mrarray = array_values($this->mrarray);
 						}
-						$this->resetDbMatingEntryForm();
-						$this->panel2 = false;
-						$this->panel5 = false;
-						$this->panel6 = false;
 					}
-					else {
-						$this->matingEntryErrorMsg = "Please select Room, Rack";
-						$this->body = "Please select Room, Rack";
-						$this->dispatch('error');
-					}
+					$this->resetDbMatingEntryForm();
+					$this->panel2 = false;
+					$this->panel5 = false;
+					$this->panel6 = false;
+				}
+				else {
+					$this->matingEntryErrorMsg = "Please select Room, Rack";
+					$this->body = "Please select Room, Rack";
+					$this->dispatch('error');
+				}
 			}
 			else {
 				$this->matingEntryErrorMsg = "Please select Room, Rack";
@@ -811,7 +778,6 @@ class LitterTodb extends Component
 		
 		public function prepareMatingSetup()
 		{
-			
 			$this->dspair = [];
 			//prepare the pairs and select them
 			$t1=array(); 
@@ -858,8 +824,7 @@ class LitterTodb extends Component
 			}			
 		}
 
-
-
+		/*
 		public function freeSlotsByRackId()
 		{
 			//dd($this->mrack_id);
@@ -884,8 +849,5 @@ class LitterTodb extends Component
 				$this->mfslot_num = "No Free slots in rack";
 			}		
 		}
-	
-	
-	
-	
+		*/
 }

@@ -30,12 +30,8 @@ trait BPutPupsToDB
 		//decode rack id and slot array first.
 		//select the array that has maximum slots
 		$this->rarray = max($this->rackIdSlotArray);
-		//unset($this->rarray[0]);
-		//$this->rarray = array_values($this->rarray);
-		//dd($this->rarray);
 		$this->active_rack_id = array_search(max($this->rackIdSlotArray), $this->rackIdSlotArray);
 		
-				
 		$lk = 0;
 		
 		for($k=0; $k < $cagesMF; $k++)
@@ -61,25 +57,23 @@ trait BPutPupsToDB
 				//dd($mice_idx, $miceArrayInfo);
 				$msgx2 = 'Data collection for [ '.$miceArrayInfo['ID'].'] insert array complete';
 				Log::channel('coding')->info($msgx2);
-				//array_push($this->success_box, $msgx2);
 
 				//now insert into db here using try catch to revert if any error
-
 				try {
-							$result = Mouse::UpdateOrCreate($miceArrayInfo);
-							$this->cageUpdateFlag = true;
-							$msgx1 = 'Mouse Id [ '.$miceArrayInfo['ID'].' ] creation success';
-							array_push($this->success_box, $msgx1);
-							Log::channel('coding')->info($msgx1);
+					$result = Mouse::UpdateOrCreate($miceArrayInfo);
+					$this->cageUpdateFlag = true;
+					$msgx1 = 'Mouse Id [ '.$miceArrayInfo['ID'].' ] creation success';
+					array_push($this->success_box, $msgx1);
+					Log::channel('coding')->info($msgx1);
 				}
 
 				catch (\Illuminate\Database\QueryException $e ) {
-                $result = DB::rollback();
-                $eMsg = $e->getMessage();
-								array_push($this->error_box, $eMsg);
-								Log::channel('coding')->info('Entry ID [ '.$eMsg.' ] creation fail');
-                //dd($eMsg);
-                $result = false;
+					$result = DB::rollback();
+					$eMsg = $e->getMessage();
+					array_push($this->error_box, $eMsg);
+					Log::channel('coding')->info('Entry ID [ '.$eMsg.' ] creation fail');
+					//dd($eMsg);
+					$result = false;
 				}
 				//before loop restarts, no need to unset the key you are done with
 				//as we are using for loop, loop will pick running index value
@@ -105,8 +99,7 @@ trait BPutPupsToDB
 				else {
 					array_push($this->error_box, "Cage Insertion, Rack Update and Mouse location updates failed");
 				}
-				//before the loop goes back
-				//prepare for cage insertion
+				//before the loop goes back prepare for cage insertion
 				//this must be $this->rarray because the array must be adjusted after every entry.
 				unset($this->rarray[0]);  
 				$this->mice_idx = [];
