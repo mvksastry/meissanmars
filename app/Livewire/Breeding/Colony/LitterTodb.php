@@ -666,8 +666,7 @@ class LitterTodb extends Component
 						$finalMatArray[] = array_merge($row, $base);
 					}
 					
-					$msg = 'Data collection for mating entries seems to be complete';
-					//array_push($this->msgLTM, $msg);
+					$msg = 'Data collection for mating entries complete';
 					Log::channel('coding')->info($msg);
 					
 					//dd($finalMatArray);	
@@ -763,7 +762,7 @@ class LitterTodb extends Component
 				}
 			}
 			else {
-				$this->matingEntryErrorMsg = "Please select Room, Rack";
+				$this->matingEntryErrorMsg = "Please select Mating Pairs";
 				$this->body = "Please select Mating Pairs";
 				$this->dispatch('error');
 			}
