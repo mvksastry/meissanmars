@@ -206,12 +206,12 @@ class LitterTodb extends Component
 			//$input['_mouse_key'] = $this->getMaxMouseKey(); // 
 			if($this->baseMouseId != null || $this->baseMouseId != "")
 			{
-				$maxSlotValue = max($this->rackIdSlotArray);
-				$maxSlotRack_id = array_search(max($this->rackIdSlotArray), $this->rackIdSlotArray);
-				ksort( $this->rackIdSlotArray);
-			
 				if(count($this->rackIdSlotArray) > 0)
 				{ 
+					$maxSlotValue = max($this->rackIdSlotArray);
+					$maxSlotRack_id = array_search(max($this->rackIdSlotArray), $this->rackIdSlotArray);
+					ksort( $this->rackIdSlotArray);
+					
 					foreach($this->openLitterEntries as $row)
 					{
 						$this->strainKey = $row->_strain_key;
