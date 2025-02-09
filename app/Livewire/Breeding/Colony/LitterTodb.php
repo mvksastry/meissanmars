@@ -442,39 +442,32 @@ class LitterTodb extends Component
 		{
 			$rack_id1 = $this->rack_id1;
 			$slots = Slot::where('rack_id', $this->rack_id1)->where('status','A')->get();
-			
+			$slotCount = $slots->count();
 			//if no free slots available throw Message
-			if($this->rack_id1 != null)
+			if($slotCount > 0)
 			{
-				if($this->rack_id1 != null && $this->rack_id1 == $this->rack_id2)
+				if($this->rack_id1 != $this->rack_id2)
 				{
-					if($this->free_slots1 > 0)
+					$this->sarray = $slots->toArray();
+					//$this->rarray = [];
+					foreach($this->sarray as $row)
 					{
-						$this->sarray = $slots->toArray();
-						//$this->rarray = [];
-						foreach($this->sarray as $row)
-						{
-							$this->rarray1[] = $row['slot_id'];
-						}
-						$this->free_slots1 = $slots->count();
-						$this->fslot_num1 = json_encode(array_slice($this->rarray1, 0, 5, true));
+						$this->rarray1[] = $row['slot_id'];
+					}
+					$this->free_slots1 = $slotCount;
+					$this->fslot_num1 = json_encode(array_slice($this->rarray1, 0, 5, true));
 
-						$this->slot_id1 = $this->rarray1[0];
-						$this->rackIdSlotArray[$this->rack_id1] = $this->rarray1;
-						$this->hideRack1=true;
-					}
-					else {
-						$this->body = "No Free slots in rack";
-						$this->dispatch('error');
-					}
+					$this->slot_id1 = $this->rarray1[0];
+					$this->rackIdSlotArray[$this->rack_id1] = $this->rarray1;
+					$this->hideRack1=true;
 				}
 				else {
 					$this->body = "Rack Selected: Select Another";
 					$this->dispatch('error');					
-				}
+				}						
 			}
 			else {
-				$this->body = "Rack Not Selected, Select One";
+				$this->body = "No Free slots in rack";
 				$this->dispatch('error');
 			}
 		}		
@@ -490,32 +483,24 @@ class LitterTodb extends Component
 		{
 			$rack_id2 = $this->rack_id2;
 			$slots = Slot::where('rack_id', $this->rack_id2)->where('status','A')->get();
-			
+			$slotCount = $slots->count();
 			//if no free slots available throw Message
-			if($this->rack_id2 != null)
+			if($slotCount > 0)
 			{
-				if($this->rack_id2 != null && $this->rack_id1 == $this->rack_id2)
+				if(if($this->rack_id1 != $this->rack_id2))
 				{
-					if($this->free_slots2 > 0)
+					$this->sarray = $slots->toArray();
+					$this->rarray2 = [];
+					foreach($this->sarray as $row)
 					{
-						
-						$this->sarray = $slots->toArray();
-						$this->rarray2 = [];
-						foreach($this->sarray as $row)
-						{
-							$this->rarray2[] = $row['slot_id'];
-						}
-						$this->free_slots2 = $slots->count();
-						$this->fslot_num2 = json_encode(array_slice($this->rarray2, 0, 5, true));
+						$this->rarray2[] = $row['slot_id'];
+					}
+					$this->free_slots2 = $slotCount;
+					$this->fslot_num2 = json_encode(array_slice($this->rarray2, 0, 5, true));
 
-						$this->slot_id2 = $this->rarray2[0]; 
-						$this->rackIdSlotArray[$this->rack_id2] = $this->rarray2;
-						$this->hideRack2=true;
-					}
-					else {
-						$this->body = "No Free slots in rack";
-						$this->dispatch('error');
-					}
+					$this->slot_id2 = $this->rarray2[0]; 
+					$this->rackIdSlotArray[$this->rack_id2] = $this->rarray2;
+					$this->hideRack2=true;
 				}
 				else {
 					$this->body = "Rack Selected: Select Another";
@@ -523,7 +508,7 @@ class LitterTodb extends Component
 				}
 			}
 			else {
-				$this->body = "Rack Not Selected: Select One";
+				$this->body = "No Free slots in rack";
 				$this->dispatch('error');
 			}
 			//dd($this->rackIdSlotArray);
