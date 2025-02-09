@@ -763,7 +763,11 @@
 														@endif
 														<tr>
 															<td class="border px-2 p-1">
-																<button wire:click="postMatingEntryData()" class="btn btn-warning rounded">Post Mating Entries</button>
+																@if($confirming==="true")
+																	<button wire:click="postMatingEntryData()" class="btn btn-success rounded border">Sure?</button>
+																@else
+																	<button wire:click="postMatingEntryDataSure()" class="btn btn-info rounded rounded border">Post Mating Entries</button>
+																@endif
 															</td>
 															<td class="border px-2 p-1">
 															</td>

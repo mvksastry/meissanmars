@@ -438,6 +438,7 @@ class LitterTodb extends Component
 			$this->wean_days = null;
 			$this->mating_date = null;
 			$this->agmatingr = null;
+			$this->confirming = "false";
 		}
 
 		// DB entry related rooms and racks
@@ -633,6 +634,11 @@ class LitterTodb extends Component
 			}
 		}
 		
+		public function postMatingEntryDataSure()
+		{
+			$this->confirming = "true";
+		}
+		
 		public function postMatingEntryData()
 		{
 			/*
@@ -762,6 +768,7 @@ class LitterTodb extends Component
 					$this->panel2 = false;
 					$this->panel5 = false;
 					$this->panel6 = false;
+					$this->confirming = "false";
 				}
 				else {
 					$this->matingEntryErrorMsg = "Please select Room, Rack";
