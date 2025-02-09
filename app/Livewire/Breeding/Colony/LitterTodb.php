@@ -442,11 +442,11 @@ class LitterTodb extends Component
 		{
 			$rack_id1 = $this->rack_id1;
 			$slots = Slot::where('rack_id', $this->rack_id1)->where('status','A')->get();
-			$this->free_slots1 = $slots->count();
+			
 			//if no free slots available throw Message
 			if($this->rack_id1 != null)
 			{
-				if($this->rack_id2 == $this->rack_id1)
+				if($this->rack_id1 != null && $this->rack_id1 == $this->rack_id2)
 				{
 					if($this->free_slots1 > 0)
 					{
@@ -456,6 +456,7 @@ class LitterTodb extends Component
 						{
 							$this->rarray1[] = $row['slot_id'];
 						}
+						$this->free_slots1 = $slots->count();
 						$this->fslot_num1 = json_encode(array_slice($this->rarray1, 0, 5, true));
 
 						$this->slot_id1 = $this->rarray1[0];
@@ -489,11 +490,11 @@ class LitterTodb extends Component
 		{
 			$rack_id2 = $this->rack_id2;
 			$slots = Slot::where('rack_id', $this->rack_id2)->where('status','A')->get();
-			$this->free_slots2 = $slots->count();
+			
 			//if no free slots available throw Message
 			if($this->rack_id2 != null)
 			{
-				if($this->rack_id2 == $this->rack_id1)
+				if($this->rack_id2 != null && $this->rack_id1 == $this->rack_id2)
 				{
 					if($this->free_slots2 > 0)
 					{
@@ -504,6 +505,7 @@ class LitterTodb extends Component
 						{
 							$this->rarray2[] = $row['slot_id'];
 						}
+						$this->free_slots2 = $slots->count();
 						$this->fslot_num2 = json_encode(array_slice($this->rarray2, 0, 5, true));
 
 						$this->slot_id2 = $this->rarray2[0]; 
