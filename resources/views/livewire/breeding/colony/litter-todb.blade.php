@@ -440,7 +440,7 @@
 														</tr>
 														<tr>
 															<td class="border px-2 p-1">
-																@if($confirming==="true")
+																@if($confirm1==="true")
 																		<button wire:click="prepareDBEntryData()" class="btn btn-success rounded border">Sure?</button>
 																		<button wire:click="cancelEntry()" class="btn btn-success rounded border px-5">Cancel</button>
 																@else
@@ -764,7 +764,7 @@
 														@endif
 														<tr>
 															<td class="border px-2 p-1">
-																@if($confirming==="true")
+																@if($confirm3==="true")
 																	<button wire:click="postMatingEntryData()" class="btn btn-success rounded border">Sure?</button>
 																	<button wire:click="cancelEntry()" class="btn btn-success rounded border px-5">Cancel</button>
 																@else

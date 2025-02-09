@@ -58,6 +58,7 @@ class LitterTodb extends Component
 		//form messages
 		public $iaMessage, $mpairErrorMessage = null;
 		public $matingEntryErrorMsg = null, $confirming="false";
+		public $confirm1="false", $confirm2="false",$confirm3="false",$confirm4="false";
 		//panels
 		public $panel1 = false, $panel2 = false, $panel3 = false, $panel4 = false;
 		public $panel5 = false, $panel6 = false;
@@ -178,7 +179,7 @@ class LitterTodb extends Component
 
     public function prepareDBEntryDataSure()
     {
-      $this->confirming = "true";
+      $this->confirm1 = "true";
     }
 		
 		public function	prepareDBEntryData()
@@ -319,7 +320,7 @@ class LitterTodb extends Component
 	
 		public function putPupsToDBSure()
 		{
-			$this->confirming = "true";
+			$this->confirm2 = "true";
 		}
 		
 		public function putPupsToDB()
@@ -444,6 +445,10 @@ class LitterTodb extends Component
 			$this->mating_date = null;
 			$this->agmatingr = null;
 			$this->confirming = "false";
+			$this->confirm1 = "false";
+			$this->confirm2 = "false";
+			$this->confirm3 = "false";
+			$this->confirm4 = "false";
 		}
 
 		// DB entry related rooms and racks
@@ -641,7 +646,7 @@ class LitterTodb extends Component
 		
 		public function postMatingEntryDataSure()
 		{
-			$this->confirming = "true";
+			$this->confirm3 = "true";
 		}
 		
 		public function postMatingEntryData()
@@ -773,7 +778,7 @@ class LitterTodb extends Component
 					$this->panel2 = false;
 					$this->panel5 = false;
 					$this->panel6 = false;
-					$this->confirming = "false";
+					$this->confirm3 = "false";
 				}
 				else {
 					$this->matingEntryErrorMsg = "Please select Room, Rack";

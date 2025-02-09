@@ -142,7 +142,7 @@
 					
 					<tr>
 						<td class="border px-2 p-1">
-							@if($confirming==="true")
+							@if($confirm2==="true")
 								<button wire:click="putPupsToDB()" class="btn btn-success rounded border">Sure?</button>
 								<button wire:click="cancelEntry()" class="btn btn-success rounded border px-5">Cancel</button>
 							@else
