@@ -487,7 +487,7 @@ class LitterTodb extends Component
 			//if no free slots available throw Message
 			if($slotCount > 0)
 			{
-				if(if($this->rack_id1 != $this->rack_id2))
+				if($this->rack_id1 != $this->rack_id2)
 				{
 					$this->sarray = $slots->toArray();
 					$this->rarray2 = [];
