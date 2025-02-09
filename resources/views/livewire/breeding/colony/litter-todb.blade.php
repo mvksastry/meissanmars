@@ -442,6 +442,7 @@
 															<td class="border px-2 p-1">
 																@if($confirming==="true")
 																		<button wire:click="prepareDBEntryData()" class="btn btn-success rounded border">Sure?</button>
+																		<button wire:click="cancelEntry()" class="btn btn-success rounded border px-5">Cancel</button>
 																@else
 																		<button wire:click="prepareDBEntryDataSure()" class="btn btn-info rounded rounded border">Prepare DB Entries</button>
 																@endif				
@@ -765,6 +766,7 @@
 															<td class="border px-2 p-1">
 																@if($confirming==="true")
 																	<button wire:click="postMatingEntryData()" class="btn btn-success rounded border">Sure?</button>
+																	<button wire:click="cancelEntry()" class="btn btn-success rounded border px-5">Cancel</button>
 																@else
 																	<button wire:click="postMatingEntryDataSure()" class="btn btn-info rounded rounded border">Post Mating Entries</button>
 																@endif

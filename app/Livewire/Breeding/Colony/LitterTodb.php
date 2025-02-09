@@ -131,7 +131,12 @@ class LitterTodb extends Component
 				'mslot_id'            => 'required|numeric',
 				'mating_comment'      => 'sometimes|nullable|regex:/^[\pL\s\- .,;0-9_]+$/u|max:500',
 		]; 
-
+		
+		public function cancelEntry()
+		{
+			$this->confirming = "false";
+		}
+		
 		public function render()
 		{
 			//$this->pullAllOpenLitterEntries();
