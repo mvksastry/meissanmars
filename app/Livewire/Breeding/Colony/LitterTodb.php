@@ -182,6 +182,11 @@ class LitterTodb extends Component
       $this->confirm1 = "true";
     }
 		
+		public function cancelPrepareDBEntryData()
+		{
+			$this->confirm1 = "false";
+		}
+		
 		public function	prepareDBEntryData()
 		{
 			//standard common info for mouse entries
@@ -321,6 +326,11 @@ class LitterTodb extends Component
 		public function putPupsToDBSure()
 		{
 			$this->confirm2 = "true";
+		}
+		
+		public function cancelPutPupsToDB()
+		{
+			$this->confirm2 = "false";
 		}
 		
 		public function putPupsToDB()
@@ -647,6 +657,11 @@ class LitterTodb extends Component
 		public function postMatingEntryDataSure()
 		{
 			$this->confirm3 = "true";
+		}
+		
+		public function cancelPostMatingEntryData()
+		{
+			$this->confirm3 = "false";
 		}
 		
 		public function postMatingEntryData()
