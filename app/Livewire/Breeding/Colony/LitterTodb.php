@@ -480,6 +480,11 @@ class LitterTodb extends Component
 			$slots = Slot::where('rack_id', $this->rack_id2)->where('status','A')->get();
 			$this->free_slots2 = $slots->count();
 			//if no free slots available throw Message
+			if($this->rack_id2 == $this->rack_id1)
+			{
+				$this->body = "Rack Selected: Select Another";
+				$this->dispatch('error');
+			}
 			if($this->free_slots2 > 0)
 			{
 				
