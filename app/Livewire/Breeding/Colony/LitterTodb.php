@@ -303,7 +303,7 @@ class LitterTodb extends Component
 			$this->fpairs = [];
 			$this->panel3 = true;
 			$this->panel4 = true;
-			$this->body = "Select Equal Number of Males & Females for Mating Set-up";
+			$this->body = "For Mating, Select Equal Number of Males & Females";
 			$this->dispatch('info');
 		}
 	
@@ -412,8 +412,10 @@ class LitterTodb extends Component
 			$this->_generation_key = null;
 			$this->active_rack_id = null; 
 			$this->rarray = [];
-			//$this->rooms = [];
-			//$this->racks = [];
+			$this->room_id1 = null;
+			$this->room_id2 = null;
+			$this->rack_id1 = null;
+			$this->rack_id2 = null;
 			
 			$this->mating_comment = null;
 			$this->mslot_id = null;
@@ -520,7 +522,7 @@ class LitterTodb extends Component
 	
 		public function matingRackSelected()
 		{
-			$temp = $this->rackIdSlotArray;
+			//$temp = $this->rackIdSlotArray;
 			
 			$cageArray = array($this->cagesM, $this->cagesF );
 			
@@ -534,11 +536,11 @@ class LitterTodb extends Component
 
 			//check here if the racks for stock and new mating are identical or not
 			//if identical remove those slots filled thrugh the db entries.
-			if(array_key_exists($mrack_id, $temp))
+			if(array_key_exists($mrack_id, $this->rackIdSlotArray))
 			{
 				if($freeSlotsTotal > $totalNeeded)
 				{
-					foreach($temp as $key => $val1)
+					foreach($this->rackIdSlotArray as $key => $val1)
 					{
 						if(count($val1) >= $totalNeeded)
 						{
@@ -563,12 +565,12 @@ class LitterTodb extends Component
 					$this->mrack_id = array_search(max($this->mrarray), $this->mrarray);
 					$this->mrarray = $this->mrarray[$this->mrack_id];
 					$this->mslot_id = $this->mrarray[0];
-					//dd($temp, $cageArray, $this->mrarray);
+					//dd($this->rackIdSlotArray, $cageArray, $this->mrarray);
 					$this->mfslot_num = json_encode(array_slice($this->mrarray, 0, 5, true));
 					$this->mfree_slots = count($this->mrarray);
 					
 					$this->matingGoFlag = true;
-					$this->body = "Sufficient Free Slots in Selected Racks";
+					$this->body = "Green Flag for Mating Entry, Go";
 					$this->dispatch('success');
 				}
 				else {
@@ -599,7 +601,6 @@ class LitterTodb extends Component
 					//}
 					$this->mfslot_num = json_encode(array_slice($this->mrarray, 0, 5, true));
 					//dd($rarray, $sarray);
-					//$this->mcageInfos = $this->mrarray[0];
 					$this->mslot_id = $this->mrarray[0];
 					$this->matingGoFlag = true;
 				}
@@ -613,13 +614,13 @@ class LitterTodb extends Component
 		
 		public function postMatingEntryData()
 		{
-				/*
-				1. Take dspairs, for each pair, add all mating table column data 
-				2. take all the rest of the data and merge arrays which is the easiest
-				3. Then make entries.
-				4. Make sure you  retrive mouse keys from mouse table as dam sire keys will
-					 not be available immediately. Must put pups first for this operation.
-				*/
+			/*
+			1. Take dspairs, for each pair, add all mating table column data 
+			2. take all the rest of the data and merge arrays which is the easiest
+			3. Then make entries.
+			4. Make sure you  retrive mouse keys from mouse table as dam sire keys will
+				 not be available immediately. Must put pups first for this operation.
+			*/
 			//$this->validate();
 			
 			//$this->matingGoFlag = false;

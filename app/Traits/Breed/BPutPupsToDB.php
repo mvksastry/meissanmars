@@ -111,7 +111,7 @@ trait BPutPupsToDB
 					unset($this->rackIdSlotArray[$this->active_rack_id]);
 					$this->rarray = max($this->rackIdSlotArray);
 					$this->active_rack_id = array_search(max($this->rackIdSlotArray), $this->rackIdSlotArray);	
-					$this->rarray = $this->rackIdSlotArray[$this->active_rack_id];
+					//$this->rarray = $this->rackIdSlotArray[$this->active_rack_id];
 					$this->slot_error_msg = "Moved to Next Available Rack";
 					array_push($this->success_box, $this->slot_error_msg);
 				}					
@@ -121,6 +121,8 @@ trait BPutPupsToDB
 			}
 		
 		}
+		//this line will ensure to keep next female cages will have continuous 
+		//cage ids and correct slot numbers.
 		$this->rackIdSlotArray[$this->active_rack_id] = $this->rarray;
 		return $this->cageUpdateFlag;
 	}
