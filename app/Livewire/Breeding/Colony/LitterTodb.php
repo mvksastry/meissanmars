@@ -57,7 +57,7 @@ class LitterTodb extends Component
 		
 		//form messages
 		public $iaMessage, $mpairErrorMessage = null;
-		public $matingEntryErrorMsg = null;
+		public $matingEntryErrorMsg = null, $confirming="false";
 		//panels
 		public $panel1 = false, $panel2 = false, $panel3 = false, $panel4 = false;
 		public $panel5 = false, $panel6 = false;
@@ -131,7 +131,7 @@ class LitterTodb extends Component
 				'mslot_id'            => 'required|numeric',
 				'mating_comment'      => 'sometimes|nullable|regex:/^[\pL\s\- .,;0-9_]+$/u|max:500',
 		]; 
-	
+
 		public function render()
 		{
 			//$this->pullAllOpenLitterEntries();
@@ -170,11 +170,14 @@ class LitterTodb extends Component
 				$this->panel5 = true;
 			}
 		}
+
+    public function prepareDBEntryDataSure()
+    {
+      $this->confirming = "true";
+    }
 		
 		public function	prepareDBEntryData()
 		{
-
-
 			//standard common info for mouse entries
 			$input['exitDate'] = null;
 			$input['cod'] = null;  
@@ -309,6 +312,11 @@ class LitterTodb extends Component
 			$this->dispatch('info');
 		}
 	
+		public function putPupsToDBSure()
+		{
+			$this->confirming = "true";
+		}
+		
 		public function putPupsToDB()
 		{
 			/*

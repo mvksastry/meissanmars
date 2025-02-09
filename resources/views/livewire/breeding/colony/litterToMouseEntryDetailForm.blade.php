@@ -142,7 +142,11 @@
 					
 					<tr>
 						<td class="border px-2 p-1">
-							<button wire:click="putPupsToDB()" class="btn btn-primary rounded">Put Pups To DB</button>
+							@if($confirming==="true")
+								<button wire:click="putPupsToDB()" class="btn btn-success rounded border">Sure?</button>
+							@else
+								<button wire:click="putPupsToDBSure()" class="btn btn-info rounded rounded border">Put Pups To DB</button>
+							@endif
 						</td>
 						@if($panel6)
 						<td class="border px-2 p-1">

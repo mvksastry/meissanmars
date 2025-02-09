@@ -440,10 +440,13 @@
 														</tr>
 														<tr>
 															<td class="border px-2 p-1">
-																<button wire:click="prepareDBEntryData()" class="btn btn-info rounded">Prepare Entries</button>
+																@if($confirming==="true")
+																		<button wire:click="prepareDBEntryData()" class="btn btn-success rounded border">Sure?</button>
+																@else
+																		<button wire:click="prepareDBEntryDataSure()" class="btn btn-info rounded rounded border">Prepare DB Entries</button>
+																@endif				
 															</td>
 															<td class="border px-2 p-1">
-																
 															</td>
 														</tr>
 													</tbody>

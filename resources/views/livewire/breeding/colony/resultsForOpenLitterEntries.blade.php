@@ -15,11 +15,12 @@
 							<thead class="thead-dark">
 								<th>Mating</br>Key</th>
 								<th>Birth</br>Date</th>
-								<th>Ref ID</th>
+								<th>Breeding </br> ID</th>
+								<th>Parent </br>ID</th>
 								<th>Total</br>Born</th>
-								<th>F </th>
 								<th>M</th>
-								<th>Dead</th>
+								<th>F </th>
+								<th>Still</br>Born</th>
 								<th>Wean</br>Date</th>
 								<th>Status</th>
 								<th>Status</br>Date</th>
@@ -39,16 +40,19 @@
 									{{ $row->mating->matingRefID }}
 									</td>
 									<td class="mx-2">
+									{{ $row->mating->parentID }}
+									</td>
+									<td class="mx-2">
 									<?php 
 										$total = $total + $row->totalBorn; 								
 									?>
 									{{ $row->totalBorn }} 
 									</td>
 									<td class="mx-2">
-									{{ $row->numFemale }} <?php $females = $females + $row->numFemale; ?>
-									</td>
-									<td class="mx-2">
 									{{ $row->numMale }} <?php $males = $males + $row->numMale; ?>
+									</td>									
+									<td class="mx-2">
+									{{ $row->numFemale }} <?php $females = $females + $row->numFemale; ?>
 									</td>
 									<td class="mx-2">
 									{{ $row->numberBornDead }} <?php $dead = $dead + $row->numberBornDead; ?>
@@ -57,7 +61,7 @@
 									{{ date('d-m-Y', strtotime($row->weanDate)) }}
 									</td>
 									<td class="mx-2">
-									{{ $row->entry_status }} 
+									{{ ucfirst($row->entry_status) }} 
 									</td>
 									<td class="mx-2">
 									{{ date('d-m-Y', strtotime($row->entry_status_date)) }} 
@@ -68,6 +72,11 @@
 								</tr>
 								@endforeach
 								<tr>
+									<td colspan="12">
+									</td>
+								<tr>
+								<tr>
+									<td class="mx-2"></td>
 									<td class="mx-2"></td>
 									<td class="mx-2"></td>
 									<td class="mx-2 text-bold">Total </td>
