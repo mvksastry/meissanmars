@@ -173,9 +173,7 @@ class LitterTodb extends Component
 		
 		public function	prepareDBEntryData()
 		{
-			$maxSlotValue = max($this->rackIdSlotArray);
-			$maxSlotRack_id = array_search(max($this->rackIdSlotArray), $this->rackIdSlotArray);
-			ksort( $this->rackIdSlotArray);
+
 
 			//standard common info for mouse entries
 			$input['exitDate'] = null;
@@ -208,6 +206,10 @@ class LitterTodb extends Component
 			//$input['_mouse_key'] = $this->getMaxMouseKey(); // 
 			if($this->baseMouseId != null || $this->baseMouseId != "")
 			{
+				$maxSlotValue = max($this->rackIdSlotArray);
+				$maxSlotRack_id = array_search(max($this->rackIdSlotArray), $this->rackIdSlotArray);
+				ksort( $this->rackIdSlotArray);
+			
 				if(count($this->rackIdSlotArray) > 0)
 				{ 
 					foreach($this->openLitterEntries as $row)
