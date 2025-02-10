@@ -183,7 +183,7 @@ class LitterTodb extends Component
     }
 		
 		public function cancelPrepareDBEntryData()
-		{
+		{			
 			$this->confirm1 = "false";
 		}
 		
@@ -404,7 +404,7 @@ class LitterTodb extends Component
 					$matchThese = ['_litter_key' => $row->_litter_key, '_mating_key' => $row->_mating_key];
 					$putThese = ['entry_status' => 'closed', 'entry_status_date' => date('Y-m-d') ];
 					$result = Litter::where($matchThese)->update($putThese);
-					$msgx5 = 'Litter entry staus closed for litter key [ '.$row->_litter_key.' ] ';
+					$msgx5 = 'Litter Key [ '.$row->_litter_key.' ] staus closed.';
 					array_push($this->success_box, $msgx5);
 					$matchThese = []; $putThese = [];
 					

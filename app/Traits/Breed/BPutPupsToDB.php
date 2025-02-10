@@ -94,10 +94,10 @@ trait BPutPupsToDB
 				//$result = true;
 				if($result)
 				{
-					array_push($this->success_box, "Cage Insertion, Rack Update and Mouse location updates success");
+					array_push($this->success_box, "Cage, Rack and Location updates success");
 				}
 				else {
-					array_push($this->error_box, "Cage Insertion, Rack Update and Mouse location updates failed");
+					array_push($this->error_box, "Cage, Rack and Location updates failed");
 				}
 				//before the loop goes back prepare for cage insertion
 				//this must be $this->rarray because the array must be adjusted after every entry.

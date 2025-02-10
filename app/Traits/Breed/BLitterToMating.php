@@ -44,7 +44,7 @@ trait BLitterToMating
 		public function addMatingThroughLitter($input)
 		{
 				// 1. setting the db
-				//$mcmsTables = $this->setMcmsDB();
+
 				// 2. preparing the data.
 				$qResultMsg = "";
 				//$purpose = $input['purpose'];
