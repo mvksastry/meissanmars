@@ -121,6 +121,7 @@ use App\Livewire\Breeding\Colony\MatingEntries;
 use App\Livewire\Breeding\Colony\LitterEntries;
 use App\Livewire\Breeding\Colony\SupplyRegister;
 use App\Livewire\Breeding\Colony\MortalityRegister;
+use App\Livewire\Breeding\Colony\FormC;
 //------------------------------------------------------//
 
 //livewire - Breeding/Colnoy Permission Management
@@ -334,6 +335,7 @@ Route::middleware(['auth','verified'])->group(function() {
 		Route::get('/supply-register', SupplyRegister::class);
 		Route::get('/mortality-register', MortalityRegister::class);
 		Route::get('/cage-register', CageRegister::class);
+		Route::get('/form-c', FormC::class);
     // -------------- //
         
 		// Breeding - Livewire Colony Routes		

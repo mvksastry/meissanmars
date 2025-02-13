@@ -3,6 +3,8 @@
 namespace App\Livewire\Breeding\Colony;
 
 use Livewire\Component;
+use Livewire\Attributes\On; 
+use Livewire\WithPagination;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
@@ -37,7 +39,7 @@ use App\Traits\Breed\BContainer;
 
 class EditEntry extends Component
 {
-      // display panels/divisions default state
+    // display panels/divisions default state
     use BEditMice, BContainer;
 
     public $iaMessage;
@@ -55,7 +57,14 @@ class EditEntry extends Component
 
     public $cageParams, $cageChars, $nextCageId, $cageName, $datex, $cageRooms, $cageComment, $cageStatus;
     public $cageCreateMessage="";
-    
+
+  #[On('pickedid')] 
+	public function pickedMatingID(int $pickedid)
+	{
+			//dd($pickedid);
+			$this->edit($pickedid);
+	}
+	
     public function render()
     {
         return view('livewire.breeding.colony.edit-entry');
@@ -95,72 +104,89 @@ class EditEntry extends Component
                             ->with('lifestatusSelected')
                             ->with('originSelected')
                             ->with('ownerSelected')
-                            ->where('ID', $id)->first();
+                            ->where('_mouse_key', $id)->first();
         //dd($this->entry);
         $this->speciesKey = $this->entry->_species_key;
 
         $q1 = CVSpecies::where('_species_key', $this->speciesKey)->first();
-		$this->speciesName = $q1->species;
+				$this->speciesName = $q1->species;
 
 
         $this->useScheduleTerms = Usescheduleterm::all();
-		$this->protocols = CVProtocol::where('_species_key', $this->speciesKey)->get();
-		$this->strains = Strain::where('_species_key', $this->speciesKey)->get();
-		$this->generations = CVGeneration::all();
-		$this->phenotypes = CVPhenotype::where('_species_key', $this->speciesKey)->get();
-		$this->lifestatus = Lifestatus::all();
-		$this->rooms = Room::all();
-		$this->coatcolors = CVCoatcolor::where('_species_key', $this->speciesKey)->get();
-		$this->diets = CVDiet::where('_species_key', $this->speciesKey)->get();
-		$this->owners = Owner::all();
-		$this->origins = CVOrigin::all();
-		$this->containerId = Container::max('containerID');
-		$this->cage_code = $this->containerId;
+				$this->protocols = CVProtocol::where('_species_key', $this->speciesKey)->get();
+				$this->strains = Strain::where('_species_key', $this->speciesKey)->get();
+				$this->generations = CVGeneration::all();
+				$this->phenotypes = CVPhenotype::where('_species_key', $this->speciesKey)->get();
+				$this->lifestatus = Lifestatus::all();
+				$this->rooms = Room::all();
+				$this->coatcolors = CVCoatcolor::where('_species_key', $this->speciesKey)->get();
+				$this->diets = CVDiet::where('_species_key', $this->speciesKey)->get();
+				$this->owners = Owner::all();
+				$this->origins = CVOrigin::all();
+				$this->containerId = Container::max('containerID');
+				$this->cage_code = $this->containerId;
 
         $this->roomInfo = Container::where('_container_key', $this->entry->_pen_key )->first();
-
         //$this->cage_id = $this->entry->_pen_key;
-
         //dd($this->entry); //everything is supposed as it should be
 
         //now get the keys of phenotype mouse link selected
         //we need to process for the form so that loops are avoided.
         $phenolinks = Phenotypemouselink::with('phenotypeDesc')
                                                 ->where('_mouse_key', $this->entry->_mouse_key)->get();
-        foreach($phenolinks as $link)
-        {
-            $va = $link->phenotypeDesc;
-            foreach($va as $row){
-                $av[] = $row->phenotype;
-            }
-        }
-        $this->av = $av;
+        if(count($phenolinks) > 0)
+				{
+					foreach($phenolinks as $link)
+					{
+							$va = $link->phenotypeDesc;
+							foreach($va as $row){
+									$av[] = $row->phenotype;
+							}
+					}
+					$this->av = $av;
+				}
+				else {
+					$this->av = [];
+				}
         //dd($av);
 
         //get the use schedules selected by the user and show him
         // the original options.
         $uschterms = Useschedule::with('useSchTerms')->where('_mouse_key', $this->entry->_mouse_key)->get();
-        foreach($uschterms as $link){
-            $xc = $link->useSchTerms;
-            foreach($xc as $row){
-                $av2[] = $row->useScheduleTermName;
-            }
-
-        }
-        $this->av2 = $av2;
+				
+        if(count($uschterms) > 0)
+				{
+					foreach($uschterms as $link)
+					{
+							$xc = $link->useSchTerms;
+							foreach($xc as $row){
+									$av2[] = $row->useScheduleTermName;
+							}
+					}
+					$this->av2 = $av2;
+				}
+				else {
+					$this->av2  = [];
+				}
         //with the above use schedules are also corrected
 
-
         //now render form fields to set preexisting values.
-        foreach($this->entry as $row){
+        foreach($this->entry as $row)
+				{
             $xd = $this->entry->protoSelected;
-            foreach($xd as $val){
-                $protoSelected = $xd->id;
-            }
+						if(!empty($xd))
+						{
+							foreach($xd as $val)
+							{
+									$this->protoSelected = $xd->id;
+							}
+						}
+						else {
+							$this->protoSelected = null;
+						}
         }
-        $this->protoSelected = $protoSelected;
-
         $this->formEditDetail = true;
+				$this->dispatch('entrySearchDone');
     }
 
 

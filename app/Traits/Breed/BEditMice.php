@@ -45,6 +45,7 @@ trait BEditMice
         $this->queryResult = $queryResult;
 
         $this->entrySearchResult = true;
+				$this->dispatch('entrySearchDone');
   }
 
 

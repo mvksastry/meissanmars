@@ -94,7 +94,7 @@
 			<!-- small box -->			
 			<div class="col-lg-3 col-6">
 				<div class="small-box">
-					<a href="#" class="small-box-footer"> 
+					<a href="/form-c" class="small-box-footer"> 
 					<button type="button" class="btn btn-outline-primary btn-block">
 					<i class="fas fa-arrow-circle-right"></i>
 						FORM-C

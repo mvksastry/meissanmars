@@ -212,8 +212,9 @@ public function addMating($input)
             }
         }
         //echo "Query to be executed = ".$baseSqlStatement;echo "</br>";
-        $result = DB::select($baseSqlStatement);
+        $result = DB::select($baseSqlStatement)->paginate(10);
         //echo "number of rows got = ".count($result);echo "</br>";
+				dd($result);
         return $result;
     }
 

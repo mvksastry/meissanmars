@@ -96,7 +96,12 @@
                 <font color="red">Generation*</font>
             </td>
 						<td>
-							<font color="red">{{ $entry->genSelected->generation }}</font>
+							<font color="red">
+							@if($entry->genSelected != null)
+							{{ $entry->genSelected->generation }}</font>
+							@else
+								-
+							@endif
 						</td>
             <td>
             </td>
@@ -198,7 +203,11 @@
               Room*
             </td>
 						<td>
+						@if($roomInfo != null)
 							{{ $roomInfo->containerName }}
+						@else 
+							-
+						@endif
 						</td>
             <td>
               <select wire:model.lazy="_room_key" name="_room_key" id="_room_key">

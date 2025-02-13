@@ -14,7 +14,7 @@
 					<div class="col-sm-6">
 						<ol class="breadcrumb float-sm-right">
 							<li class="breadcrumb-item"><a href="/dashboard">Colony</a></li>
-							<li class="breadcrumb-item active">Entry</li>
+							<li class="breadcrumb-item active">Entryx</li>
 						</ol>
 					</div><!-- /.col -->
 				</div><!-- /.row -->
@@ -29,7 +29,7 @@
 		<section class="content">
 			<div class="container-fluid">
         @hasrole('manager')
-					@include('livewire.breeding.colony.flexMenuColony')
+					
 				@endhasrole
 				<!-- Main row -->
 				<div class="row">

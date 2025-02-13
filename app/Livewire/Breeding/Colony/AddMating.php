@@ -3,6 +3,8 @@
 namespace App\Livewire\Breeding\Colony;
 
 use Livewire\Component;
+use Livewire\Attributes\On; 
+use Livewire\WithPagination;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
@@ -49,8 +51,9 @@ use Livewire\Attributes\Validate;
 class AddMating extends Component
 {
     // display panels/divisions default state
-    use BEditMice, BContainer, BAddMating, BAddCageInfo;
-		use CageInfoUpdate;
+    use BEditMice, BAddMating, BAddCageInfo, CageInfoUpdate;
+		//use BContainer;
+		use WithPagination;
 		
     //message here
     public $iaMessage;
@@ -88,38 +91,43 @@ class AddMating extends Component
 		public $rack_id, $room_id, $slotID, $slotval, $cageInfos;
 		//public $showRacks=false;
 
-	protected $rules = [
+		protected $rules = [
 
-		'parentID'       => 'required|numeric',
-		'newMatingRefID' => 'required|numeric',
-		'strain_key'     => 'required|numeric',
-		'generation_key' => 'required|alpha_num',
-		'ownerwg'        => 'required|alpha_dash',
-		'matingDate'     => 'required|date',
-		'weantime'       => 'required|numeric',
-		'room_id'        => 'required|numeric',
-		'rack_id'        => 'required|numeric',
-		'slot_id'        => 'required|numeric',
+			'parentID'       => 'required|numeric',
+			'newMatingRefID' => 'required|numeric',
+			'strain_key'     => 'required|numeric',
+			'generation_key' => 'required|alpha_num',
+			'ownerwg'        => 'required|alpha_dash',
+			'matingDate'     => 'required|date',
+			'weantime'       => 'required|numeric',
+			'room_id'        => 'required|numeric',
+			'rack_id'        => 'required|numeric',
+			'slot_id'        => 'required|numeric',
 
-		'diet_key'       => 'sometimes|nullable|numeric',
-		'matgType'       => 'sometimes|nullable|numeric',		
+			'diet_key'       => 'sometimes|nullable|numeric',
+			'matgType'       => 'sometimes|nullable|numeric',		
 
-		'genotypeneed'   => 'sometimes|nullable|boolean',
-		'weannote'       => 'sometimes|nullable|regex:/^[\pL\s\- .,;0-9_]+$/u|max:500',
-		'comments'       => 'sometimes|nullable|regex:/^[\pL\s\- .,;0-9_]+$/u|max:500',
+			'genotypeneed'   => 'sometimes|nullable|boolean',
+			'weannote'       => 'sometimes|nullable|regex:/^[\pL\s\- .,;0-9_]+$/u|max:500',
+			'comments'       => 'sometimes|nullable|regex:/^[\pL\s\- .,;0-9_]+$/u|max:500',
+			
+		];
+	
+		#[On('Dam1pick')] 
+		public function pickedDam1ID(int $dam1id)
+		{
+				//dd($pickedid);
+				$this->pick($dam1id);
+		}
 		
-  ];
-	
-
-	
-    public function render()
-    {
-      $this->dam1IdCheck($this->dam1Id);
-      $this->dam2IdCheck($this->dam2Id);
-      $this->sireIdCheck($this->sireId);
-			$this->rackSelCheck($this->cageRooms);
-      return view('livewire.breeding.colony.add-mating');
-    }
+		public function render()
+		{
+			$this->dam1IdCheck($this->dam1Id);
+			$this->dam2IdCheck($this->dam2Id);
+			$this->sireIdCheck($this->sireId);
+			//$this->rackSelCheck($this->cageRooms);
+			return view('livewire.breeding.colony.add-mating');
+		}
 
 		public function clearAllFlagsForEntry()
 		{
@@ -135,18 +143,6 @@ class AddMating extends Component
 			}
 		}
 		
-		public function changeStrainInfos()
-		{
-			
-			
-		}
-		
-		public function rackSelCheck($room_id)
-		{
-			//$this->racksInRoom = Rack::where('room_id', $room_id)->get();
-			//dd($racksInRooms);
-		}
-
     public function dam1IdCheck($dam1Id)
     {
 			//dd($dam1Id);
@@ -258,6 +254,22 @@ class AddMating extends Component
       $this->showEntrySearchForm = true;
     }
 
+    public function pick($id)
+    {
+      $ix = explode('_', $id);
+      if($ix[0] === "Dam1"){
+          $this->dam1Id = $ix[1];
+      }
+      if($ix[0] === "Dam2"){
+          $this->dam2Id = $ix[1];
+      }
+      if($ix[0] === "Sire"){
+          $this->sireId = $ix[1];
+      }
+      $this->entrySearchResult = false;
+      $this->showEntrySearchForm = false;
+    }
+		
     public function post()
     {
       $this->iaMessage = "Welcome, Pay attention to fields";
@@ -402,23 +414,44 @@ class AddMating extends Component
 			
 		}
 		
-    public function pick($id)
-    {
-      $ix = explode('_', $id);
-      if($ix[0] === "Dam1"){
-          $this->dam1Id = $ix[1];
-      }
-      if($ix[0] === "Dam2"){
-          $this->dam2Id = $ix[1];
-      }
-      if($ix[0] === "Sire"){
-          $this->sireId = $ix[1];
-      }
-      $this->entrySearchResult = false;
-      $this->showEntrySearchForm = false;
-    }
+		public function roomSelected()
+		{
+			$this->fslot_num = "";
+			$this->cageInfos = null;
+			$this->free_slots = null;
+			$room_id = $this->room_id;
+			$this->racksInRoom = Rack::where('room_id', $room_id)->get();
+			//dd($room_id, $this->racksInRoom);
+		}		
 
-
+		public function rackSelected()
+		{
+			$rack_id = $this->rack_id;
+			$slots = Slot::where('rack_id', $rack_id)->where('status','A')->get();
+			$this->free_slots = $slots->count();
+			//if no free slots available throw Message
+			if($this->free_slots > 0)
+			{
+				$this->sarray = $slots->toArray();
+				$this->rarray = [];
+				foreach($this->sarray as $row)
+				{
+					$this->rarray[] = $row['slot_id'];
+				}
+				$this->fslot_num = json_encode(array_slice($this->rarray, 0, 5, true));
+				//dd($rarray, $sarray);
+				$this->cageInfos = $this->rarray[0];
+				$this->slot_id = $this->rarray[0];
+				//dd($this->cageInfos);
+				//$this->validateOnly($this->cageInfos);
+				//$this->slotSelectFlag = true;
+				//$this->cageCreateFlag = true;
+			}
+			else {
+				$this->fslot_num = "No Free slots in rack";
+			}
+		}	
+	
 	/*
 		protected $validationAttributes = [
         'slot_id' => 'Slot ID'
@@ -494,45 +527,22 @@ class AddMating extends Component
 		{
 
     }
-	*/
-
-		public function roomSelected()
+		*/
+		/*
+		public function changeStrainInfos()
 		{
-			$this->fslot_num = "";
-			$this->cageInfos = null;
-			$this->free_slots = null;
-			$room_id = $this->room_id;
-			$this->racksInRoom = Rack::where('room_id', $room_id)->get();
-			//dd($room_id, $this->racksInRoom);
-		}		
-
-		public function rackSelected()
+			
+			
+		}
+		
+		public function rackSelCheck($room_id)
 		{
-			$rack_id = $this->rack_id;
-			$slots = Slot::where('rack_id', $rack_id)->where('status','A')->get();
-			$this->free_slots = $slots->count();
-			//if no free slots available throw Message
-			if($this->free_slots > 0)
-			{
-				$this->sarray = $slots->toArray();
-				$this->rarray = [];
-				foreach($this->sarray as $row)
-				{
-					$this->rarray[] = $row['slot_id'];
-				}
-				$this->fslot_num = json_encode(array_slice($this->rarray, 0, 5, true));
-				//dd($rarray, $sarray);
-				$this->cageInfos = $this->rarray[0];
-				$this->slot_id = $this->rarray[0];
-				//dd($this->cageInfos);
-				//$this->validateOnly($this->cageInfos);
-				//$this->slotSelectFlag = true;
-				//$this->cageCreateFlag = true;
-			}
-			else {
-				$this->fslot_num = "No Free slots in rack";
-			}
-		}	
-	
-    
+			//$this->racksInRoom = Rack::where('room_id', $room_id)->get();
+			//dd($racksInRooms);
+		}
+		*/ 
+
+
+
+ 
 }

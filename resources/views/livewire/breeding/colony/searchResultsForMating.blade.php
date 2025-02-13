@@ -5,49 +5,54 @@
 		</div>
 
 		<div class="p-1">
-			<table class="text-xs">
 				<div>
 					Search Result for: {{ $searchFor }}
 				</div>
+			<table id="example4" class="text-xs">
+
+				
 				@if(!empty($queryResult))
-					<tr>
-						<td align="center">
-							<font color="red"> Select </font>
-						</td>
-						<td align="center">
-							ID <font color="red"></font>
-						</td>
-						<td align="center">
-							<font color="red">Strain</font>
-						</td>
-						<td align="center">
-							<font color="red">Generation</font>
-						</td>
-						<td align="center">
-							<font color="red">Protocol</font>
-						</td>
-						<td align="center">
-							<font color="red">Date of Birth</font>
-						</td>
-						<td align="center">
-							<font color="red">Sex</font>
-						</td>
-						<td align="center">
-							<font color="red">Life Status*</font>
-						</td>
-						<td align="center">
-							<font color="red">Breeding Status*</font>
-						</td>
-						<td align="center">
-							<font color="red">Exit Date*</font>
-						</td>
-						<td align="center">
-							<font color="red">Origin</font>
-						</td>
-						<td align="center">
-							<font color="red">Owner</font>
-						</td>
-					</tr>
+					<thead>
+						<tr>
+							<th align="center">
+								<font color="red"> Select </font>
+							</th>
+							<th align="center">
+								ID <font color="red"></font>
+							</th>
+							<th align="center">
+								<font color="red">Strain</font>
+							</th>
+							<th align="center">
+								<font color="red">Generation</font>
+							</th>
+							<th align="center">
+								<font color="red">Protocol</font>
+							</th>
+							<th align="center">
+								<font color="red">Date of Birth</font>
+							</th>
+							<th align="center">
+								<font color="red">Sex</font>
+							</th>
+							<th align="center">
+								<font color="red">Life Status*</font>
+							</th>
+							<th align="center">
+								<font color="red">Breeding Status*</font>
+							</th>
+							<th align="center">
+								<font color="red">Exit Date*</font>
+							</th>
+							<th align="center">
+								<font color="red">Origin</font>
+							</th>
+							<th align="center">
+								<font color="red">Owner</font>
+							</th>
+						</tr>
+					</thead>
+					<tbody>
 					@foreach($queryResult as $row)
 						<tr>
 							<td align="center" width="4%">
@@ -88,15 +93,68 @@
 							</td>
 						</tr>
 					@endforeach
+					</tbody>
 				@else
-					 <tr>
-						<td align="center">
-							<font color="red"> No Data Retrived: Refine Selection </font>
-						</td>
-					</tr>
+					<tbody>
+						<tr>
+							<td align="center">
+								<font color="red"> No Data Retrived: Refine Selection </font>
+							</td>
+						</tr>
+					</tbody>
 				@endif
 			</table>
+			
 		</div>
 
 	</div>
 </div>
+
+
+@script
+<script>
+		document.addEventListener("fMSResults", function(body){
+			var body = @this.body
+			$(document).Toasts('create', {
+        title: 'Results Loaded',
+				icon: 'success',
+				autohide: true,
+        delay: 5750,
+        body: body
+      });
+			//Swal.fire(body)
+			//Swal.fire('Results Loaded', body, 'success')			
+		});
+</script>
+@endscript
+@script
+<script>
+	$(document).on('click', '#pickedid', function()
+	{
+		let id = $(this).val(); 
+		//alert("working"+id);
+		Livewire.dispatch('pickedid', { pickedid: id })
+	});
+</script>
+@endscript
+@script
+	<script>
+			document.addEventListener("matingSearchResultsDone", function(){
+				$(document).ready(function(){
+					$('#example4').DataTable({
+							"responsive": true, 
+							"lengthChange": false, 
+							"autoWidth": false,
+							"buttons": ["copy", "csv", "excel", "print", 
+									{
+                    extend: 'pdfHtml5',
+                    orientation: 'landscape',
+                    pageSize: 'A4'
+									},
+									"colvis"
+							],
+					}).buttons().container().appendTo('#example4_wrapper .col-md-6:eq(0)');
+				});
+			});
+	</script>
+@endscript

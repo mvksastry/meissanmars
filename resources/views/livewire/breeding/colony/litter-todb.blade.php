@@ -31,7 +31,7 @@
 		<section class="content">
 			<div class="container-fluid">
         @hasrole('manager')
-					@include('livewire.breeding.colony.flexMenuLitterHome2')
+					
 				@endhasrole
 				
 				<!-- Main row -->
